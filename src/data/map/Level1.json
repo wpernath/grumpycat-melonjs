@@ -226,7 +226,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"terrain.json"
+         "source":"Terrain.json"
         }],
  "tilewidth":32,
  "type":"map",

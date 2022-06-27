@@ -39,7 +39,7 @@ const DataManifest = [
 		src: "./data/img/cat_right.png",
 	},
 	{
-		name: "terrain",
+		name: "Terrain",
 		type: "tsx",
 		src: "./data/map/Terrain.json",
 	},
@@ -48,6 +48,34 @@ const DataManifest = [
 		name: "level1",
 		type: "tmx",
 		src: "./data/map/Level1.json",
+		//src: "maps/0"
+	},
+
+	{
+		name: "level2",
+		type: "tmx",
+		src: "./data/map/Level2.json",
+		//src: "maps/0"
+	},
+
+	{
+		name: "level3",
+		type: "tmx",
+		src: "./data/map/Level3.json",
+		//src: "maps/0"
+	},
+	{
+		name: "level4",
+		type: "tmx",
+		src: "./data/map/Level4.json",
+		//src: "maps/0"
+	},
+
+	{
+		name: "level5",
+		type: "tmx",
+		src: "./data/map/Level5.json",
+		//src: "maps/0"
 	},
 ];
 

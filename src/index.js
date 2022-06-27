@@ -6,7 +6,8 @@ import {
     video,
     utils,
     plugin,
-    pool
+    pool,
+    input
 } from 'melonjs/dist/melonjs.module.js';
 
 import 'index.css';
@@ -40,6 +41,8 @@ device.onReady(() => {
     audio.init("mp3,ogg");
 
     // allow cross-origin for image/texture loading
+    //loader.setBaseURL("tmx", "http://localhost:8080/");
+
     loader.crossOrigin = "anonymous";
 
     // set and load all resources.
@@ -49,9 +52,14 @@ device.onReady(() => {
         state.set(state.PLAY, new PlayScreen());
 
         // add our player entity in the entity pool
-        pool.register("mainPlayer", PlayerEntity);
-        pool.register("enemy", EnemyEntity);
+        pool.register("player", PlayerEntity, true);
+        pool.register("enemy", EnemyEntity, false);
 
+        input.bindKey(input.KEY.LEFT, "left");
+        input.bindKey(input.KEY.RIGHT, "right");
+        input.bindKey(input.KEY.UP, "up");
+        input.bindKey(input.KEY.DOWN, "down");
+        
         // Start the game.
         state.change(state.PLAY);
     });

@@ -363,7 +363,7 @@
          "name":"Persons",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":70,
          "x":0,
          "y":0
@@ -377,7 +377,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/..\/..\/tiled\/Terrain.tsx"
+         "source":"Terrain.json"
         }],
  "tilewidth":32,
  "type":"map",
