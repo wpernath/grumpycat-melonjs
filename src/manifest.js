@@ -29,6 +29,12 @@ const DataManifest = [
 	},
 
 	{
+		name: "player",
+		type: "image",
+		src: "./data/img/player.png",
+	},
+
+	{
 		name: "cat_left",
 		type: "image",
 		src: "./data/img/cat_left.png",

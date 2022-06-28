@@ -1,8 +1,11 @@
-import { Stage, game, level, TMXTileMap, loader, pool } from 'melonjs/dist/melonjs.module.js';
+import { Stage, game, level } from 'melonjs/dist/melonjs.module.js';
+import EnemyEntity from '../renderables/enemy.js';
+import PlayerEntity from "../renderables/player.js";
 
 class PlayScreen extends Stage {
     currentMap;
-
+    player;
+    enemy= [];
     /**
      *  action to perform on state change
      */
@@ -18,8 +21,14 @@ class PlayScreen extends Stage {
                         let tile = l.cellAt(x, y);
                         if( tile !== null && tile !== undefined ) {
                             if (tile.tileId === 993 ) { // player
-                                let player = pool.pull("player", x, y);
-                                console.log("  player at (" + x + "/" + y + "): " + player);
+                                this.player = new PlayerEntity(x, y);
+                                console.log("  player at (" + x + "/" + y + "): " + this.player);
+                                game.world.addChild(this.player);
+                            }
+                            else if (tile.tileId === 992) {
+                                let enemy=0;// = new EnemyEntity(x, y);
+                                this.enemies.push(enemy);
+                                console.log("  enemy at (" + x + "/" + y + "): " + enemy);
                             }
                         }
                     }

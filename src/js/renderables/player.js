@@ -1,4 +1,4 @@
-import { Entity, game, input, Sprite } from 'melonjs/dist/melonjs.module.js';
+import { Entity, game, input, Sprite, Body } from 'melonjs/dist/melonjs.module.js';
 
 
 class PlayerEntity extends Entity {
@@ -11,13 +11,15 @@ class PlayerEntity extends Entity {
         let settings = {
             width: 32,
             height: 32,
-            image: "sensa_jaa"
+            image: "player"
         };
         super(x*32, y*32 , settings);
 
-        this.body.setMaxVelocity(3, 15);
-        this.body.setFriction(0.4, 0);
+        this.body.setMaxVelocity(3, 3);
+        this.body.setFriction(0, 0);
+        this.body.ignoreGravity = true;
 
+        //this.body.
         // set the display to follow our position on both axis
         game.viewport.follow(this.pos, game.viewport.AXIS.BOTH, 0.4);
 
@@ -32,6 +34,8 @@ class PlayerEntity extends Entity {
      */
     update(dt) {
         // change body force based on inputs
+        this.body.force.x = 0;
+        this.body.force.y = 0;
         if (input.isKeyPressed("left")) {
             console.log("left pressed");
             this.renderable.flipX(true);
@@ -49,7 +53,10 @@ class PlayerEntity extends Entity {
             this.renderable.flipY(false);
             this.body.force.y = this.body.maxVel.y;
         }
-
+        else {
+            this.body.force.x = 0; 
+            this.body.force.y = 0;
+        }
         // call the parent method
         return super.update(dt);
     }
@@ -60,7 +67,7 @@ class PlayerEntity extends Entity {
      */
     onCollision(response, other) {
         // Make all other objects solid
-        return false;
+        return true;
     }
 };
 
