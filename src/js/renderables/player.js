@@ -39,11 +39,13 @@ class PlayerEntity extends Entity {
         if (input.isKeyPressed("left")) {
             console.log("left pressed");
             this.renderable.flipX(true);
-            this.body.force.x = -this.body.maxVel.x;
+            this.pos.x -= 16;
+            if(this.pos.x <= 0 ) this.pos.x = 0;
         } 
         else if (input.isKeyPressed("right")) {
             this.renderable.flipX(false);
-            this.body.force.x = this.body.maxVel.x;
+            this.pos.x += 16;
+            if( this.pos.x > screen.width ) this.pos.x = screen.width;
         } 
         else if (input.isKeyPressed("up")) {
             this.renderable.flipY(true);
@@ -57,6 +59,7 @@ class PlayerEntity extends Entity {
             this.body.force.x = 0; 
             this.body.force.y = 0;
         }
+        console.log("  position: " + this.pos.x + " / " + this.pos.y);
         // call the parent method
         return super.update(dt);
     }
