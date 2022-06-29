@@ -28,8 +28,9 @@ class PlayScreen extends Stage {
                                 console.log("  player at (" + x + "/" + y + "): " + this.player);
                                 game.world.addChild(this.player);
                             }
-                            else if (tile.tileId === 992) {
-                                let enemy=0;// = new EnemyEntity(x, y);
+                            else if (tile.tileId === 994) {
+                                let enemy=new EnemyEntity(x, y);
+                                game.world.addChild(enemy);
                                 this.enemies.push(enemy);
                                 console.log("  enemy at (" + x + "/" + y + "): " + enemy);
                             }
