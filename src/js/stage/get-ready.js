@@ -2,6 +2,7 @@ import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile,
 import GetReadyText from "./getready-text";
 
 class GetReadyScreen extends Stage {
+    firstLevel = true;
 	/**
 	 *  action to perform on state change
 	 */
@@ -29,9 +30,6 @@ class GetReadyScreen extends Stage {
 
 		this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
 			if (action === "enter") {
-				// play something on tap / enter
-				// this will unlock audio on mobile devices
-
 				state.change(state.PLAY);
 			}
 		});
@@ -44,6 +42,16 @@ class GetReadyScreen extends Stage {
 		input.unbindKey(input.KEY.ENTER);
 		input.unbindPointer(input.pointer.LEFT);
 		event.off(event.KEYDOWN, this.handler);
+
+		// play something on tap / enter
+		// this will unlock audio on mobile devices
+		if (this.firstLevel) {
+			console.log("  first level");			
+			this.firstLevel = false;
+		} else {
+			level.next();
+			console.log("  next level: " + level.getCurrentLevelId());
+		}
 	}
 }
 

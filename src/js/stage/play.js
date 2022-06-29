@@ -13,8 +13,7 @@ class PlayScreen extends Stage {
     onResetEvent() {
         this.player = null;
         this.enemies = [];
-            
-        level.next();
+        level.reload(level.getCurrentLevelId());
         let layers = level.getCurrentLevel().getLayers();
         layers.forEach((l) => {
             console.log(l.name);

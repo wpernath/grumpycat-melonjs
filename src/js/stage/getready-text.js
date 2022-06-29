@@ -27,9 +27,10 @@ export default class GetReadyText extends Renderable {
 
 	draw(renderer) {
 		this.font.textAlign = "center";
+		this.font.draw(renderer, "GET READY", game.viewport.width, 400);
 		this.font.draw(renderer, "PRESS ENTER TO PLAY NEXT LEVEL", game.viewport.width, game.viewport.height);
 		this.font.textAlign = "left";
-		this.font.draw(renderer, this.scroller, this.scrollerpos, 400);
+		//this.font.draw(renderer, this.scroller, this.scrollerpos, 400);
 	}
 
 	onDestroyEvent() {

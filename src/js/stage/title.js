@@ -30,7 +30,8 @@ class TitleScreen extends Stage {
 			if (action === "enter") {
 				// play something on tap / enter
 				// this will unlock audio on mobile devices
-				
+				console.log("NUMBER OF LEVELS: " + level.levelCount());
+                console.log("  Current Level: " + level.getCurrentLevelId());
 				state.change(state.READY);
 			}
 		});
