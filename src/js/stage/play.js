@@ -1,16 +1,19 @@
-import { Stage, game, level } from 'melonjs/dist/melonjs.module.js';
+import { Stage, game, level, TSXTileSet } from 'melonjs/dist/melonjs.module.js';
 import EnemyEntity from '../renderables/enemy.js';
 import PlayerEntity from "../renderables/player.js";
 
 class PlayScreen extends Stage {
-    currentMap;
     player;
-    enemy= [];
+    enemies= [];
+    bombs;
+
     /**
      *  action to perform on state change
      */
     onResetEvent() {
-        level.load("level1");
+
+        level.load("level2");
+        
         let layers = level.getCurrentLevel().getLayers();
         layers.forEach((l) => {
             console.log(l.name);

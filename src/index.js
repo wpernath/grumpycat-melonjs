@@ -16,7 +16,7 @@ import TitleScreen from 'js/stage/title.js';
 import PlayScreen from 'js/stage/play.js';
 import PlayerEntity from 'js/renderables/player.js';
 import EnemyEntity from "js/renderables/enemy.js";
-
+import BombEntity from './js/renderables/bomb';
 import DataManifest from 'manifest.js';
 
 
@@ -54,11 +54,14 @@ device.onReady(() => {
         // add our player entity in the entity pool
         pool.register("player", PlayerEntity, true);
         pool.register("enemy", EnemyEntity, false);
+        pool.register("bomb", BombEntity, false);
 
         input.bindKey(input.KEY.LEFT, "left");
         input.bindKey(input.KEY.RIGHT, "right");
         input.bindKey(input.KEY.UP, "up");
         input.bindKey(input.KEY.DOWN, "down");
+        input.bindKey(input.KEY.SPACE, "bomb");
+        //input.bindKey()
         
         // Start the game.
         state.change(state.PLAY);

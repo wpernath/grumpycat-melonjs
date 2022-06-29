@@ -267,7 +267,12 @@
         {
          "firstgid":1,
          "source":"Terrain.json"
-        }],
+        },
+        {
+         "firstgid": 1025,
+         "source": "bomb.json"
+        }
+      ],
  "tilewidth":32,
  "type":"map",
  "version":"1.8",

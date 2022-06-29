@@ -1,4 +1,4 @@
-import { Entity } from "melonjs/dist/melonjs.module.js";
+import { collision, Entity } from "melonjs/dist/melonjs.module.js";
 
 class EnemyEntity extends Entity {
 	/**
@@ -25,6 +25,7 @@ class EnemyEntity extends Entity {
 	 */
 	onCollision(response, other) {
 		// Make all other objects solid
+        
 		return true;
 	}
 }

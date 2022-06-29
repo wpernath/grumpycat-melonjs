@@ -23,6 +23,11 @@ const DataManifest = [
 		src: "./data/img/terrain.png",
 	},
 	{
+		name: "BombExploding",
+		type: "image",
+		src: "./data/img/BombExploding.png",
+	},
+	{
 		name: "sensa_jaa",
 		type: "image",
 		src: "./data/img/sensa_jaa.png",
@@ -43,6 +48,11 @@ const DataManifest = [
 		name: "cat_right",
 		type: "image",
 		src: "./data/img/cat_right.png",
+	},
+	{
+		name: "bomb",
+		type: "tsx",
+		src:  "./data/map/bomb.json"
 	},
 	{
 		name: "Terrain",
