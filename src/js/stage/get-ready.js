@@ -46,12 +46,13 @@ class GetReadyScreen extends Stage {
 		// play something on tap / enter
 		// this will unlock audio on mobile devices
 		if (this.firstLevel) {
-			console.log("  first level");			
+			console.log("  first level");
+            //level.load("level1");		
 			this.firstLevel = false;
 		} else {
 			level.next();
-			console.log("  next level: " + level.getCurrentLevelId());
 		}
+        console.log("  next level: " + level.getCurrentLevelId());
 	}
 }
 

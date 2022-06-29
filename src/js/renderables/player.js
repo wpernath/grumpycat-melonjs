@@ -29,9 +29,6 @@ class PlayerEntity extends Entity {
         this.xInMap = x;
         this.yInMap = y;
 
-        //this.body.setMaxVelocity(3, 3);
-        //this.body.setFriction(0, 0);
-        //this.body = new Body(this);
         this.body.ignoreGravity = true;
 		this.body.collisionType = collision.types.PLAYER_OBJECT;
 		this.body.setCollisionMask(collision.types.ENEMY_OBJECT);
@@ -79,15 +76,6 @@ class PlayerEntity extends Entity {
         return 0;
     }
 
-    placeBomb(x,y) {
-        let realX = Math.floor(x / 32);
-		let realY = Math.floor(y / 32);
-        let tileset = level.getCurrentLevel().tilesets.getTilesetByGid(1025);
-        let tile = new Tile(realX, realY, 1025, tileset);
-        let old = this.groundLayer.getTile(x,y);
-        console.log("old: " + old.tileId);
-        this.bonusLayer.setTile(tile,x,y);
-    }
     /**
      * update the entity
      */
@@ -97,8 +85,7 @@ class PlayerEntity extends Entity {
             dy = 0;
 
         if( input.isKeyPressed("bomb")) {
-            game.world.addChild(new BombEntity(this.pos.x, this.pos.y));
-            //this.placeBomb(this.pos.x, this.pos.y);
+            game.world.addChild(new BombEntity(this.pos.x, this.pos.y));            
         }
         if (input.isKeyPressed("left")) {            
             this.renderable.flipX(true);
@@ -146,11 +133,17 @@ class PlayerEntity extends Entity {
         if( this.invincible ) return false;
         if( other.body.collisionType === collision.types.ENEMY_OBJECT ) {
             this.energy -= 10;
-            if( this.energy < 0 ) state.change(state.MENU);
-            this.invincible = true;
-            this.renderable.flicker(1000, () => {
-                this.invincible = false;
-            });
+            console.log("  energy: " + this.energy + "/" + 100);
+            if( this.energy < 0 ) {
+                console.log("GAME OVER!");
+                state.change(state.MENU);
+            }
+            else {
+                this.invincible = true;
+                this.renderable.flicker(1000, () => {
+                    this.invincible = false;
+                });
+            }
         }
         return false;
     }

@@ -46,6 +46,10 @@ class PlayScreen extends Stage {
             }
         });    
     }
+
+    onDestroyEvent() {
+        
+    }
 };
 
 export default PlayScreen;

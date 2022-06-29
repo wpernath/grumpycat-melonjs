@@ -7,7 +7,7 @@ export default class TitleText extends Renderable {
 		// font for the scrolling text
 		this.font = new BitmapText(0, 0, { font: "PressStart2P" });
 
-		this.scroller = "QUARKUS GRUMPYCAT. A GAME WRITTEN BY WANJA PERNATH, INSPIRED BY FAT CAT AND PAC MAN. THIS GAME IS USING A QUARKUS BACKEND TO LOAD AND STORE DATA FROM/TO        ";
+		this.scroller = "QUARKUS GRUMPYCAT. A GAME WRITTEN BY WANJA PERNATH, INSPIRED BY FAT CAT AND PAC MAN. THIS GAME IS USING A QUARKUS BACKEND TO LOAD AND STORE DATA FROM/TO A SERVER...................................................       ";
 		this.scrollerpos = 600;
 
 		// a tween to animate the arrow
