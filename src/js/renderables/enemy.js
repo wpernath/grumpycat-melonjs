@@ -1,4 +1,4 @@
-import { collision, Sprite, level } from "melonjs/dist/melonjs.module.js";
+import { collision, Entity, level, Body, Rect } from "melonjs/dist/melonjs.module.js";
 
 class Direction {
 	constructor(dx, dy) {
@@ -40,52 +40,180 @@ class Queue {
 	get isEmpty() {
 		return this.length === 0;
 	}
+	clear() {
+		this.elements={};
+		this.head = 0;
+		this.tail = 0;
+	}
 }
 
-class EnemyEntity extends Sprite {
+class EnemyEntity extends Entity {
+	SPEED = 2;
 	borderLayer;
-	discoveredPlaces;
+	discoveredPlaces=[];
+	player;
+	nextPositionFound = false;
+	stunned = false;
+	mapWidth;
+	mapHeight;
+
+	nextPosition = {
+		x: -1,
+		y: -1,
+		dx: 0,
+		dy: 0
+	};
 
 	/**
 	 * constructor
 	 */
 	constructor(x, y) {
 		// call the parent constructor
-		super(x * 32, y * 32, {
+		super(x * 32 + 16, y * 32 + 16, {
 			width: 32,
 			height: 32,
 			image: "cat_left",
 		});
 
 		let layers = level.getCurrentLevel().getLayers();
+		this.mapWidth = level.getCurrentLevel().cols;
+		this.mapHeight= level.getCurrentLevel().rows;
+
 		layers.forEach((l) => {
 			if (l.name === "Frame") this.borderLayer = l;
 		});
 		// allocate an array of booleans for the path finder
-		this.discovered = new Array(this.borderLayer.height);
+		this.discoveredPlaces = new Array(this.mapHeight);
 
-		for (let y = 0; y < this.borderLayer.height; y++) {
-			this.discovered[y] = new Array(this.borderLayer.width);
-			for (let x = 0; x < this.borderLayer.width; x++) {
-				this.discovered[y][x] = false;
+		for (let y = 0; y < this.mapHeight; y++) {
+			this.discoveredPlaces[y] = new Array(this.mapWidth);
+			for (let x = 0; x < this.mapWidth; x++) {
+				this.discoveredPlaces[y][x] = false;
 			}
 		}
+
+		this.alwaysUpdate = true;
+		this.body = new Body(this);
+		this.body.addShape(new Rect(0, 0, this.width, this.height));
+		this.body.ignoreGravity = true;
+		this.body.collisionType = collision.types.ENEMY_OBJECT;
+
+	}
+
+	setPlayer(player) {
+		this.player = player;
 	}
 
 	isWalkable(x, y) {
-		let realX = Math.floor(x / 32);
-		let realY = Math.floor(y / 32);
+		let realX = Math.floor(x *32);
+		let realY = Math.floor(y *32);
 		let tile = this.borderLayer.cellAt(realX, realY);
 		if (tile !== null && tile != undefined) return false;
 		else return true;
 	}
 
+	transformPosition(x,y) {
+		return {
+			x: Math.floor(x / 32),
+			y: Math.floor(y / 32)
+		}
+	}
 	/**
 	 * update the entity
 	 */
 	update(dt) {
+		if( !this.nextPositionFound) {
+			//console.log("UpdateEnemy()");
+			let mouse = this.transformPosition(this.player.pos.x, this.player.pos.y);
+			let mouseX = mouse.x;
+			let mouseY = mouse.y;
+			let cat = this.transformPosition(this.pos.x, this.pos.y);
+			let catX = cat.x;
+			let catY = cat.y;
+
+			//console.log("  Player at " + mouseX + "/" +mouseY);
+			//console.log("  Enemy  at " + catX + "/" + catY);
+			let dirs = [
+				new Direction(-1, 0),
+				new Direction(0, -1),
+				new Direction(0, +1),
+				new Direction(+1, 0),
+				//new Direction(-1, -1),
+				//new Direction(+1, +1),
+				//new Direction(+1, -1),
+				//new Direction(-1, +1),
+			];
+
+			if (!this.stunned) {
+				let queue = new Queue();
+				let discovered = this.discoveredPlaces;
+				// prepare discovered places				
+				for (let y = 0; y < this.mapHeight; y++) {
+					for (let x = 0; x < this.mapWidth; x++) {
+						discovered[y][x] = false;
+					}
+				}
+				// mark the current pos as visited
+				discovered[catY][catX] = true;
+
+				queue.enqueue(new Node(catX, catY, null));
+				while (!queue.isEmpty) {
+					let node = queue.dequeue();
+
+					for (let d = 0; d < dirs.length; d++) {
+						let dir = dirs[d];
+						let newX = node.x + dir.dx;
+						let newY = node.y + dir.dy;
+						let newDir = (node.initialDir == null ) ? dir : node.initialDir;
+
+						// found mouse
+						if (newX == mouseX && newY == mouseY) {
+							catX = catX + newDir.dx;
+							catY = catY + newDir.dy;
+
+							this.catX = catX;
+							this.catY = catY;
+							if (newDir.dx < 0) this.flipX(true);
+							else if (newDir.dx > 0) this.flipX(false);
+
+							queue.clear();
+							this.nextPositionFound = true;
+							this.nextPosition.x = this.catX;
+							this.nextPosition.y = this.catY;
+							this.nextPosition.dx= newDir.dx * this.SPEED;
+							this.nextPosition.dy= newDir.dy * this.SPEED;		
+							
+							//console.log("  new position: (" + catX + "/" + catY + ")");
+							break;
+						}
+
+						if( newX <0 || newX >= this.mapWidth || newY <0 || newY >= this.mapHeight) continue;
+
+						if (this.isWalkable(newX, newY) && !discovered[newY][newX]) {
+//							console.log("  (" + newX + "/" + newY + ") walkable and !visited");
+							discovered[newY][newX] = true;
+							queue.enqueue(new Node(newX, newY, newDir));
+						}
+					}					
+				}
+				if( !this.nextPositionFound ) {
+					//console.log("  NO POSITION FOUND!!!");
+				}
+			}
+		}
+		else if( this.nextPositionFound ) {
+			this.pos.x += this.nextPosition.dx;
+			this.pos.y += this.nextPosition.dy;
+
+			let x = Math.floor(this.pos.x / 32);
+			let y = Math.floor(this.pos.y / 32);
+			if( x == this.nextPosition.x && y == this.nextPosition.y) {
+				this.nextPositionFound = false;
+			}
+		}
         
-		return super.update(dt);
+		super.update(dt);
+		return true;
 	}
 
 	/**
@@ -94,7 +222,7 @@ class EnemyEntity extends Sprite {
 	 */
 	onCollision(response, other) {
 		// Make all other objects solid
-		console.log("ayaayayayay");
+		console.log("Enemy: ayaayayayay");
 		return true;
 	}
 }

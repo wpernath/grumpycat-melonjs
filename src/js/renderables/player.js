@@ -1,7 +1,8 @@
-import { Entity, game, input, Sprite, Body, level, Tile } from 'melonjs/dist/melonjs.module.js';
+import { Entity, game, input, Sprite, Body, collision, level, Tile, Rect } from 'melonjs/dist/melonjs.module.js';
 import BombEntity from './bomb';
 
 class PlayerEntity extends Entity {
+    SPEED=8;
     borderLayer;
     bonusLayer;
     groundLayer;
@@ -26,6 +27,7 @@ class PlayerEntity extends Entity {
 
         //this.body.setMaxVelocity(3, 3);
         //this.body.setFriction(0, 0);
+        //this.body = new Body(this);
         this.body.ignoreGravity = true;
 
         // set the display to follow our position on both axis
@@ -43,6 +45,8 @@ class PlayerEntity extends Entity {
             else if( l.name === "Frame") this.borderLayer = l;    
             else if( l.name === "Ground") this.groundLayer = l;    
         });
+        this.body.addShape(new Rect(0,0,this.width, this.height));
+        this.body.collisionType = collision.types.PLAYER_TYPE;
     }
 
     isWalkable(x, y) {
@@ -88,17 +92,17 @@ class PlayerEntity extends Entity {
         if (input.isKeyPressed("left")) {
             console.log("left pressed");
             this.renderable.flipX(true);
-            dx = -4;
+            dx = -this.SPEED;
         } 
         if (input.isKeyPressed("right")) {
             this.renderable.flipX(false);
-            dx = +4;
+            dx = +this.SPEED;
         } 
         if (input.isKeyPressed("up")) {
-            dy = -4;
+            dy = -this.SPEED;
         } 
         if (input.isKeyPressed("down")) {
-            dy = +4;
+            dy = +this.SPEED;
         }
 
         if (this.isWalkable(this.pos.x + dx, this.pos.y + dy)) {
@@ -111,8 +115,6 @@ class PlayerEntity extends Entity {
             if (this.pos.x > this.mapWidth * 32) this.pos.x = this.mapWidth * 32;
             if (this.pos.y <= 0) this.pos.y -= dy;
             if (this.pos.y > this.mapHeight * 32) this.pos.y = this.mapHeight * 32;
-
-
 		}
 
         // call the parent method
@@ -124,7 +126,7 @@ class PlayerEntity extends Entity {
      * (called when colliding with other objects)
      */
     onCollision(response, other) {
-        // Make all other objects solid
+        console.log("Player: ayaayayayay");
         return true;
     }
 };
