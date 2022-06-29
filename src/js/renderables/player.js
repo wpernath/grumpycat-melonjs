@@ -1,4 +1,4 @@
-import { Entity, game, input, Sprite, Body, collision, level, Tile, Rect } from 'melonjs/dist/melonjs.module.js';
+import { Entity, game, input, Sprite, Body, collision, level, Tile, Rect, state } from 'melonjs/dist/melonjs.module.js';
 import BombEntity from './bomb';
 
 class PlayerEntity extends Entity {
@@ -10,6 +10,8 @@ class PlayerEntity extends Entity {
     yInMap;
     mapWidth;
     mapHeight;
+    energy = 100;
+    invincible = false;
 
     /**
      * constructor
@@ -29,13 +31,14 @@ class PlayerEntity extends Entity {
         //this.body.setFriction(0, 0);
         //this.body = new Body(this);
         this.body.ignoreGravity = true;
+		this.body.collisionType = collision.types.PLAYER_OBJECT;
+		this.body.setCollisionMask(collision.types.ENEMY_OBJECT);
 
         // set the display to follow our position on both axis
         game.viewport.follow(this.pos, game.viewport.AXIS.BOTH, 0.4);
 
         // ensure the player is updated even when outside of the viewport
         this.alwaysUpdate = true;
-        this.alive = true;
         this.mapHeight = level.getCurrentLevel().rows;
         this.mapWidth  = level.getCurrentLevel().cols;
         console.log(this.mapWidth + "x" + this.mapHeight);
@@ -46,7 +49,6 @@ class PlayerEntity extends Entity {
             else if( l.name === "Ground") this.groundLayer = l;    
         });
         this.body.addShape(new Rect(0,0,this.width, this.height));
-        this.body.collisionType = collision.types.PLAYER_TYPE;
     }
 
     isWalkable(x, y) {
@@ -89,8 +91,7 @@ class PlayerEntity extends Entity {
             game.world.addChild(new BombEntity(this.pos.x, this.pos.y));
             //this.placeBomb(this.pos.x, this.pos.y);
         }
-        if (input.isKeyPressed("left")) {
-            console.log("left pressed");
+        if (input.isKeyPressed("left")) {            
             this.renderable.flipX(true);
             dx = -this.SPEED;
         } 
@@ -126,8 +127,16 @@ class PlayerEntity extends Entity {
      * (called when colliding with other objects)
      */
     onCollision(response, other) {
-        console.log("Player: ayaayayayay");
-        return true;
+        if( this.invincible ) return false;
+        if( other.body.collisionType === collision.types.ENEMY_OBJECT ) {
+            this.energy -= 10;
+            if( this.energy < 0 ) state.change(state.MENU);
+            this.invincible = true;
+            this.renderable.flicker(1000, () => {
+                this.invincible = false;
+            });
+        }
+        return false;
     }
 };
 

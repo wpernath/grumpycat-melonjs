@@ -69,7 +69,7 @@ class EnemyEntity extends Entity {
 	 */
 	constructor(x, y) {
 		// call the parent constructor
-		super(x * 32 + 16, y * 32 + 16, {
+		super(x * 32 - 16, y * 32 - 16, {
 			width: 32,
 			height: 32,
 			image: "cat_left",
@@ -93,10 +93,11 @@ class EnemyEntity extends Entity {
 		}
 
 		this.alwaysUpdate = true;
-		this.body = new Body(this);
+		//this.body = new Body(this);
 		this.body.addShape(new Rect(0, 0, this.width, this.height));
 		this.body.ignoreGravity = true;
 		this.body.collisionType = collision.types.ENEMY_OBJECT;
+        this.body.setCollisionMask(collision.types.PLAYER_OBJECT);
 
 	}
 
@@ -105,10 +106,8 @@ class EnemyEntity extends Entity {
 	}
 
 	isWalkable(x, y) {
-		let realX = Math.floor(x *32);
-		let realY = Math.floor(y *32);
-		let tile = this.borderLayer.cellAt(realX, realY);
-		if (tile !== null && tile != undefined) return false;
+		let tile = this.borderLayer.cellAt(x, y);
+		if( tile !== null ) return false;
 		else return true;
 	}
 
@@ -131,17 +130,15 @@ class EnemyEntity extends Entity {
 			let catX = cat.x;
 			let catY = cat.y;
 
-			//console.log("  Player at " + mouseX + "/" +mouseY);
-			//console.log("  Enemy  at " + catX + "/" + catY);
 			let dirs = [
 				new Direction(-1, 0),
 				new Direction(0, -1),
 				new Direction(0, +1),
 				new Direction(+1, 0),
-				//new Direction(-1, -1),
-				//new Direction(+1, +1),
-				//new Direction(+1, -1),
-				//new Direction(-1, +1),
+				new Direction(-1, -1),
+				new Direction(+1, +1),
+				new Direction(+1, -1),
+				new Direction(-1, +1),
 			];
 
 			if (!this.stunned) {
@@ -173,8 +170,8 @@ class EnemyEntity extends Entity {
 
 							this.catX = catX;
 							this.catY = catY;
-							if (newDir.dx < 0) this.flipX(true);
-							else if (newDir.dx > 0) this.flipX(false);
+							if (newDir.dx < 0) this.renderable.flipX(false);
+							else if (newDir.dx > 0) this.renderable.flipX(true);
 
 							queue.clear();
 							this.nextPositionFound = true;
@@ -195,9 +192,6 @@ class EnemyEntity extends Entity {
 							queue.enqueue(new Node(newX, newY, newDir));
 						}
 					}					
-				}
-				if( !this.nextPositionFound ) {
-					//console.log("  NO POSITION FOUND!!!");
 				}
 			}
 		}
@@ -222,8 +216,8 @@ class EnemyEntity extends Entity {
 	 */
 	onCollision(response, other) {
 		// Make all other objects solid
-		console.log("Enemy: ayaayayayay");
-		return true;
+		//console.log("Enemy: ayaayayayay");
+		return false;
 	}
 }
 

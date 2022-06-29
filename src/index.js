@@ -64,6 +64,6 @@ device.onReady(() => {
         //input.bindKey()
         
         // Start the game.
-        state.change(state.PLAY);
+        state.change(state.MENU);
     });
 });
