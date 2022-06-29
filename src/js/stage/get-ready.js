@@ -1,6 +1,7 @@
-import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader } from 'melonjs/dist/melonjs.module.js';
-import TitleText from './title-text';
-class TitleScreen extends Stage {
+import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader } from "melonjs/dist/melonjs.module.js";
+import GetReadyText from "./getready-text";
+
+class GetReadyScreen extends Stage {
 	/**
 	 *  action to perform on state change
 	 */
@@ -12,7 +13,7 @@ class TitleScreen extends Stage {
 
 		// scale to fit with the viewport size
 		backgroundImage.scale(game.viewport.width / backgroundImage.width, game.viewport.height / backgroundImage.height);
-        backgroundImage.setOpacity(0.5);
+		backgroundImage.setOpacity(0.5);
 
 		// there currently is a bug in melonjs where me.input.pointer is null if registerPointerEvent has not been called previously
 		// here we are just telling melonjs we want to use pointer events, and setting the callback to a noop
@@ -20,7 +21,7 @@ class TitleScreen extends Stage {
 
 		// add to the world container
 		game.world.addChild(backgroundImage, 1);
-		game.world.addChild(new TitleText(), 10);
+		game.world.addChild(new GetReadyText(), 10);
 
 		// change to play state on press Enter or click/tap
 		input.bindKey(input.KEY.ENTER, "enter", true);
@@ -30,8 +31,8 @@ class TitleScreen extends Stage {
 			if (action === "enter") {
 				// play something on tap / enter
 				// this will unlock audio on mobile devices
-				
-				state.change(state.READY);
+
+				state.change(state.PLAY);
 			}
 		});
 	}
@@ -46,4 +47,4 @@ class TitleScreen extends Stage {
 	}
 }
 
-export default TitleScreen;
+export default GetReadyScreen;

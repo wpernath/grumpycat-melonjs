@@ -12,6 +12,8 @@ class PlayerEntity extends Entity {
     mapHeight;
     energy = 100;
     invincible = false;
+    collectedBonusTiles = 0;
+    numberOfBonusTiles = 0;
 
     /**
      * constructor
@@ -49,6 +51,13 @@ class PlayerEntity extends Entity {
             else if( l.name === "Ground") this.groundLayer = l;    
         });
         this.body.addShape(new Rect(0,0,this.width, this.height));
+
+        for( let x=0; x < this.mapWidth; x++) {
+            for( let y=0; y < this.mapHeight; y++) {
+                let tile = this.bonusLayer.cellAt(x,y);
+                if( tile !== null ) this.numberOfBonusTiles++;
+            }
+        }
     }
 
     isWalkable(x, y) {
@@ -110,7 +119,14 @@ class PlayerEntity extends Entity {
 			this.pos.x += dx;
             this.pos.y += dy;
 
-            this.collectBonusTile(this.pos.x, this.pos.y);
+            let bonus = this.collectBonusTile(this.pos.x, this.pos.y);
+            if( bonus !== 0 ) {
+                this.collectedBonusTiles++;
+                if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
+                    // level won!
+                    state.change(state.READY);
+                }
+            }
 
 			if (this.pos.x <= 0) this.pos.x -= dx;
             if (this.pos.x > this.mapWidth * 32) this.pos.x = this.mapWidth * 32;

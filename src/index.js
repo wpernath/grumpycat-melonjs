@@ -14,6 +14,8 @@ import 'index.css';
 
 import TitleScreen from 'js/stage/title.js';
 import PlayScreen from 'js/stage/play.js';
+import GetReadyScreen from './js/stage/get-ready';
+
 import PlayerEntity from 'js/renderables/player.js';
 import EnemyEntity from "js/renderables/enemy.js";
 import BombEntity from './js/renderables/bomb';
@@ -50,6 +52,7 @@ device.onReady(() => {
         // set the user defined game stages
         state.set(state.MENU, new TitleScreen());
         state.set(state.PLAY, new PlayScreen());
+        state.set(state.READY, new GetReadyScreen());
 
         // add our player entity in the entity pool
         pool.register("player", PlayerEntity, true);

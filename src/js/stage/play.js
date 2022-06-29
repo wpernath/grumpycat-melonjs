@@ -5,15 +5,16 @@ import PlayerEntity from "../renderables/player.js";
 class PlayScreen extends Stage {
     player;
     enemies= [];
-    bombs;
+    
 
     /**
      *  action to perform on state change
      */
     onResetEvent() {
-
-        level.load("level2");
-        
+        this.player = null;
+        this.enemies = [];
+            
+        level.next();
         let layers = level.getCurrentLevel().getLayers();
         layers.forEach((l) => {
             console.log(l.name);

@@ -34,6 +34,12 @@ const DataManifest = [
 	},
 
 	{
+		name: "sensa_grass",
+		type: "image",
+		src: "./data/img/sensa_grass.jpeg",
+	},
+
+	{
 		name: "player",
 		type: "image",
 		src: "./data/img/player.png",
@@ -52,7 +58,7 @@ const DataManifest = [
 	{
 		name: "bomb",
 		type: "tsx",
-		src:  "./data/map/bomb.json"
+		src: "./data/map/bomb.json",
 	},
 	{
 		name: "Terrain",
