@@ -1,7 +1,9 @@
-import { collision, level, game, Sprite } from "melonjs/dist/melonjs.module.js";
+import { collision, level, game, Sprite, Body, Rect } from "melonjs/dist/melonjs.module.js";
 
 class BombEntity extends Sprite {
 	borderLayer;
+	isExploding = false;
+
 	/**
 	 * constructor
 	 */
@@ -15,17 +17,26 @@ class BombEntity extends Sprite {
 			frameheight: 64,
 		});
 
-        let layers = level.getCurrentLevel().getLayers();
-        layers.forEach((l) => {
-            if (l.name === "Frame") this.borderLayer = l;
-        });
+		let layers = level.getCurrentLevel().getLayers();
+		layers.forEach((l) => {
+			if (l.name === "Frame") this.borderLayer = l;
+		});
 
+		this.body = new Body(this);
+		this.body.addShape(new Rect(0, 0, this.width, this.height));
+		this.body.ignoreGravity = true;
+		this.body.collisionType = collision.types.PROJECTILE_OBJECT;
+		this.body.setCollisionMask(collision.types.ENEMY_OBJECT);
+
+		// add animations
 		this.alwaysUpdate = true;
-		this.addAnimation("bzzz", [0, 1, 2, 3, 4, 5, 6]); 
-		this.addAnimation("boom", [7, 8, 9,10,11,12,13]);
+		this.addAnimation("bzzz", [0, 1, 2, 3, 4, 5, 6]);
+		this.addAnimation("boom", [7, 8, 9, 10, 11, 12, 13]);
 		this.setCurrentAnimation("bzzz", function () {
 			game.viewport.shake(50, 400);
-			this.setCurrentAnimation("boom", function() {
+			this.isExploding = true;
+			this.setCurrentAnimation("boom", function () {
+				this.isExploding = false;
 				game.world.removeChild(this);
 				// remove all frames in a 3/3 radius
 				let rad = [

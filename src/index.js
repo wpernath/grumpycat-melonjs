@@ -43,7 +43,7 @@ device.onReady(() => {
     audio.init("mp3,ogg");
 
     // allow cross-origin for image/texture loading
-    //loader.setBaseURL("tmx", "http://localhost:8080/");
+    loader.setBaseURL("tmx", "http://localhost:8080/");
 
     loader.crossOrigin = "anonymous";
 
@@ -59,6 +59,7 @@ device.onReady(() => {
         pool.register("enemy", EnemyEntity, false);
         pool.register("bomb", BombEntity, false);
 
+        input.bindKey(input.KEY.SHIFT, "barrier");
         input.bindKey(input.KEY.LEFT, "left");
         input.bindKey(input.KEY.RIGHT, "right");
         input.bindKey(input.KEY.UP, "up");

@@ -97,7 +97,7 @@ class EnemyEntity extends Entity {
 		this.body.addShape(new Rect(0, 0, this.width, this.height));
 		this.body.ignoreGravity = true;
 		this.body.collisionType = collision.types.ENEMY_OBJECT;
-        this.body.setCollisionMask(collision.types.PLAYER_OBJECT);
+        this.body.setCollisionMask(collision.types.PLAYER_OBJECT | collision.types.PROJECTILE_OBJECT);
 
 	}
 
@@ -120,7 +120,7 @@ class EnemyEntity extends Entity {
 	/**
 	 * update the entity
 	 */
-	update(dt) {
+	update(dt) {		
 		if( !this.nextPositionFound) {
 			//console.log("UpdateEnemy()");
 			let mouse = this.transformPosition(this.player.pos.x, this.player.pos.y);
@@ -179,15 +179,12 @@ class EnemyEntity extends Entity {
 							this.nextPosition.y = this.catY;
 							this.nextPosition.dx= newDir.dx * this.SPEED;
 							this.nextPosition.dy= newDir.dy * this.SPEED;		
-							
-							//console.log("  new position: (" + catX + "/" + catY + ")");
 							break;
 						}
 
 						if( newX <0 || newX >= this.mapWidth || newY <0 || newY >= this.mapHeight) continue;
 
 						if (this.isWalkable(newX, newY) && !discovered[newY][newX]) {
-//							console.log("  (" + newX + "/" + newY + ") walkable and !visited");
 							discovered[newY][newX] = true;
 							queue.enqueue(new Node(newX, newY, newDir));
 						}
@@ -215,8 +212,15 @@ class EnemyEntity extends Entity {
 	 * (called when colliding with other objects)
 	 */
 	onCollision(response, other) {
-		// Make all other objects solid
-		//console.log("Enemy: ayaayayayay");
+		if( other.body.collisionType === collision.types.PROJECTILE_OBJECT ) {
+			console.log("colliding with: " + other.isExploding);
+			if( other.isExploding ) {
+				this.stunned = true;
+				this.flicker(5000, () => {
+					this.stunned = false;
+				});
+			}
+		}
 		return false;
 	}
 }

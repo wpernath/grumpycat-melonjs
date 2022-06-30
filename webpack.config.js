@@ -70,10 +70,10 @@ module.exports = {
         mode: 'auto', // optional can be 'webapp', 'light' or 'auto' - 'auto' by default
         devMode: 'webapp', // optional can be 'webapp' or 'light' - 'light' by default
         favicons: {
-            appName: 'melonJS ES6 Boilerplate',
-            appDescription: 'My melonJS ES6 Boilerplate Game',
-            developerName: 'melonJS',
-            developerURL: "http://www.melonjs.org", // prevent retrieving from the nearest package.json
+            appName: 'GrumpyCat',
+            appDescription: 'GrumpyCat melonjs client',
+            developerName: 'Wanja Pernath',
+            developerURL: "https://github.com/wpernath", // prevent retrieving from the nearest package.json
             icons: {
                 coast: false,
                 yandex: false

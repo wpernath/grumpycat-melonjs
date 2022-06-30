@@ -84,43 +84,67 @@ class PlayerEntity extends Entity {
         let dx = 0,
             dy = 0;
 
-        if( input.isKeyPressed("bomb")) {
-            game.world.addChild(new BombEntity(this.pos.x, this.pos.y));            
-        }
-        if (input.isKeyPressed("left")) {            
-            this.renderable.flipX(true);
-            dx = -this.SPEED;
-        } 
-        if (input.isKeyPressed("right")) {
-            this.renderable.flipX(false);
-            dx = +this.SPEED;
-        } 
-        if (input.isKeyPressed("up")) {
-            dy = -this.SPEED;
-        } 
-        if (input.isKeyPressed("down")) {
-            dy = +this.SPEED;
-        }
-
-        if (this.isWalkable(this.pos.x + dx, this.pos.y + dy)) {
-			this.pos.x += dx;
-            this.pos.y += dy;
-
-            let bonus = this.collectBonusTile(this.pos.x, this.pos.y);
-            if( bonus !== 0 ) {
-                this.collectedBonusTiles++;
-                if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
-                    // level won!
-                    state.change(state.READY);
-                }
+        if( input.isKeyPressed("barrier")) {
+            let mapX = Math.floor(this.pos.x/32);
+            let mapY = Math.floor(this.pos.y/32);
+            
+            if( input.isKeyPressed("left")) {
+                dx =-1;
+            }
+            else if( input.isKeyPressed("right")) {
+                dx =+1;
+            }
+            if( input.isKeyPressed("up")) {
+                dy =-1;
+            }
+            else if( input.isKeyPressed("down")){
+                dy =+1;
             }
 
-			if (this.pos.x <= 0) this.pos.x -= dx;
-            if (this.pos.x > this.mapWidth * 32) this.pos.x = this.mapWidth * 32;
-            if (this.pos.y <= 0) this.pos.y -= dy;
-            if (this.pos.y > this.mapHeight * 32) this.pos.y = this.mapHeight * 32;
-		}
+            if( dx != 0 || dy != 0) {
+                // place a new barrier tile in borderLayer
+                let tile = this.borderLayer.getTileById(184, mapX+dx, mapY+dy);
+                this.borderLayer.setTile(tile, mapX + dx, mapY+dy);
+            }
+        }
+        else {
+            if( input.isKeyPressed("bomb")) {
+                game.world.addChild(new BombEntity(this.pos.x, this.pos.y));            
+            }
+            if (input.isKeyPressed("left")) {            
+                this.renderable.flipX(true);
+                dx = -this.SPEED;
+            } 
+            if (input.isKeyPressed("right")) {
+                this.renderable.flipX(false);
+                dx = +this.SPEED;
+            } 
+            if (input.isKeyPressed("up")) {
+                dy = -this.SPEED;
+            } 
+            if (input.isKeyPressed("down")) {
+                dy = +this.SPEED;
+            }
 
+            if (this.isWalkable(this.pos.x + dx, this.pos.y + dy)) {
+                this.pos.x += dx;
+                this.pos.y += dy;
+
+                let bonus = this.collectBonusTile(this.pos.x, this.pos.y);
+                if( bonus !== 0 ) {
+                    this.collectedBonusTiles++;
+                    if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
+                        // level won!
+                        state.change(state.READY);
+                    }
+                }
+
+                if (this.pos.x <= 0) this.pos.x -= dx;
+                if (this.pos.x > this.mapWidth * 32) this.pos.x = this.mapWidth * 32;
+                if (this.pos.y <= 0) this.pos.y -= dy;
+                if (this.pos.y > this.mapHeight * 32) this.pos.y = this.mapHeight * 32;
+            }
+        }
         // call the parent method
         return super.update(dt);
     }
@@ -134,7 +158,7 @@ class PlayerEntity extends Entity {
         if( other.body.collisionType === collision.types.ENEMY_OBJECT ) {
             this.energy -= 10;
             console.log("  energy: " + this.energy + "/" + 100);
-            if( this.energy < 0 ) {
+            if( this.energy <= 0 ) {
                 console.log("GAME OVER!");
                 state.change(state.MENU);
             }
