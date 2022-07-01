@@ -18,7 +18,8 @@ import GetReadyScreen from './js/stage/get-ready';
 import GameOverScreen from './js/stage/game-over';
 
 import PlayerEntity from 'js/renderables/player.js';
-import EnemyEntity from "js/renderables/enemy.js";
+import CatEnemy from "js/renderables/enemy.js";
+import { SpiderEnemy } from './js/renderables/spider-enemy';
 import BombEntity from './js/renderables/bomb';
 import DataManifest from 'manifest.js';
 
@@ -66,8 +67,9 @@ device.onReady(() => {
 
         // add our player entity in the entity pool
         pool.register("player", PlayerEntity, true);
-        pool.register("enemy", EnemyEntity, false);
-        pool.register("bomb", BombEntity, false);
+        pool.register("enemy", CatEnemy, false);
+        pool.register("bomb", BombEntity, true);
+        pool.register("spider", SpiderEnemy, true);
 
         input.bindKey(input.KEY.SHIFT, "barrier");
         input.bindKey(input.KEY.LEFT, "left");

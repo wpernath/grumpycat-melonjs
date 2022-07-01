@@ -8,8 +8,9 @@ require("@babel/register");
 module.exports = {
   entry: ['@babel/polyfill','./src/index.js'],
   output: {
-    path: __dirname + '/public',
-    filename: 'bundle.js'
+    path: __dirname + '/dist',
+    filename: 'grumpycat.bundle.js',
+
   },
   module: {
     rules : [
@@ -89,7 +90,7 @@ module.exports = {
   },
   devServer: {
     static: {
-        directory: path.join(__dirname, 'public'),
+        directory: path.join(__dirname, 'dist'),
     },
     compress: true,
     hot: true,

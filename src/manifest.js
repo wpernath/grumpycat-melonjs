@@ -20,8 +20,14 @@ const DataManifest = [
 	{
 		name: "explosion",
 		type: "image",
-		src : "./data/img/explosion4.png",
+		src: "./data/img/explosion4.png",
 	},
+	{
+		name: "spider-red",
+		type: "image",
+		src: "./data/img/spider-red.png",
+	},
+
 	{
 		name: "terrain",
 		type: "image",
@@ -61,11 +67,6 @@ const DataManifest = [
 		src: "./data/img/cat_right.png",
 	},
 	{
-		name: "bomb",
-		type: "tsx",
-		src: "./data/map/bomb.json",
-	},
-	{
 		name: "Terrain",
 		type: "tsx",
 		src: "./data/map/Terrain.json",
@@ -75,34 +76,34 @@ const DataManifest = [
 		name: "level1",
 		type: "tmx",
 		//src: "./data/map/Level1.json",
-		src: "maps/0.json"
+		src: "maps/0.json",
 	},
 
 	{
 		name: "level2",
 		type: "tmx",
 		//src: "./data/map/Level2.json",
-		src: "maps/1.json"
+		src: "maps/1.json",
 	},
 
 	{
 		name: "level3",
 		type: "tmx",
 		//src: "./data/map/Level3.json",
-		src: "maps/2.json"
+		src: "maps/2.json",
 	},
 	{
 		name: "level4",
 		type: "tmx",
 		//src: "./data/map/Level4.json",
-		src: "maps/3.json"
+		src: "maps/3.json",
 	},
 
 	{
 		name: "level5",
 		type: "tmx",
 		//src: "./data/map/Level5.json",
-		src: "maps/4.json"
+		src: "maps/4.json",
 	},
 ];
 

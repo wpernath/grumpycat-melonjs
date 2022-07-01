@@ -1,5 +1,6 @@
 import { Stage, game, level, TSXTileSet } from 'melonjs/dist/melonjs.module.js';
-import EnemyEntity from '../renderables/enemy.js';
+import CatEnemy from '../renderables/enemy.js';
+import { SpiderEnemy } from '../renderables/spider-enemy.js';
 import PlayerEntity from "../renderables/player.js";
 import GlobalGameState from '../global-game-state.js';
 import HUDContainer from './hud/hud-container.js';
@@ -36,7 +37,7 @@ class PlayScreen extends Stage {
                                 game.world.addChild(this.player);
                             }
                             else if (tile.tileId === 994) {
-                                let enemy=new EnemyEntity(x, y);
+                                let enemy=new SpiderEnemy(x, y);
                                 enemy.name = "CatEnemy" + (enemynum++);
                                 game.world.addChild(enemy);
                                 this.enemies.push(enemy);
