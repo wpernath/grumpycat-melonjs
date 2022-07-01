@@ -44,17 +44,6 @@ class GetReadyScreen extends Stage {
 		input.unbindKey(input.KEY.ENTER);
 		input.unbindPointer(input.pointer.LEFT);
 		event.off(event.KEYDOWN, this.handler);
-
-		if( GlobalGameState.currentLevel != 0 ) {
-			level.load(GlobalGameState.levels[GlobalGameState.currentLevel]);
-		}
-
-		GlobalGameState.currentLevel++;
-
-		if( GlobalGameState.currentLevel >= GlobalGameState.levels.length ) {
-			GlobalGameState.currentLevel = 0;
-		}
-        console.log("  next level: " + level.getCurrentLevelId());
 	}
 }
 

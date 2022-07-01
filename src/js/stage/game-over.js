@@ -30,7 +30,7 @@ class GameOverScreen extends Stage {
 
 		this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
 			if (action === "enter") {
-				state.change(state.PLAY);
+				state.change(state.MENU);
 			}
 		});
 	}

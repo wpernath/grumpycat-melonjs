@@ -104,13 +104,18 @@ class PlayerEntity extends Entity {
 
             if( dx != 0 || dy != 0) {
                 // place a new barrier tile in borderLayer
-                let tile = this.borderLayer.getTileById(184, mapX+dx, mapY+dy);
-                this.borderLayer.setTile(tile, mapX + dx, mapY+dy);
+                // only if there is no border tile at that pos
+                if( this.borderLayer.cellAt(mapX+dx, mapY+dy) == null ) {
+                    let tile = this.borderLayer.getTileById(184, mapX+dx, mapY+dy);
+                    this.borderLayer.setTile(tile, mapX + dx, mapY+dy);
+                    GlobalGameState.placedBarriers++;
+                }
             }
         }
         else {
             if( input.isKeyPressed("bomb")) {
-                game.world.addChild(new BombEntity(this.pos.x, this.pos.y));            
+                game.world.addChild(new BombEntity(this.pos.x, this.pos.y));   
+                GlobalGameState.usedBombs++;         
             }
             if( input.isKeyPressed("explode")) {
                 game.world.addChild(new ExplosionEntity(this.pos.x, this.pos.y));            
@@ -138,8 +143,20 @@ class PlayerEntity extends Entity {
                 let bonus = this.collectBonusTile(this.pos.x, this.pos.y);
                 if( bonus !== 0 ) {
                     this.collectedBonusTiles++;
+                    GlobalGameState.score += 10;
+
+                    if( bonus === 961 ) {
+                        console.log("  bomb collected")
+                        GlobalGameState.bombs += 5;
+                    }
+
                     if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
-                        // level won!
+                        // level won! next level
+        		      	GlobalGameState.currentLevel++;
+
+						if (GlobalGameState.currentLevel >= GlobalGameState.levels.length) {
+							GlobalGameState.currentLevel = 0;
+						}
                         state.change(state.READY);
                     }
                 }

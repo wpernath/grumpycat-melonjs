@@ -16,6 +16,7 @@ const GlobalGameState = {
     score : 0,
     bombs : 0,
     placedBarriers: 0,
+    usedBombs:0,
     invincible: false,
 
 

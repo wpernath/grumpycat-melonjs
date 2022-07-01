@@ -14,6 +14,7 @@ class TitleScreen extends Stage {
 		GlobalGameState.placedBarriers = 0;
 		GlobalGameState.score = 0;
 		GlobalGameState.bombs = 0;
+		GlobalGameState.usedBombs = 0;
 
 		//level.load("level1");
 

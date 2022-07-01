@@ -1,11 +1,12 @@
 import { Stage, game, level, TSXTileSet } from 'melonjs/dist/melonjs.module.js';
 import EnemyEntity from '../renderables/enemy.js';
 import PlayerEntity from "../renderables/player.js";
-
+import GlobalGameState from '../global-game-state.js';
+import HUDContainer from './hud/hud-container.js';
 class PlayScreen extends Stage {
     player;
     enemies= [];
-    
+    hudContainer;
 
     /**
      *  action to perform on state change
@@ -14,9 +15,10 @@ class PlayScreen extends Stage {
         console.log("Play.OnEnter()");
         this.player = null;
         this.enemies = [];
-        
-        console.log("PLAYING: " + level.getCurrentLevelId());
-        level.load(level.getCurrentLevelId());
+      
+		level.load(GlobalGameState.levels[GlobalGameState.currentLevel]);
+        console.log("PLAYING: " + level.getCurrentLevelId());        
+
         let layers = level.getCurrentLevel().getLayers();
         layers.forEach((l) => {
             console.log(l.name);
@@ -46,12 +48,16 @@ class PlayScreen extends Stage {
 
                 // make sure, all enemies know the player
                 this.enemies.forEach(e => e.setPlayer(this.player));
+                this.hudContainer = new HUDContainer();
+                game.world.addChild(this.hudContainer);
+
             }
         });    
     }
 
     onDestroyEvent() {
       console.log("Play.OnExit()");  
+      game.world.removeChild(this.hudContainer);
     }
 };
 
