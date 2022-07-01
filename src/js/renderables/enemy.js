@@ -1,4 +1,5 @@
 import { collision, Entity, level, Body, Rect } from "melonjs/dist/melonjs.module.js";
+import GlobalGameState from "../global-game-state";
 
 class Direction {
 	constructor(dx, dy) {
@@ -216,7 +217,7 @@ class EnemyEntity extends Entity {
 			console.log("colliding with: " + other.isExploding);
 			if( other.isExploding ) {
 				this.stunned = true;
-				this.flicker(5000, () => {
+				this.renderable.flicker(GlobalGameState.enemyStunnedTime, () => {
 					this.stunned = false;
 				});
 			}

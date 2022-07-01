@@ -15,11 +15,14 @@ import 'index.css';
 import TitleScreen from 'js/stage/title.js';
 import PlayScreen from 'js/stage/play.js';
 import GetReadyScreen from './js/stage/get-ready';
+import GameOverScreen from './js/stage/game-over';
 
 import PlayerEntity from 'js/renderables/player.js';
 import EnemyEntity from "js/renderables/enemy.js";
 import BombEntity from './js/renderables/bomb';
 import DataManifest from 'manifest.js';
+
+import CONFIG from 'config.js';
 
 
 device.onReady(() => {
@@ -43,7 +46,13 @@ device.onReady(() => {
     audio.init("mp3,ogg");
 
     // allow cross-origin for image/texture loading
-    loader.setBaseURL("tmx", "http://localhost:8080/");
+    let environment = CONFIG.environment;
+    let baseURL;
+    if( environment === 'local')    baseURL = CONFIG.local.baseURL;
+    else if( environment === 'dev') baseURL = CONFIG.dev.baseURL;
+    else if( environment === 'test')baseURL = CONFIG.test.baseURL;
+    
+    loader.setBaseURL("tmx", baseURL);
 
     loader.crossOrigin = "anonymous";
 
@@ -53,6 +62,7 @@ device.onReady(() => {
         state.set(state.MENU, new TitleScreen());
         state.set(state.PLAY, new PlayScreen());
         state.set(state.READY, new GetReadyScreen());
+        state.set(state.GAMEOVER, new GameOverScreen());
 
         // add our player entity in the entity pool
         pool.register("player", PlayerEntity, true);
@@ -63,6 +73,7 @@ device.onReady(() => {
         input.bindKey(input.KEY.LEFT, "left");
         input.bindKey(input.KEY.RIGHT, "right");
         input.bindKey(input.KEY.UP, "up");
+        input.bindKey(input.KEY.E, "explode");
         input.bindKey(input.KEY.DOWN, "down");
         input.bindKey(input.KEY.SPACE, "bomb");
         //input.bindKey()

@@ -1,97 +1,156 @@
-# melonJS ES6 Webpack Boilerplate
+# quarkus-grumpycat / melonjs client
+This is a refactored JavaScript / melonjs client for the game written with Quarkus / JavaScript [here](https://github.com/wpernath/quarkus-grumpycat)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/melonjs/es6-boilerplate/blob/master/LICENSE)
+## The Game
 
-A simple ES6 Webpack based boilerplate to create games with [melonJS](https://github.com/melonjs/melonJS), built with :
-- [melonJS 2](https://github.com/melonjs/melonJS)
-- [ECMAScript 6](http://es6-features.org) structure and semantic
-- [Webpack](https://webpack.js.org/guides)
-- [Webpack Dev Server](https://github.com/webpack/webpack-dev-server) plugin for local development
-- [Hot Reloading](https://webpack.js.org/concepts/hot-module-replacement) dev server
-- Basic Asset Build [management](https://webpack.js.org/plugins/copy-webpack-plugin/)
-- Minification and Transpiling to ES5 using [Babel](https://babeljs.io/docs/setup/#installation)
-- Favicon support using the [favicons Webpack Plugin](https://www.npmjs.com/package/favicons-webpack-plugin)
-- a [debug plugin](#Debug-plugin) to display stats on number of objects, memory usage, draw time, frame rate, etc...
+This game was inspired by the old Fat-Cat game and by PacMan. You're controlling a dog in a maze which needs to eat all food without being caught by a grumpy cat. 
 
-## Prerequisites
+Right now you can control the dog with arrow keys UP, DOWN, LEFT & RIGHT and with W, A, S, D. More keys are:
 
-Ensure you have [Node.js](http://nodejs.org/) installed, then install all the build dependencies in the folder where you cloned the repository :
+- *P* PAUSE
+- *SPACE* place bomb
+- *Shift* + UP/DOWN/LEFT/RIGHT: place barrier in the direction
 
-    $ [sudo] npm install
+If the cat gets into an exploding bomb, it stops for 3sec. A bomb can destroy barriers. The game ends if you got all food.
+  
 
-## Usage
+Game logic is coded with [melonjs](https://github.com/melonjs/melonjs)
 
-- `npm run dev` to start the dev server on watch mode at `localhost:9000`.
-- `npm run build` to generate a minified, production-ready build, in the `public` folder
+![the game](docs/the-game.png)
 
-if everything goes well, on running the dev server for the first time you should see this :
-![boilerplate-helloworld](https://user-images.githubusercontent.com/4033090/134762171-6e1fac3d-8b41-4665-890b-daa217ba61dc.png)
+## Running the application in dev mode
 
-> Note: when generating the production build, Webpack will attempt to filter files under the data folder to only copy final assets and ignore project files (e.g. .ftpp project files from Free Texture Packer). If you find your file being wrongly ignore you can easily add the corresponding extension in the [webpack.config.js](webpack.config.js) file
-
-## Folder structure
-
-```none
-src
-└── data
-│    ├── bgm
-│    ├── fnt
-|    ├── img
-|    ├── map
-|    └── sfx
-└── js
-|    ├── renderables
-|    └── stage
-├── index.js
-├── index.css
-├── index.html
-├── manifest.js
-public
-├── data
-├── bundle.js
-└── index.html
+You can run your application in dev mode that enables live coding using:
+```shell script
+npm install
+npm run dev
 ```
 
-- `src`
-  - the root folder for your game source code
-  - The entry file is [index.js](src/index.js).
-  - [index.css](src/index.css) and [index.html](src/index.html) are default templates that can be customized
-  - [manifest.js](src/manifest.js) is a list of asset to be preloaded by melonJS (these won't be automatically imported and bundled by webpack)
-- `src/js`
-  - add your source classes here
-- `src/data`
-  - where to add your game assets
-- `public`
-  - where the production-ready build files will be copied/generated when using `npm run build`
-
-Debug plugin
--------------------------------------------------------------------------------
-In development mode, the boilerplate will automatically register and instantiate the melonJS Debug Plugin
-![debug-panel](https://user-images.githubusercontent.com/4033090/138006717-cf3165a4-a52d-4855-a7c7-16b2a09ed124.png)
-
-the Debug Panel is hidden by default and can be displayed using the "S" key, it will then provide the below information :
-* Amount of objects currently active in the current scene
-* Amount of draws operation
-* Amount of body shape (requires to enable the hitbox checkbox)
-* Amount of bounding box
-* Amount of sprites objects
-* Amount of objects currently inactive in the the object pool
-* Heap/memory usage
-* Frame update time (in ms)
-* Frame draw time (in ms)
-* Current fps rate vs target fps
-
-> Note: Heap information requires starting Chrome [with](http://www.chromium.org/developers/how-tos/run-chromium-with-flags) `--enable-precise-memory-info`
-
-Additionally, using the checkbox in the panel it is also possible to draw :
-* Shape and Bounding box for all objects
-* Current velocity vector
-* Quadtree spatial visualization
+## Game Server
+You have to install the quarkus part as well to run this application! Please go [there](https://github.com/wpernath/quarkus-grumpycat) and have a look. 
 
 
-Questions, need help ?
--------------------------------------------------------------------------------
-If you need technical support, you can contact us through the following channels :
-* Forums: with melonJS 2 we moved to a new discourse [forum](https://melonjs.discourse.group), but we can still also find the previous one [here](http://www.html5gamedevs.com/forum/32-melonjs/)
-* Chat: come and chat with us on [discord](https://discord.gg/aur7JMk), or [gitter](https://gitter.im/melonjs/public)
-* we tried to keep our [wikipage](https://github.com/melonjs/melonJS/wiki) up-to-date with useful links, tutorials, and anything related melonJS.
+## Game Logic
+
+
+## Creating new Levels
+To create a new level, download the [Tiled MapEditor](https://mapeditor.org). A `Level-Template.tmx` can be found in `/tiled` folder. The only supported tileset currently is `/tiled/Terrain.tsx`. Please make sure to **NOT** save the new Level with embedded tileset. If you're done creating the level and would like to use it in the game, export it in JSON format and store it in `/java/resources/maps`. Then you need to update `MapResource.java` to include this new level. 
+
+If you directly want to play your new level, you could open `game-logic.js` and go to the function `initGame()` where you can change the global variable `currentLevel` to point to the index of the array in `MapResource.java`. 
+
+Maps can be of any size. The only important thing you need to keep in mind are the names and function of the layers of a map:
+
+- **Ground:** This is the base ground of the level. You can put any tile here.  
+- **Frame:** This layer is the border of the map. Anything placed here will be used as barrier for player and enemies. Anything placed here can be destroyed with a bomb. 
+- **Dekor:** Use this layer to place decorative tiles on. For example flowers on water or stones on sand. 
+- **Bonus:** Use this layer to place your bonus items on. Any tile placed here can be a bonus which adds a score of 10 points. Once the player walks over it, the bonus item gets removed. Special bonus tile is the bomb, which provides 5 more bombs to the player to be used to destroy frames.
+- **Persons:** This layer will be used to place the player and enemies on. Use the two sign tiles as player and enemies. Note, you MUST not place more than one player, but you CAN place more than one enemy.
+
+You might add more layers to your map. Any layer placed on top of **Persons** will be drawn last, which means it will draw over enemies and player sprites.
+
+## Running on Docker / Podman
+There are container images ready to be used on [Quay.io](https://quay.io/wpernath/quarkus-grumpycat). Use this command to pull the image to your local repository:
+
+```shell
+docker pull quay.io/wpernath/quarkus-grumpycat
+```
+
+Note, to run the server part, you need to have a PostgreSQL database running. You can use the `docker-compose.yaml` file in `src/main/docker/` to setup a local docker / podman compose environment.
+
+```shell
+docker-compose -f src/main/docker/docker-compose.yaml [--detach|-d] up
+```
+
+The app is then available under `http://localhost:8081` in your browser.
+
+
+## Running on Kubernetes / OpenShift
+### OpenShift S2I
+Installing database
+
+```shell
+oc new-app postgresql-persistent \
+	-p POSTGRESQL_USER=cat \
+	-p POSTGRESQL_PASSWORD=grumpy \
+	-p POSTGRESQL_DATABASE=catdb \
+	-p DATABASE_SERVICE_NAME=catserver
+```
+
+Start building the app
+```shell
+oc new-app java:openjdk-17-ubi8~https://github.com/wpernath/quarkus-grumpycat.git  --name=grumpy-cat --build-env MAVEN_MIRROR_URL=http://nexus.ci:8081/repository/maven-public/
+```
+
+Expose the service
+```shell
+oc expose svc/grumpy-cat
+```
+
+### OpenShift / Kubernetes image deployment in a GitOps way
+There are precompiled images available on `quay.io/wpernath/quarkus-grumpycat`. You can either use `latest` tag or use one of the `vx.y.z` tags.
+
+NOTE, for this approach, you need to have the `Crunchy Data Postgres Operator` installed in your Kubernetes environment. 
+
+Just clone the [config repository](https://github.com/wpernath/grumpycat-config.git). Then apply the `config/overlays/dev` configuration as usual:
+
+```shell
+oc new-project cat-dev
+oc apply -k config/overlays/dev
+```
+
+This will automatically install a database and the latest DEV version of the App.
+
+
+### Using full featured GitOps
+To make use of all GitOps features, have a look at the `src/main/gitops` folder of this project. 
+
+Your OpenShift / Kubernetes cluster needs to have the following Operators installed:
+
+- OpenShift Pipeline (or Tekton Pipeline)
+- OpenShift GitOps (or an ArgoCD instance)
+- Crunchy Data Postgres Operator
+
+To install the `cat-ci` project, call:
+
+```shell
+./src/main/gitops/tekton/pipeline.sh init \
+	--force \
+	--git-user <your git user> \
+	--git-password <your git password> \
+	--registry-user <your quay.io user> \
+	--registry-password <your quay.io password>
+```
+
+To install the `cat-dev` and `cat-stage` projects, call
+
+```shell
+oc apply -k ./src/main/gitops/argocd
+```
+
+To start a pipeline build, call
+
+```shell
+./src/main/gitops/tekton/pipeline.sh build \
+	-u <your quay.io user>
+	-p <your quay.io password>
+```
+
+To stage your version of quarkus-grumpycat, call something like
+
+```shell
+./src/main/gitops/tekton/pipeline.sh stage -r v0.2.4
+```
+
+This creates a new branch in github.com and tags the current image on quay.io.
+
+## Roadmap
+
+- In the near future there will also be an EnemyMovementResource to store - well - the enemy's movements, as my plan to calculate new positions of the enemies based on current PlayerMovement doesn't work properly (timing issue).
+
+- Refactoring of the JavaScript stuff. I mainly have used this project to learn some JavaScript. Now it's time to refactor everything and to use some more fancy methods to do the same.
+
+- Do not directly use the Player- / EnemyMovement to store the data in the database, but use Apache Kafka or Streams to take the data and then use a Consumer to store the data asynchronously in the database. 
+
+## About the graphics
+The map graphics are coming from [LPC Terrain](https://opengameart.org/content/tiled-terrains) and all its authors. Special thanks to all of them!
+                    

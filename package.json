@@ -1,5 +1,5 @@
 {
-  "name": "GrumpyCat melonjs",
+  "name": "GrumpyCat-melonjs",
   "version": "0.1.0",
   "main": "index.js",
   "author": "Wanja Pernath",
@@ -21,7 +21,9 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --mode=development --config webpack.config.js",
-    "build": "webpack --mode=production --config webpack.config.js"
+    "build": "webpack --mode=production --config webpack.config.js",
+    "docker-build": "docker build -f src/Dockerfile.nginx -t quay.io/wpernath/grumpycat-melonjs:latest .",
+    "docker-push": "docker push quay.io/wpernath/grumpycat-melonjs -a"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",

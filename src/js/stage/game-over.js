@@ -1,13 +1,12 @@
 import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader } from "melonjs/dist/melonjs.module.js";
-import GetReadyText from "./getready-text";
-import GlobalGameState from "../global-game-state";
+import GameOverText from "./gameover-text";
 
-class GetReadyScreen extends Stage {
+class GameOverScreen extends Stage {
+	
 	/**
 	 *  action to perform on state change
 	 */
 	onResetEvent() {
-		console.log("GetReady.OnEnter()");
 		// new sprite for the title screen, position at the center of the game viewport
 		var backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
 			image: loader.getImage("sensa_grass"),
@@ -23,7 +22,7 @@ class GetReadyScreen extends Stage {
 
 		// add to the world container
 		game.world.addChild(backgroundImage, 1);
-		game.world.addChild(new GetReadyText(), 10);
+		game.world.addChild(new GameOverText(), 10);
 
 		// change to play state on press Enter or click/tap
 		input.bindKey(input.KEY.ENTER, "enter", true);
@@ -40,22 +39,10 @@ class GetReadyScreen extends Stage {
 	 *  action to perform when leaving this screen (state change)
 	 */
 	onDestroyEvent() {
-		console.log("GetReady.OnExit()");
 		input.unbindKey(input.KEY.ENTER);
 		input.unbindPointer(input.pointer.LEFT);
 		event.off(event.KEYDOWN, this.handler);
-
-		if( GlobalGameState.currentLevel != 0 ) {
-			level.load(GlobalGameState.levels[GlobalGameState.currentLevel]);
-		}
-
-		GlobalGameState.currentLevel++;
-
-		if( GlobalGameState.currentLevel >= GlobalGameState.levels.length ) {
-			GlobalGameState.currentLevel = 0;
-		}
-        console.log("  next level: " + level.getCurrentLevelId());
 	}
 }
 
-export default GetReadyScreen;
+export default GameOverScreen;

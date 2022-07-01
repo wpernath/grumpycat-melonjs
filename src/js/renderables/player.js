@@ -1,5 +1,7 @@
 import { Entity, game, input, Sprite, Body, collision, level, Tile, Rect, state } from 'melonjs/dist/melonjs.module.js';
 import BombEntity from './bomb';
+import ExplosionEntity from './explosion';
+import GlobalGameState from '../global-game-state';
 
 class PlayerEntity extends Entity {
     SPEED=8;
@@ -10,8 +12,6 @@ class PlayerEntity extends Entity {
     yInMap;
     mapWidth;
     mapHeight;
-    energy = 100;
-    invincible = false;
     collectedBonusTiles = 0;
     numberOfBonusTiles = 0;
 
@@ -29,6 +29,7 @@ class PlayerEntity extends Entity {
         this.xInMap = x;
         this.yInMap = y;
 
+        //this.body = new Body(this);
         this.body.ignoreGravity = true;
 		this.body.collisionType = collision.types.PLAYER_OBJECT;
 		this.body.setCollisionMask(collision.types.ENEMY_OBJECT);
@@ -40,14 +41,14 @@ class PlayerEntity extends Entity {
         this.alwaysUpdate = true;
         this.mapHeight = level.getCurrentLevel().rows;
         this.mapWidth  = level.getCurrentLevel().cols;
-        console.log(this.mapWidth + "x" + this.mapHeight);
+
         let layers = level.getCurrentLevel().getLayers();
         layers.forEach(l => {
             if(l.name === "Bonus") this.bonusLayer = l;
             else if( l.name === "Frame") this.borderLayer = l;    
             else if( l.name === "Ground") this.groundLayer = l;    
         });
-        this.body.addShape(new Rect(0,0,this.width, this.height));
+        //this.body.addShape(new Rect(0,0,this.width, this.height));
 
         for( let x=0; x < this.mapWidth; x++) {
             for( let y=0; y < this.mapHeight; y++) {
@@ -111,6 +112,10 @@ class PlayerEntity extends Entity {
             if( input.isKeyPressed("bomb")) {
                 game.world.addChild(new BombEntity(this.pos.x, this.pos.y));            
             }
+            if( input.isKeyPressed("explode")) {
+                game.world.addChild(new ExplosionEntity(this.pos.x, this.pos.y));            
+            }
+
             if (input.isKeyPressed("left")) {            
                 this.renderable.flipX(true);
                 dx = -this.SPEED;
@@ -154,18 +159,18 @@ class PlayerEntity extends Entity {
      * (called when colliding with other objects)
      */
     onCollision(response, other) {
-        if( this.invincible ) return false;
-        if( other.body.collisionType === collision.types.ENEMY_OBJECT ) {
-            this.energy -= 10;
-            console.log("  energy: " + this.energy + "/" + 100);
-            if( this.energy <= 0 ) {
+        if( GlobalGameState.invincible ) return false;
+        if( other.body.collisionType === collision.types.ENEMY_OBJECT && !other.stunned) {
+            GlobalGameState.energy -= 10;
+            console.log("  energy: " + GlobalGameState.energy + "/" + 100);
+            if( GlobalGameState.energy <= 0 ) {
                 console.log("GAME OVER!");
-                state.change(state.MENU);
+                state.change(state.GAMEOVER);
             }
             else {
-                this.invincible = true;
-                this.renderable.flicker(1000, () => {
-                    this.invincible = false;
+                GlobalGameState.invincible = true;
+                this.renderable.flicker(GlobalGameState.playerInvincibleTime, () => {
+                    GlobalGameState.invincible = false;
                 });
             }
         }

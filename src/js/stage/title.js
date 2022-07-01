@@ -1,10 +1,22 @@
 import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader } from 'melonjs/dist/melonjs.module.js';
 import TitleText from './title-text';
+import GlobalGameState from '../global-game-state';
+
 class TitleScreen extends Stage {
 	/**
 	 *  action to perform on state change
 	 */
 	onResetEvent() {
+		console.log("Title.OnEnter()");
+		// Reset GlobalGameState
+		GlobalGameState.currentLevel = 0;
+		GlobalGameState.energy = 100;
+		GlobalGameState.placedBarriers = 0;
+		GlobalGameState.score = 0;
+		GlobalGameState.bombs = 0;
+
+		//level.load("level1");
+
 		// new sprite for the title screen, position at the center of the game viewport
 		var backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
 			image: loader.getImage("sensa_grass"),
@@ -41,6 +53,7 @@ class TitleScreen extends Stage {
 	 *  action to perform when leaving this screen (state change)
 	 */
 	onDestroyEvent() {
+		console.log("Title.OnExit()");
 		input.unbindKey(input.KEY.ENTER);
 		input.unbindPointer(input.pointer.LEFT);
 		event.off(event.KEYDOWN, this.handler);

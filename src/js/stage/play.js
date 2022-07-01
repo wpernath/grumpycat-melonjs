@@ -11,9 +11,12 @@ class PlayScreen extends Stage {
      *  action to perform on state change
      */
     onResetEvent() {
+        console.log("Play.OnEnter()");
         this.player = null;
         this.enemies = [];
-        level.reload(level.getCurrentLevelId());
+        
+        console.log("PLAYING: " + level.getCurrentLevelId());
+        level.load(level.getCurrentLevelId());
         let layers = level.getCurrentLevel().getLayers();
         layers.forEach((l) => {
             console.log(l.name);
@@ -48,7 +51,7 @@ class PlayScreen extends Stage {
     }
 
     onDestroyEvent() {
-        
+      console.log("Play.OnExit()");  
     }
 };
 

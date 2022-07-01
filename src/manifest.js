@@ -18,6 +18,11 @@ const DataManifest = [
 		src: "./data/img/BombExploding.png",
 	},
 	{
+		name: "explosion",
+		type: "image",
+		src : "./data/img/explosion4.png",
+	},
+	{
 		name: "terrain",
 		type: "image",
 		src: "./data/img/terrain.png",

@@ -1,6 +1,6 @@
-import { BitmapText, game, Tween, Renderable } from "melonjs/dist/melonjs.module.js";
+import { BitmapText, game, Renderable } from "melonjs/dist/melonjs.module.js";
 
-export default class GetReadyText extends Renderable {
+export default class GameOverText extends Renderable {
 	constructor() {
 		super(0, 0, game.viewport.width, game.viewport.height);
 
@@ -14,8 +14,8 @@ export default class GetReadyText extends Renderable {
 
 	draw(renderer) {
 		this.font.textAlign = "center";
-		this.font.draw(renderer, "GET READY", game.viewport.width, 400);
-		this.font.draw(renderer, "PRESS ENTER TO PLAY NEXT LEVEL", game.viewport.width, game.viewport.height);
+		this.font.draw(renderer, "*** GAME OVER ***", game.viewport.width, 400);
+		this.font.draw(renderer, "PRESS ENTER", game.viewport.width, game.viewport.height);
 		this.font.textAlign = "left";
 	}
 
