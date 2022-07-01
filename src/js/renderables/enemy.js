@@ -50,6 +50,7 @@ class Queue {
 
 class EnemyEntity extends Entity {
 	SPEED = 2;
+	updateTime = 0;
 	borderLayer;
 	discoveredPlaces=[];
 	player;
@@ -121,7 +122,16 @@ class EnemyEntity extends Entity {
 	/**
 	 * update the entity
 	 */
-	update(dt) {		
+	update(dt) {	
+		this.updateTime += dt;
+		if( this.updateTime < 32 ) {
+			super.update(dt);
+			return false;
+		}
+		else {
+			this.updateTime = 0;
+		}
+
 		if( !this.nextPositionFound) {
 			//console.log("UpdateEnemy()");
 			let mouse = this.transformPosition(this.player.pos.x, this.player.pos.y);
@@ -202,8 +212,7 @@ class EnemyEntity extends Entity {
 			if( x == this.nextPosition.x && y == this.nextPosition.y) {
 				this.nextPositionFound = false;
 			}
-		}
-        
+		}        
 		super.update(dt);
 		return true;
 	}

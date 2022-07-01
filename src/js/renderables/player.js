@@ -4,7 +4,7 @@ import ExplosionEntity from './explosion';
 import GlobalGameState from '../global-game-state';
 
 class PlayerEntity extends Entity {
-    SPEED=8;
+    SPEED=4;
     borderLayer;
     bonusLayer;
     groundLayer;
