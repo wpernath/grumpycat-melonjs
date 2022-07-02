@@ -18,7 +18,7 @@ import GetReadyScreen from './js/stage/get-ready';
 import GameOverScreen from './js/stage/game-over';
 
 import PlayerEntity from 'js/renderables/player.js';
-import CatEnemy from "js/renderables/enemy.js";
+import CatEnemy from "js/renderables/cat-enemy.js";
 import { SpiderEnemy } from './js/renderables/spider-enemy';
 import BombEntity from './js/renderables/bomb';
 import DataManifest from 'manifest.js';
