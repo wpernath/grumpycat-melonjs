@@ -66,14 +66,18 @@ export class BaseEnemySprite extends Sprite {
 	player;
 	mapWidth;
 	mapHeight;
-
+	isDead = false;
+	isStunned = false;
 
 	nextPosition = {
 		x: -1,
 		y: -1,
 		dx: 0,
 		dy: 0,
-
+		last: {
+			dx: 0,
+			dy: 0
+		},
         toString : function() {
             return "[" + this.x + ", " + this.y + ", " + this.dx + ", " + this.dy + "]";
         }
@@ -153,6 +157,8 @@ export class BaseEnemySprite extends Sprite {
 					this.catY = catY;
 
 					queue.clear();
+					this.nextPosition.last.dx = this.nextPosition.dx;
+					this.nextPosition.last.dy = this.nextPosition.dy;
 					this.nextPositionFound = true;
 					this.nextPosition.x = this.catX;
 					this.nextPosition.y = this.catY;

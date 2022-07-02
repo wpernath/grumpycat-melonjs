@@ -37,7 +37,7 @@ class PlayScreen extends Stage {
                                 game.world.addChild(this.player);
                             }
                             else if (tile.tileId === 994) {
-                                let enemy=new SpiderEnemy(x, y);
+                                let enemy=new CatEnemy(x, y);
                                 enemy.name = "CatEnemy" + (enemynum++);
                                 game.world.addChild(enemy);
                                 this.enemies.push(enemy);

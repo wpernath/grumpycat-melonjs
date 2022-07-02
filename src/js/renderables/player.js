@@ -14,7 +14,7 @@ class PlayerEntity extends Entity {
     mapHeight;
     collectedBonusTiles = 0;
     numberOfBonusTiles = 0;
-
+    
     /**
      * constructor
      */
@@ -23,6 +23,8 @@ class PlayerEntity extends Entity {
         let settings = {
             width: 32,
             height: 32,
+            framewidth: 32,
+            frameheight: 32,
             image: "player"
         };
         super(x*32+16, y*32+16 , settings);
@@ -114,8 +116,11 @@ class PlayerEntity extends Entity {
         }
         else {
             if( input.isKeyPressed("bomb")) {
-                game.world.addChild(new BombEntity(this.pos.x, this.pos.y));   
-                GlobalGameState.usedBombs++;         
+                if( GlobalGameState.bombs > 0 ) {
+                    game.world.addChild(new BombEntity(this.pos.x, this.pos.y));   
+                    GlobalGameState.usedBombs++;         
+                    GlobalGameState.bombs--;
+                }
             }
             if( input.isKeyPressed("explode")) {
                 game.world.addChild(new ExplosionEntity(this.pos.x, this.pos.y));            
@@ -177,7 +182,7 @@ class PlayerEntity extends Entity {
      */
     onCollision(response, other) {
         if( GlobalGameState.invincible ) return false;
-        if( other.body.collisionType === collision.types.ENEMY_OBJECT && !other.stunned) {
+        if( other.body.collisionType === collision.types.ENEMY_OBJECT && !other.isStunned ) {
             GlobalGameState.energy -= 10;
             console.log("  energy: " + GlobalGameState.energy + "/" + 100);
             if( GlobalGameState.energy <= 0 ) {

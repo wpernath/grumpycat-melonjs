@@ -5,7 +5,7 @@ import { BaseEnemySprite } from "./base-enemy";
 export class CatEnemy extends BaseEnemySprite {
 	SPEED = 2;
 	updateTime = 0;
-	stunned = false;
+	
 
 
 	/**
@@ -29,7 +29,7 @@ export class CatEnemy extends BaseEnemySprite {
 			this.updateTime = 0;
 		}
 
-		if( !this.stunned ) {
+		if( !this.isStunned ) {
 			if( !this.nextPositionFound) {					
 				this.calculateNextPosition();			
 			}
@@ -60,9 +60,9 @@ export class CatEnemy extends BaseEnemySprite {
 		if( other.body.collisionType === collision.types.PROJECTILE_OBJECT ) {
 			console.log("colliding with: " + other.isExploding);
 			if( other.isExploding ) {
-				this.stunned = true;
-				this.renderable.flicker(GlobalGameState.enemyStunnedTime, () => {
-					this.stunned = false;
+				this.isStunned = true;
+				this.flicker(GlobalGameState.enemyStunnedTime, () => {
+					this.isStunned = false;
 				});
 			}
 		}

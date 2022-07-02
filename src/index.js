@@ -77,7 +77,7 @@ device.onReady(() => {
         input.bindKey(input.KEY.UP, "up");
         input.bindKey(input.KEY.E, "explode");
         input.bindKey(input.KEY.DOWN, "down");
-        input.bindKey(input.KEY.SPACE, "bomb");
+        input.bindKey(input.KEY.SPACE, "bomb", true);
         //input.bindKey()
         
         // Start the game.
