@@ -3,6 +3,18 @@ import BombEntity from './bomb';
 import ExplosionEntity from './explosion';
 import GlobalGameState from '../global-game-state';
 
+const BARRIER_TILE = {
+    light : 182,
+    mid : 183,
+    dark: 184
+};
+
+const BONUS_TILE = {
+    bomb : 961,
+    cactus : 963,
+    meat : 966,
+    cheese : 967
+};
 class PlayerEntity extends Entity {
     SPEED=4;
     borderLayer;
@@ -107,9 +119,19 @@ class PlayerEntity extends Entity {
             if( dx != 0 || dy != 0) {
                 // place a new barrier tile in borderLayer
                 // only if there is no border tile at that pos
-                if( this.borderLayer.cellAt(mapX+dx, mapY+dy) == null ) {
-                    let tile = this.borderLayer.getTileById(184, mapX+dx, mapY+dy);
-                    this.borderLayer.setTile(tile, mapX + dx, mapY+dy);
+                let bX = mapX + dx;
+                let bY = mapY + dy;
+                if( this.borderLayer.cellAt(bX, bY) == null ) {
+                    let newBorderId = 184;
+                    let ground = this.groundLayer.cellAt(bX,bY);
+                    if( ground !== null ) {
+                        let gId = ground.tileId;
+//                        switch(gId) {
+//                            case: 
+//                        }
+                    }
+                    let tile = this.borderLayer.getTileById(newBorderId, bX, bY);
+                    this.borderLayer.setTile(tile, bX, bY);
                     GlobalGameState.placedBarriers++;
                 }
             }
@@ -148,11 +170,21 @@ class PlayerEntity extends Entity {
                 let bonus = this.collectBonusTile(this.pos.x, this.pos.y);
                 if( bonus !== 0 ) {
                     this.collectedBonusTiles++;
-                    GlobalGameState.score += 10;
-
-                    if( bonus === 961 ) {
-                        console.log("  bomb collected")
+                    
+                    if( bonus === BONUS_TILE.bomb ) { // bomb                        
                         GlobalGameState.bombs += 5;
+                        GlobalGameState.score += 50;
+                    }
+                    else if( bonus === BONUS_TILE.cactus) { // cactus
+                        GlobalGameState.score += 10;
+                    }
+                    else if( bonus === BONUS_TILE.meat) { // meat
+                        GlobalGameState.energy+= 20;
+                        GlobalGameState.score += 50;
+                    }
+                    else if( bonus === BONUS_TILE.cheese) { // cheese
+                        GlobalGameState.energy+=10;
+                        GlobalGameState.score += 30;
                     }
 
                     if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
