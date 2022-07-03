@@ -9,7 +9,7 @@ class TitleScreen extends Stage {
 	onResetEvent() {
 		console.log("Title.OnEnter()");
 		// Reset GlobalGameState
-		GlobalGameState.currentLevel = 2;
+		GlobalGameState.currentLevel = 0;
 		
 		GlobalGameState.invincible = false;
 		GlobalGameState.energy = 100;

@@ -1,5 +1,5 @@
 const CONFIG = {
-	environment: "local", // change this on deployment
+	environment: "dev", // change this on deployment
 
 	mapServerURL: "maps",
 	gameServerURL: "game",
