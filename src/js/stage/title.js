@@ -10,10 +10,15 @@ class TitleScreen extends Stage {
 		console.log("Title.OnEnter()");
 		// Reset GlobalGameState
 		GlobalGameState.currentLevel = 2;
+		
+		GlobalGameState.invincible = false;
 		GlobalGameState.energy = 100;
-		GlobalGameState.placedBarriers = 0;
 		GlobalGameState.score = 0;
 		GlobalGameState.bombs = 0;
+
+		GlobalGameState.placedBarriers = 0;
+		GlobalGameState.bittenBySpiders = 0;
+		GlobalGameState.catchedByCats = 0;
 		GlobalGameState.usedBombs = 0;
 
 		//level.load("level1");

@@ -15,7 +15,7 @@ const BONUS_TILE = {
     meat : 966,
     cheese : 967
 };
-class PlayerEntity extends Entity {
+class PlayerEntity extends Sprite {
     SPEED=4;
     borderLayer;
     bonusLayer;
@@ -43,8 +43,9 @@ class PlayerEntity extends Entity {
         this.xInMap = x;
         this.yInMap = y;
 
-        //this.body = new Body(this);
+        this.body = new Body(this);
         this.body.ignoreGravity = true;
+        this.body.addShape(new Rect(0, 0, this.width, this.height));
 		this.body.collisionType = collision.types.PLAYER_OBJECT;
 		this.body.setCollisionMask(collision.types.ENEMY_OBJECT);
 
@@ -149,11 +150,11 @@ class PlayerEntity extends Entity {
             }
 
             if (input.isKeyPressed("left")) {            
-                this.renderable.flipX(true);
+                this.flipX(true);
                 dx = -this.SPEED;
             } 
             if (input.isKeyPressed("right")) {
-                this.renderable.flipX(false);
+                this.flipX(false);
                 dx = +this.SPEED;
             } 
             if (input.isKeyPressed("up")) {
@@ -223,7 +224,7 @@ class PlayerEntity extends Entity {
             }
             else {
                 GlobalGameState.invincible = true;
-                this.renderable.flicker(GlobalGameState.playerInvincibleTime, () => {
+                this.flicker(GlobalGameState.playerInvincibleTime, () => {
                     GlobalGameState.invincible = false;
                 });
             }
