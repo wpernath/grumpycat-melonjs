@@ -1,13 +1,16 @@
 const CONFIG = {
-	environment: "dev", // change this on deployment
+	environment: "local", // change this on deployment
 
+	appName: "{{applicationName}}",
+	appVersion: "{{applicationVersion}}",
+	
 	mapServerURL: "maps",
 	gameServerURL: "game",
 	playerMovementURL: "movement",
 	enemyMovementURL: "enemy",
 
 	local: {
-		baseURL: "http://localhost:8080/",
+		baseURL: "{{baseURL}}",
 	},
 	dev: {
 		baseURL: "http://grumpycat-cat-dev.apps.demo5.ocp.lan/",

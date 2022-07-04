@@ -9,11 +9,10 @@ class GameOverScreen extends Stage {
 	onResetEvent() {
 		// new sprite for the title screen, position at the center of the game viewport
 		var backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
-			image: loader.getImage("sensa_grass"),
+			image: loader.getImage("sensa_nee"),
 		});
 
 		// scale to fit with the viewport size
-		backgroundImage.scale(game.viewport.width / backgroundImage.width, game.viewport.height / backgroundImage.height);
 		backgroundImage.setOpacity(0.5);
 
 		// there currently is a bug in melonjs where me.input.pointer is null if registerPointerEvent has not been called previously

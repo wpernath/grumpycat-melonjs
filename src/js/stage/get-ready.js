@@ -10,16 +10,16 @@ class GetReadyScreen extends Stage {
 		console.log("GetReady.OnEnter()");
 		// new sprite for the title screen, position at the center of the game viewport
 		var backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
-			image: loader.getImage("sensa_grass"),
+			image: loader.getImage("sensa_jaa"),
 		});
 
 		// scale to fit with the viewport size
-		backgroundImage.scale(game.viewport.width / backgroundImage.width, game.viewport.height / backgroundImage.height);
+		//backgroundImage.scale(game.viewport.width / backgroundImage.width, game.viewport.height / backgroundImage.height);
 		backgroundImage.setOpacity(0.5);
 
 		// there currently is a bug in melonjs where me.input.pointer is null if registerPointerEvent has not been called previously
 		// here we are just telling melonjs we want to use pointer events, and setting the callback to a noop
-		//if (typeof input.pointer === "undefined") input.registerPointerEvent("pointerdown", null, null);
+		if (typeof input.pointer === "undefined") input.registerPointerEvent("pointerdown", null, null);
 
 		// add to the world container
 		game.world.addChild(backgroundImage, 1);

@@ -13,9 +13,14 @@ export default class HUDContainer extends Container {
 		// make sure we use screen coordinates
 		this.floating = true;
 
+		// always on toppest
+		this.z = Infinity;
+
+		this.setOpacity(0.5);
+
 		// give a name
 		this.name = "HUD";
-
+		
 		// add our child score object at the top left corner
 		this.addChild(new ScoreItem(5, 5));
         this.addChild(new EnergyItem(5, 5));

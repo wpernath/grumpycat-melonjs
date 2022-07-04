@@ -43,6 +43,11 @@ const DataManifest = [
 		type: "image",
 		src: "./data/img/sensa_jaa.png",
 	},
+	{
+		name: "sensa_nee",
+		type: "image",
+		src: "./data/img/sensa_nee.png",
+	},
 
 	{
 		name: "sensa_grass",
