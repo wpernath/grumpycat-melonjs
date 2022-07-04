@@ -10,10 +10,10 @@ const CONFIG = {
 		baseURL: "http://localhost:8080/",
 	},
 	dev: {
-		baseURL: "https://grumpycat-cat-dev.apps.demo5.ocp.lan/",
+		baseURL: "http://grumpycat-cat-dev.apps.demo5.ocp.lan/",
 	},
 	test: {
-		baseURL: "https://grumpycat-cat-stage.apps.demo5.ocp.lan/",
+		baseURL: "http://grumpycat-cat-stage.apps.demo5.ocp.lan/",
 	},
 };
 
