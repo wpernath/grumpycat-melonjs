@@ -22,7 +22,7 @@
   "scripts": {
     "dev": "webpack-dev-server --mode=development --config webpack.config.js",
     "build": "webpack --mode=production --config webpack.config.js",
-    "docker-build": "docker build -f src/Dockerfile.nginx -t quay.io/wpernath/grumpycat-melonjs:latest .",
+    "docker-build": "docker build -f src/main/docker/Dockerfile.nginx -t quay.io/wpernath/grumpycat-melonjs:latest .",
     "docker-push": "docker push quay.io/wpernath/grumpycat-melonjs -a"
   },
   "dependencies": {
