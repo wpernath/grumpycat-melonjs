@@ -59,6 +59,11 @@ const DIRS = [
 			new Direction(-1, +1),
 		];
 
+export const ENEMY_TYPES = {
+	cat: 'CAT',
+	spider: 'SPIDER',
+};
+
 export class BaseEnemySprite extends Sprite {
 	borderLayer;
 	discoveredPlaces = [];
@@ -68,6 +73,7 @@ export class BaseEnemySprite extends Sprite {
 	mapHeight;
 	isDead = false;
 	isStunned = false;
+	enemyType = ENEMY_TYPES.cat;
 
 	nextPosition = {
 		x: -1,

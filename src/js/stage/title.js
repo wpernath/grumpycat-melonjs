@@ -20,6 +20,8 @@ class TitleScreen extends Stage {
 		GlobalGameState.bittenBySpiders = 0;
 		GlobalGameState.catchedByCats = 0;
 		GlobalGameState.usedBombs = 0;
+		GlobalGameState.killedSpiders = 0;
+		GlobalGameState.stunnedCats = 0;
 
 		//level.load("level1");
 

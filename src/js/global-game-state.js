@@ -21,8 +21,10 @@ const GlobalGameState = {
   // statistics
 	placedBarriers: 0,
 	usedBombs: 0,
-  bittenBySpiders : 0,
-  catchedByCats : 0,
+  	bittenBySpiders : 0,
+  	catchedByCats : 0,
+	killedSpiders: 0,
+	stunnedCats: 0,
 };
 
 export default GlobalGameState;

@@ -1,6 +1,6 @@
 import { collision} from "melonjs/dist/melonjs.module.js";
 import GlobalGameState from "../global-game-state";
-import { BaseEnemySprite } from "./base-enemy";
+import { BaseEnemySprite, ENEMY_TYPES } from "./base-enemy";
 
 export class CatEnemy extends BaseEnemySprite {
 	SPEED = 2;
@@ -14,6 +14,7 @@ export class CatEnemy extends BaseEnemySprite {
 	constructor(x, y) {
 		// call the parent constructor
 		super(x, y, 32, 32, "cat_left");
+		this.enemyType = ENEMY_TYPES.cat;
 	}
 
 	/**

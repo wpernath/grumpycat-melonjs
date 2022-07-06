@@ -49,9 +49,10 @@ device.onReady(() => {
     // allow cross-origin for image/texture loading
     let environment = CONFIG.environment;
     let baseURL;
-    if( environment === 'local')    baseURL = CONFIG.local.baseURL;
-    else if( environment === 'dev') baseURL = CONFIG.dev.baseURL;
-    else if( environment === 'test')baseURL = CONFIG.test.baseURL;
+    if (environment === "local") baseURL = CONFIG.local.baseURL;
+		else if (environment === "dev") baseURL = CONFIG.dev.baseURL;
+		else if (environment === "test") baseURL = CONFIG.test.baseURL;
+		else if (environment === "prod") baseURL = CONFIG.prod.baseURL;
     
     loader.setBaseURL("tmx", baseURL);
 

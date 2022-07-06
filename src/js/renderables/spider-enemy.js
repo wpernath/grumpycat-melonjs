@@ -1,5 +1,5 @@
 import { collision } from "melonjs";
-import { BaseEnemySprite } from "./base-enemy";
+import { BaseEnemySprite, ENEMY_TYPES } from "./base-enemy";
 import GlobalGameState from "../global-game-state";
 
 export class SpiderEnemy extends BaseEnemySprite {
@@ -7,6 +7,7 @@ export class SpiderEnemy extends BaseEnemySprite {
 
 	constructor(x, y) {
 		super(x, y, 64, 64, "spider-red");
+		this.enemyType = ENEMY_TYPES.spider;
 
 		this.addAnimation("stand-up", [0]);
 		this.addAnimation("walk-up", [4, 5, 6, 7, 8, 9], 32);
@@ -71,16 +72,17 @@ export class SpiderEnemy extends BaseEnemySprite {
 				this.isStunned = true;
                 this.setCurrentAnimation("die", () => {
                     this.isDead = true;
+					GlobalGameState.killedSpiders++;
                     this.setCurrentAnimation("dead");
                 })
 			}
 		}
-        else if( other.body.collisionType === collision.types.PLAYER_OBJECT && !this.isDead && !this.isStunned) {
-            if (this.nextPosition.dx < 0) this.setCurrentAnimation("attack-left", "attack-left");
-            else if (this.nextPosition.dx > 0) this.setCurrentAnimation("attack-right", "attack-right");
+        else if( other.body.collisionType === collision.types.PLAYER_OBJECT && !this.isDead && !this.isStunned && !GlobalGameState.invincible) {
+            if (this.nextPosition.dx < 0) this.setCurrentAnimation("attack-left");
+            else if (this.nextPosition.dx > 0) this.setCurrentAnimation("attack-right");
 
-            if (this.nextPosition.dy < 0) this.setCurrentAnimation("attack-up", "attack-up");
-            else if (this.nextPosition.dy > 0) this.setCurrentAnimation("attack-down", "attack-down");
+            if (this.nextPosition.dy < 0) this.setCurrentAnimation("attack-up");
+            else if (this.nextPosition.dy > 0) this.setCurrentAnimation("attack-down");
         }
 		return false;
 	}

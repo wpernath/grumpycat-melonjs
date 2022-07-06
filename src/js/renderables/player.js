@@ -2,6 +2,7 @@ import { Entity, game, input, Sprite, Body, collision, level, Tile, Rect, state 
 import BombEntity from './bomb';
 import ExplosionEntity from './explosion';
 import GlobalGameState from '../global-game-state';
+import { ENEMY_TYPES } from './base-enemy';
 
 const BARRIER_TILE = {
     light : 182,
@@ -215,7 +216,14 @@ class PlayerEntity extends Sprite {
      */
     onCollision(response, other) {
         if( GlobalGameState.invincible ) return false;
-        if( other.body.collisionType === collision.types.ENEMY_OBJECT && !other.isStunned ) {
+        if( other.body.collisionType === collision.types.ENEMY_OBJECT && !other.isStunned && !other.isDead) {
+            if( other.enemyType === ENEMY_TYPES.cat ) {
+                GlobalGameState.catchedByCats++;
+            }
+            else if( other.enemyType === ENEMY_TYPES.spider) {
+                GlobalGameState.bittenBySpiders++;
+            }
+
             GlobalGameState.energy -= 10;
             console.log("  energy: " + GlobalGameState.energy + "/" + 100);
             if( GlobalGameState.energy <= 0 ) {
