@@ -7,6 +7,7 @@ class GameOverScreen extends Stage {
 	 *  action to perform on state change
 	 */
 	onResetEvent() {
+		console.log("GameOver.OnEnter()");
 		// new sprite for the title screen, position at the center of the game viewport
 		var backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
 			image: loader.getImage("sensa_nee"),
@@ -38,6 +39,7 @@ class GameOverScreen extends Stage {
 	 *  action to perform when leaving this screen (state change)
 	 */
 	onDestroyEvent() {
+		console.log("GameOver.OnExit()");
 		input.unbindKey(input.KEY.ENTER);
 		input.unbindPointer(input.pointer.LEFT);
 		event.off(event.KEYDOWN, this.handler);

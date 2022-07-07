@@ -38,6 +38,7 @@ const GlobalGameState = {
 	score: 0,
 	bombs: 0,
 	invincible: false,
+	isGameOver: false,
 
   // statistics
 	placedBarriers: 0,
