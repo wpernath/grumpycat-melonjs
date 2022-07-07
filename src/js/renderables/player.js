@@ -216,7 +216,7 @@ class PlayerEntity extends Sprite {
      */
     onCollision(response, other) {
         if( GlobalGameState.invincible ) return false;
-        if( other.body.collisionType === collision.types.ENEMY_OBJECT && !other.isStunned && !other.isDead) {
+        if( other.body.collisionType === collision.types.ENEMY_OBJECT && !other.isStunned && !other.isDead && !GlobalGameState.isGameOver) {
             if( other.enemyType === ENEMY_TYPES.cat ) {
                 GlobalGameState.catchedByCats++;
                 GlobalGameState.energy -= GlobalGameState.energyLostByCat;
@@ -229,6 +229,7 @@ class PlayerEntity extends Sprite {
             console.log("  energy: " + GlobalGameState.energy + "/" + 100);
             if( GlobalGameState.energy <= 0 ) {
                 console.log("GAME OVER!");
+                GlobalGameState.isGameOver = true;
                 state.change(state.GAMEOVER);
             }
             else {
