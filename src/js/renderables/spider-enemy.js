@@ -73,6 +73,7 @@ export class SpiderEnemy extends BaseEnemySprite {
                 this.setCurrentAnimation("die", () => {
                     this.isDead = true;
 					GlobalGameState.killedSpiders++;
+					GlobalGameState.score += GlobalGameState.scoreForKillingSpider;
                     this.setCurrentAnimation("dead");
                 })
 			}

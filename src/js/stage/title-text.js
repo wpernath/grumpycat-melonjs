@@ -7,17 +7,17 @@ export default class TitleText extends Renderable {
 		// font for the scrolling text
 		this.font = new BitmapText(0, 0, { font: "PressStart2P" });
 
-		this.scroller = "QUARKUS GRUMPYCAT. A GAME WRITTEN BY WANJA PERNATH, INSPIRED BY FAT CAT AND PAC MAN. THIS GAME IS USING A QUARKUS BACKEND TO LOAD AND STORE DATA FROM/TO A SERVER...................................................       ";
-		this.scrollerpos = 600;
+		this.scroller = "QUARKUS GRUMPYCAT. A GAME WRITTEN BY WANJA PERNATH, INSPIRED BY FAT CAT AND PAC MAN. THIS GAME IS USING A QUARKUS BACKEND TO LOAD AND STORE DATA FROM/TO A SERVER.                                                           ";
+		this.scrollerpos = game.viewport.width;
 
-		// a tween to animate the arrow
+		// a tween to animate the text
 		this.scrollertween = new Tween(this).to({ scrollerpos: -2200 }, 10000).onComplete(this.scrollover.bind(this)).start();
 	}
 
 	// some callback for the tween objects
 	scrollover() {
 		// reset to default value
-		this.scrollerpos = 640;
+		this.scrollerpos = game.viewport.width;
 		this.scrollertween.to({ scrollerpos: -2200 }, 10000).onComplete(this.scrollover.bind(this)).start();
 	}
 
@@ -33,7 +33,6 @@ export default class TitleText extends Renderable {
 	}
 
 	onDestroyEvent() {
-		//just in case
 		this.scrollertween.stop();
 	}
 }

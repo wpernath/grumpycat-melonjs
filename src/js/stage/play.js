@@ -76,7 +76,7 @@ class PlayScreen extends Stage {
 
                 // make sure, all enemies know the player
                 this.enemies.forEach(e => e.setPlayer(this.player));
-                this.hudContainer = new HUDContainer();
+                this.hudContainer = new HUDContainer(0,0);
                 game.world.addChild(this.hudContainer);
 
             }

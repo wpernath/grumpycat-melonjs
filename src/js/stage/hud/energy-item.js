@@ -18,7 +18,7 @@ export class EnergyItem extends Renderable {
 
 		// font alignment to right, bottom
 		this.font.textAlign = "left";
-		this.font.textBaseline = "bottom";
+		this.font.textBaseline = "top";
 	}
 
 	/**
@@ -33,7 +33,12 @@ export class EnergyItem extends Renderable {
 	 * draw the score
 	 */
 	draw(renderer) {
-		this.font.draw(renderer, "ENERGY: " + GlobalGameState.energy, this.pos.x, game.viewport.height + this.pos.y - 4);
+		this.font.draw(
+			renderer, 
+			"ENERGY: " + GlobalGameState.energy, 
+			this.pos.x + 4, 
+			this.pos.y +2
+		);
 	}
 }
 EnergyItem = EnergyItem;

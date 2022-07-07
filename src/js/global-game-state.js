@@ -9,8 +9,29 @@ const GlobalGameState = {
 		"level4",
 		"level5",
 	],
+
+	// some configs
 	enemyStunnedTime: 5000, // ms
 	playerInvincibleTime: 3000, // ms
+
+	// adding score for different elements
+	scoreForPills: 10,
+	scoreForBombs: 50,
+	scoreForMeat: 25,
+	scoreForCheese: 15,
+	scoreForStunningCat: 50,
+	scoreForKillingSpider: 100,
+
+	// Amount of energy to get back 
+	energyForMeat: 10,
+	energyForCheese: 5,
+
+	// bombs for picking up a bomb bonus
+	bombsForBombBonus: 5,
+
+	// how much energy do you loose if
+	energyLostBySpider: 15,
+	energyLostByCat: 10,
 
 	// player state
 	energy: 100,

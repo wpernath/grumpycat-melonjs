@@ -1,4 +1,4 @@
-import { Renderable, BitmapText, game } from "melonjs";
+import { Renderable, BitmapText, game, video } from "melonjs";
 import GlobalGameState from "../../global-game-state";
 /**
  * Code to draw the score to the HUD
@@ -17,8 +17,9 @@ export class BombItem extends Renderable {
 		this.font = new BitmapText(0, 0, { font: "PressStart2P" });
 
 		// font alignment to right, bottom
-		this.font.textAlign = "center";
-		this.font.textBaseline = "bottom";
+		this.font.textAlign = "left";
+		this.font.textBaseline = "top";
+
 	}
 
 	/**
@@ -33,7 +34,14 @@ export class BombItem extends Renderable {
 	 * draw the score
 	 */
 	draw(renderer) {
-		this.font.draw(renderer, "BOMBS: " + GlobalGameState.bombs, 400, game.viewport.height + this.pos.y - 4);
+		let text = "BOMBS: @@@";
+		let dims = this.font.measureText(text);
+		this.font.draw(
+			renderer, 
+			"BOMBS: " + GlobalGameState.bombs, 
+			(game.viewport.width - dims.width)/2, 
+			this.pos.y +2
+		);
 	}
 }
 

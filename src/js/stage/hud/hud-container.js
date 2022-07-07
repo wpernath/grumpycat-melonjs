@@ -4,8 +4,8 @@ import { EnergyItem } from "./energy-item";
 import { BombItem } from "./bomb-item";
 
 export default class HUDContainer extends Container {
-	constructor() {
-		super();
+	constructor(x,y) {
+		super(x,y);
 
 		// persistent across level change
 		this.isPersistent = true;

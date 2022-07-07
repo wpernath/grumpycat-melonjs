@@ -174,19 +174,19 @@ class PlayerEntity extends Sprite {
                     this.collectedBonusTiles++;
                     
                     if( bonus === BONUS_TILE.bomb ) { // bomb                        
-                        GlobalGameState.bombs += 5;
-                        GlobalGameState.score += 50;
+                        GlobalGameState.bombs += GlobalGameState.bombsForBombBonus;
+                        GlobalGameState.score += GlobalGameState.scoreForBombs;
                     }
                     else if( bonus === BONUS_TILE.cactus) { // cactus
-                        GlobalGameState.score += 10;
+                        GlobalGameState.score += GlobalGameState.scoreForPills;
                     }
                     else if( bonus === BONUS_TILE.meat) { // meat
-                        GlobalGameState.energy+= 20;
-                        GlobalGameState.score += 50;
+                        GlobalGameState.energy+= GlobalGameState.energyForMeat;
+                        GlobalGameState.score += GlobalGameState.scoreForMeat;
                     }
                     else if( bonus === BONUS_TILE.cheese) { // cheese
-                        GlobalGameState.energy+=10;
-                        GlobalGameState.score += 30;
+                        GlobalGameState.energy+= GlobalGameState.energyForCheese;
+                        GlobalGameState.score += GlobalGameState.scoreForCheese;
                     }
 
                     if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
@@ -219,12 +219,13 @@ class PlayerEntity extends Sprite {
         if( other.body.collisionType === collision.types.ENEMY_OBJECT && !other.isStunned && !other.isDead) {
             if( other.enemyType === ENEMY_TYPES.cat ) {
                 GlobalGameState.catchedByCats++;
+                GlobalGameState.energy -= GlobalGameState.energyLostByCat;
             }
             else if( other.enemyType === ENEMY_TYPES.spider) {
                 GlobalGameState.bittenBySpiders++;
+                GlobalGameState.energy -= GlobalGameState.energyLostBySpider;
             }
 
-            GlobalGameState.energy -= 10;
             console.log("  energy: " + GlobalGameState.energy + "/" + 100);
             if( GlobalGameState.energy <= 0 ) {
                 console.log("GAME OVER!");

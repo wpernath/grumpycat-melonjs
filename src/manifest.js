@@ -12,6 +12,19 @@ const DataManifest = [
 		type: "binary",
 		src: "./data/fnt/PressStart2P.fnt",
 	},
+
+	{
+		name: "grumpy_cat_left",
+		type: "image",
+		src: "./data/img/grumpy_cat_left.png",
+	},
+
+	{
+		name: "grumpy_cat_right",
+		type: "image",
+		src: "./data/img/grumpy_cat_right.png",
+	},
+
 	{
 		name: "bombs",
 		type: "image",

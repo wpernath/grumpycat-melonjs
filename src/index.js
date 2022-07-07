@@ -60,28 +60,32 @@ device.onReady(() => {
 
     // set and load all resources.
     loader.preload(DataManifest, function() {
-        // set the user defined game stages
-        state.set(state.MENU, new TitleScreen());
-        state.set(state.PLAY, new PlayScreen());
-        state.set(state.READY, new GetReadyScreen());
-        state.set(state.GAMEOVER, new GameOverScreen());
+			// set the user defined game stages
+			state.set(state.MENU, new TitleScreen());
+			state.set(state.PLAY, new PlayScreen());
+			state.set(state.READY, new GetReadyScreen());
+			state.set(state.GAMEOVER, new GameOverScreen());
 
-        // add our player entity in the entity pool
-        pool.register("player", PlayerEntity, true);
-        pool.register("enemy", CatEnemy, false);
-        pool.register("bomb", BombEntity, true);
-        pool.register("spider", SpiderEnemy, true);
+            // set the fade transition effect
+			state.transition("fade", "#000000", 1000);
 
-        input.bindKey(input.KEY.SHIFT, "barrier");
-        input.bindKey(input.KEY.LEFT, "left");
-        input.bindKey(input.KEY.RIGHT, "right");
-        input.bindKey(input.KEY.UP, "up");
-        input.bindKey(input.KEY.E, "explode");
-        input.bindKey(input.KEY.DOWN, "down");
-        input.bindKey(input.KEY.SPACE, "bomb", true);
-        //input.bindKey()
-        
-        // Start the game.
-        state.change(state.MENU);
-    });
+			// add our player entity in the entity pool
+			pool.register("player", PlayerEntity, true);
+			pool.register("enemy", CatEnemy, false);
+			pool.register("bomb", BombEntity, true);
+			pool.register("spider", SpiderEnemy, true);
+
+			// bind keys
+			input.bindKey(input.KEY.SHIFT, "barrier");
+			input.bindKey(input.KEY.LEFT, "left");
+			input.bindKey(input.KEY.RIGHT, "right");
+			input.bindKey(input.KEY.UP, "up");
+			input.bindKey(input.KEY.E, "explode", true);
+			input.bindKey(input.KEY.DOWN, "down");
+			input.bindKey(input.KEY.SPACE, "bomb", true);
+			//input.bindKey()
+
+			// Start the game.
+			state.change(state.MENU);
+		});
 });

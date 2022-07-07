@@ -17,8 +17,8 @@ export class ScoreItem extends Renderable {
 		this.font = new BitmapText(0, 0, { font: "PressStart2P" });
 
 		// font alignment to right, bottom
-		this.font.textAlign = "right";
-		this.font.textBaseline = "bottom";
+		this.font.textAlign = "left";
+		this.font.textBaseline = "top";
 
 	}
 
@@ -34,7 +34,15 @@ export class ScoreItem extends Renderable {
 	 * draw the score
 	 */
 	draw(renderer) {
-		this.font.draw(renderer, "SCORE: " + GlobalGameState.score, game.viewport.width + this.pos.x, game.viewport.height + this.pos.y - 4);
+		let text = "Score: 999999";
+		let dims = this.font.measureText(text);
+
+		text = GlobalGameState.score.toString().padStart(6, "0");
+		this.font.draw(
+			renderer, "SCORE: " + text, 
+			game.viewport.width + this.pos.x - dims.width, 
+			this.pos.y + 2 
+		);
 	}
 }
 ScoreItem = ScoreItem;
