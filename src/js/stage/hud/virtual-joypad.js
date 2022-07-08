@@ -1,4 +1,4 @@
-import { GUI_Object, Sprite, game, input, Vector2d, Container, event } from "melonjs";
+import { GUI_Object, Sprite, game, input, Vector2d, Container, event, device, plugins } from "melonjs";
 import GlobalGameState from "../../global-game-state";
 /**
  * a basic control to toggle fullscreen on/off
@@ -34,6 +34,81 @@ class ActionButton extends GUI_Object {
 		return false;
 	}
 }
+
+class PauseButton extends GUI_Object {
+	/**
+	 * constructor
+	 */
+	constructor(x, y) {
+		super(x, y, {
+			image: GlobalGameState.screenControlsTexture,
+			region: "shadedDark14", // pause // shadedDark16: play
+		});
+		this.setOpacity(0.25);
+		this.anchorPoint.set(0, 0);
+		this.isPaused = false;
+	}
+
+	/**
+	 * function called when the object is clicked on
+	 */
+	onClick(event) {
+		this.setOpacity(0.5);
+		if( !this.isPaused ) {
+			this.isPaused = true;
+			this.tint.setColor(50,50,0);
+		}
+		else {
+			this.isPaused = false;
+			this.tint.setColor(255, 255, 255);
+
+		}
+		input.triggerKeyEvent(input.KEY.P, true);
+		return false;
+	}
+
+	/**
+	 * function called when the object is clicked on
+	 */
+	onRelease(event) {
+		this.setOpacity(0.25);
+		input.triggerKeyEvent(input.KEY.P, false);
+		return false;
+	}
+}
+
+class ExitButton extends GUI_Object {
+	/**
+	 * constructor
+	 */
+	constructor(x, y) {
+		super(x, y, {
+			image: GlobalGameState.screenControlsTexture,
+			region: "shadedDark35",
+		});
+		this.setOpacity(0.25);
+		this.anchorPoint.set(0, 0);
+	}
+
+	/**
+	 * function called when the object is clicked on
+	 */
+	onClick(event) {
+		this.setOpacity(0.5);
+		input.triggerKeyEvent(input.KEY.ESC, true);		
+		return false;
+	}
+
+	/**
+	 * function called when the object is clicked on
+	 */
+	onRelease(event) {
+		this.setOpacity(0.25);
+		input.triggerKeyEvent(input.KEY.ESC, false);
+		return false;
+	}
+}
+
 
 class OtherButton extends GUI_Object {
 	/**
@@ -150,7 +225,7 @@ class Joypad extends GUI_Object {
 		let xAchsis = Math.abs(dx) > 20;
 		let yAchsis = Math.abs(dy) > 20;
 
-		console.log("checking if (" + x + "|" + y + ")" + " (" + rx + "|" + ry + ")" + " within (" + this.width + "|" + this.height + ") - distance (" + dx + "|" + dy + ")");
+		//console.log("checking if (" + x + "|" + y + ")" + " (" + rx + "|" + ry + ")" + " within (" + this.width + "|" + this.height + ") - distance (" + dx + "|" + dy + ")");
 
 		if (yAchsis && dy < 0) {
 			if (this.cursors.up === false) {
@@ -211,7 +286,7 @@ class Joypad extends GUI_Object {
 		let y = event.gameScreenY + event.height / 2;
 		this.setOpacity(0.5);
 		this.checkDirection.call(this, x, y);
-		console.log(JSON.stringify(this.cursors));
+		//console.log(JSON.stringify(this.cursors));
 		return false;
 	}
 
@@ -236,7 +311,7 @@ class Joypad extends GUI_Object {
 			input.triggerKeyEvent(input.KEY.DOWN, false);
 			this.cursors.down = false;
 		}
-		console.log(JSON.stringify(this.cursors));
+		//console.log(JSON.stringify(this.cursors));
 		this.joypad_offset.set(0, 0);
 		return false;
 	}
@@ -273,16 +348,22 @@ class VirtualJoypad extends Container {
 		// give a name
 		this.name = "VirtualJoypad";
 
-		// instance of the virtual joypad
-		this.joypad = new Joypad(50, game.viewport.height - 200);
-
 		// instance of the buttons
 		this.actionButton = new ActionButton(game.viewport.width - 200, game.viewport.height - 150);
 		this.otherButton = new OtherButton(game.viewport.width - 120, game.viewport.height - 200);
+		this.pauseButton = new PauseButton(20, 24);
+		this.exitButton = new ExitButton(game.viewport.width - 48 - 20, 24);
 
-		this.addChild(this.joypad);
+		// instance of the virtual joypad
+		if( device.touch || (plugins.debugPanel && plugins.debugPanel.panel.visible)) {
+			this.joypad = new Joypad(50, game.viewport.height - 200);
+			this.addChild(this.joypad);
+		}
+
 		this.addChild(this.actionButton);
 		this.addChild(this.otherButton);
+		this.addChild(this.pauseButton);
+		this.addChild(this.exitButton);
 
 		// re-position the button in case of
 		// size/orientation change
@@ -290,6 +371,7 @@ class VirtualJoypad extends Container {
 		event.on(event.VIEWPORT_ONRESIZE, function (width, height) {
 			self.actionButton.pos.set(width - 200, height - 150, self.button.pos.z);
 			self.otherButton.pos.set(width - 120, height - 200, self.button.pos.z);
+			self.exitButton.pos.set(width - 48 - 20, 24, self.button.pos.z);
 		});
 	}
 }

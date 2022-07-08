@@ -29,7 +29,12 @@ class GameOverScreen extends Stage {
 		input.bindPointer(input.pointer.LEFT, input.KEY.ENTER);
 
 		this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
-			if (action === "enter") {
+			if (!state.isCurrent(state.GAMEOVER)) return;
+			console.log("GameOver.EventHandler()");
+			if (action === "enter" || action === "bomb") {
+				state.change(state.MENU);
+			}
+			if( action === "exit") {
 				state.change(state.MENU);
 			}
 		});

@@ -30,9 +30,15 @@ class GetReadyScreen extends Stage {
 		input.bindPointer(input.pointer.LEFT, input.KEY.ENTER);
 
 		this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
-			if (action === "enter") {
+			if (!state.isCurrent(state.READY)) return;
+			console.log("GetReady.EventHandler()");
+			if (action === "enter" || action === "bomb") {
 				state.change(state.PLAY);
 			}
+            if (action === "exit") {
+				state.change(state.MENU);
+			}
+
 		});
 	}
 

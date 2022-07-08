@@ -5,6 +5,7 @@ import {
     device,
     video,
     utils,
+    game,
     plugin,
     pool,
     input,
@@ -17,6 +18,7 @@ import TitleScreen from 'js/stage/title.js';
 import PlayScreen from 'js/stage/play.js';
 import GetReadyScreen from './js/stage/get-ready';
 import GameOverScreen from './js/stage/game-over';
+import VirtualJoypad from './js/stage/hud/virtual-joypad';
 
 import PlayerEntity from 'js/renderables/player.js';
 import CatEnemy from "js/renderables/cat-enemy.js";
@@ -27,7 +29,7 @@ import DataManifest from 'manifest.js';
 import CONFIG from 'config.js';
 import GlobalGameState from './js/global-game-state';
 
-
+let joypad;
 device.onReady(() => {
 
     // initialize the display canvas once the device/browser is ready
@@ -89,9 +91,13 @@ device.onReady(() => {
             input.bindKey(input.KEY.P, "pause", true);
 			input.bindKey(input.KEY.DOWN, "down");
 			input.bindKey(input.KEY.SPACE, "bomb", true);
+            input.bindKey(input.KEY.ESC, "exit", true);
 			//input.bindKey()
 
 			// Start the game.
+            joypad = new VirtualJoypad();
+			game.world.addChild(joypad);
+
 			state.change(state.MENU);
 		});
 });

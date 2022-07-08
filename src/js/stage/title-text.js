@@ -29,7 +29,7 @@ export default class TitleText extends Renderable {
 		this.font.textAlign = "center";
 		this.font.draw(renderer, "PRESS ENTER TO PLAY", game.viewport.width, game.viewport.height);
 		this.font.textAlign = "left";
-		this.font.draw(renderer, this.scroller, this.scrollerpos, 400);
+		this.font.draw(renderer, this.scroller, this.scrollerpos, game.viewport.height - 40);
 	}
 
 	onDestroyEvent() {

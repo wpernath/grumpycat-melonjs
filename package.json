@@ -1,6 +1,6 @@
 {
-  "name": "GrumpyCat-melonjs",
-  "version": "0.2.3",
+  "name": "grumpycat-melonjs",
+  "version": "0.3.3",
   "main": "index.js",
   "author": "Wanja Pernath",
   "license": "MIT",

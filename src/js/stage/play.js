@@ -63,7 +63,7 @@ class PlayScreen extends Stage {
                                 this.enemyEmitter.isActive = true;
                                 this.enemyEmitter.emitAt.x = x;
                                 this.enemyEmitter.emitAt.y = y;
-                                this.enemyEmitter.emitCount=l.enemyNumEmitting;
+                                this.enemyEmitter.emitCount=l.enemyNumEmitting*10;
                                 this.enemyEmitter.emitEvery=l.enemyTimeEmitting;
                                 
                                 
@@ -80,10 +80,10 @@ class PlayScreen extends Stage {
                 this.hudContainer = new HUDContainer(0,0);
                 game.world.addChild(this.hudContainer);
 
-                this.joypad = new VirtualJoypad();
-                game.world.addChild(this.joypad);
 
                 this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
+                    if (!state.isCurrent(state.PLAY)) return;
+                    //console.log("Play.EventHandler(" + action + ", " + keyCode + ", " + edge + ")");
                     if (action === "pause") {
                         if( !state.isPaused() ) {
                             state.pause();
@@ -92,6 +92,12 @@ class PlayScreen extends Stage {
                             state.resume();
                         }                        
                     }
+                    if( action === "exit") {
+				        state.change(state.MENU);
+			        }
+
+
+
                 });
             }
         });    
@@ -100,7 +106,7 @@ class PlayScreen extends Stage {
     onDestroyEvent() {
       console.log("Play.OnExit()");  
       game.world.removeChild(this.hudContainer);
-      game.world.removeChild(this.joypad);
+      //game.world.removeChild(this.joypad);
       event.off(event.KEYDOWN, this.handler);
     }
 

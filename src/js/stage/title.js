@@ -10,6 +10,7 @@ class TitleScreen extends Stage {
 		console.log("Title.OnEnter()");
 		// Reset GlobalGameState
 		GlobalGameState.reset();
+		GlobalGameState.currentLevel = 1;
 		
 		// new sprite for the title screen, position at the center of the game viewport
 		let backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
@@ -45,7 +46,9 @@ class TitleScreen extends Stage {
 		input.bindPointer(input.pointer.LEFT, input.KEY.ENTER);
 
 		this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
-			if (action === "enter") {
+			if( !state.isCurrent( state.MENU )) return;
+			console.log("Title.EventHandler()");
+			if (action === "enter" || action === 'bomb') {
 				// play something on tap / enter
 				// this will unlock audio on mobile devices
 				console.log("NUMBER OF LEVELS: " + level.levelCount());
