@@ -1,5 +1,11 @@
 # quarkus-grumpycat / melonjs client
-This is a refactored JavaScript / melonjs client for the game written with Quarkus / JavaScript [here](https://github.com/wpernath/quarkus-grumpycat)
+This is a refactored JavaScript / melonjs client for the game written with Quarkus / JavaScript [here](https://github.com/wpernath/quarkus-grumpycat). NOTE, that in order to run this client, you also need to start the server, as it will be used to 
+- download levels
+- storing highscores
+- creating new games on the server
+- storing and reading player movements on the server
+- storing and reading enemy movements on the server
+
 
 ## The Game
 
@@ -11,20 +17,27 @@ Right now you can control the dog with arrow keys UP, DOWN, LEFT & RIGHT and wit
 - *SPACE* place bomb
 - *Shift* + UP/DOWN/LEFT/RIGHT: place barrier in the direction
 
-If the cat gets into an exploding bomb, it stops for 3sec. A bomb can destroy barriers. The game ends if you got all food.
+If the cat gets into an exploding bomb, it is stunned for 3sec. A bomb can also destroy barriers. The level ends if you got all food. 
+
+## NEW 
+This engine supports a new enemy type: Spider. Spiders are not coming alone! If a spider gets into an exploding bomb, the spider will be killed. 
   
 
-Game logic is coded with [melonjs](https://github.com/melonjs/melonjs)
+Game logic is coded with [melonjs JavaScript engine](https://github.com/melonjs/melonjs)
 
 ![the game](docs/the-game.png)
 
 ## Running the application in dev mode
+First of all, you need to also run the [server part](https://github.com/wpernath/quarkus-grumpycat). Then make sure, you open `src/config.js` and change the `CONFIG.environment` variable to `local`. 
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
 npm install
 npm run dev
 ```
+
+
+
 
 ## Game Server
 You have to install the quarkus part as well to run this application! Please go [there](https://github.com/wpernath/quarkus-grumpycat) and have a look. 
@@ -34,25 +47,13 @@ You have to install the quarkus part as well to run this application! Please go 
 
 
 ## Creating new Levels
-To create a new level, download the [Tiled MapEditor](https://mapeditor.org). A `Level-Template.tmx` can be found in `/tiled` folder. The only supported tileset currently is `/tiled/Terrain.tsx`. Please make sure to **NOT** save the new Level with embedded tileset. If you're done creating the level and would like to use it in the game, export it in JSON format and store it in `/java/resources/maps`. Then you need to update `MapResource.java` to include this new level. 
-
-If you directly want to play your new level, you could open `game-logic.js` and go to the function `initGame()` where you can change the global variable `currentLevel` to point to the index of the array in `MapResource.java`. 
-
-Maps can be of any size. The only important thing you need to keep in mind are the names and function of the layers of a map:
-
-- **Ground:** This is the base ground of the level. You can put any tile here.  
-- **Frame:** This layer is the border of the map. Anything placed here will be used as barrier for player and enemies. Anything placed here can be destroyed with a bomb. 
-- **Dekor:** Use this layer to place decorative tiles on. For example flowers on water or stones on sand. 
-- **Bonus:** Use this layer to place your bonus items on. Any tile placed here can be a bonus which adds a score of 10 points. Once the player walks over it, the bonus item gets removed. Special bonus tile is the bomb, which provides 5 more bombs to the player to be used to destroy frames.
-- **Persons:** This layer will be used to place the player and enemies on. Use the two sign tiles as player and enemies. Note, you MUST not place more than one player, but you CAN place more than one enemy.
-
-You might add more layers to your map. Any layer placed on top of **Persons** will be drawn last, which means it will draw over enemies and player sprites.
+To create a new level, fork the server part of grumpycat and download the [Tiled MapEditor](https://mapeditor.org). A `Level-Template.tmx` can be found in `/tiled` folder of the server part. 
 
 ## Running on Docker / Podman
-There are container images ready to be used on [Quay.io](https://quay.io/wpernath/quarkus-grumpycat). Use this command to pull the image to your local repository:
+There are container images ready to be used on [Quay.io](https://quay.io/wpernath/grumpycat-meleonjs). Use this command to pull the image to your local repository:
 
 ```shell
-docker pull quay.io/wpernath/quarkus-grumpycat
+docker pull quay.io/wpernath/grumpycat-melonjs
 ```
 
 Note, to run the server part, you need to have a PostgreSQL database running. You can use the `docker-compose.yaml` file in `src/main/docker/` to setup a local docker / podman compose environment.

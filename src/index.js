@@ -7,7 +7,8 @@ import {
     utils,
     plugin,
     pool,
-    input
+    input,
+    TextureAtlas
 } from 'melonjs/dist/melonjs.module.js';
 
 import 'index.css';
@@ -24,6 +25,7 @@ import BombEntity from './js/renderables/bomb';
 import DataManifest from 'manifest.js';
 
 import CONFIG from 'config.js';
+import GlobalGameState from './js/global-game-state';
 
 
 device.onReady(() => {
@@ -60,6 +62,9 @@ device.onReady(() => {
 
     // set and load all resources.
     loader.preload(DataManifest, function() {
+
+            GlobalGameState.screenControlsTexture = new TextureAtlas(loader.getJSON("screen-controls"), loader.getImage("screen-controls"));
+
 			// set the user defined game stages
 			state.set(state.MENU, new TitleScreen());
 			state.set(state.PLAY, new PlayScreen());

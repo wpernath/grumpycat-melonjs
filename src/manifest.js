@@ -1,6 +1,18 @@
 // a melonJS data manifest
 // note : this is not a webpack manifest
 const DataManifest = [
+	// screen controls texture map
+	{
+		name: "screen-controls",
+		type: "image",
+		src: "./data/img/screen-controls.png",
+	},
+	{
+		name: "screen-controls",
+		type: "json",
+		src: "./data/img/screen-controls.json",
+	},
+
 	/* Bitmap Text */
 	{
 		name: "PressStart2P",

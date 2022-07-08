@@ -1,5 +1,6 @@
 const GlobalGameState = {
 	// engine state
+	screenControlsTexture: null,
 	currentLevel: 0,
 	levels: [
 		// GUIDs from manifest.js

@@ -13,7 +13,7 @@ class TitleScreen extends Stage {
 		
 		GlobalGameState.invincible = false;
 		GlobalGameState.isGameOver = false;
-		GlobalGameState.energy = 20;
+		GlobalGameState.energy = 100;
 		GlobalGameState.score = 0;
 		GlobalGameState.bombs = 0;
 

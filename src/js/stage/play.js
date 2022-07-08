@@ -4,6 +4,7 @@ import { SpiderEnemy } from '../renderables/spider-enemy.js';
 import PlayerEntity from "../renderables/player.js";
 import GlobalGameState from '../global-game-state.js';
 import HUDContainer from './hud/hud-container.js';
+import VirtualJoypad from './hud/virtual-joypad.js';
 
 
 
@@ -79,6 +80,9 @@ class PlayScreen extends Stage {
                 this.hudContainer = new HUDContainer(0,0);
                 game.world.addChild(this.hudContainer);
 
+                this.joypad = new VirtualJoypad();
+                game.world.addChild(this.joypad);
+
             }
         });    
     }
@@ -86,6 +90,7 @@ class PlayScreen extends Stage {
     onDestroyEvent() {
       console.log("Play.OnExit()");  
       game.world.removeChild(this.hudContainer);
+      game.world.removeChild(this.joypad);
     }
 
     update(dt) {
