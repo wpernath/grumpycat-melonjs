@@ -9,21 +9,8 @@ class TitleScreen extends Stage {
 	onResetEvent() {
 		console.log("Title.OnEnter()");
 		// Reset GlobalGameState
-		GlobalGameState.currentLevel = 0;
+		GlobalGameState.reset();
 		
-		GlobalGameState.invincible = false;
-		GlobalGameState.isGameOver = false;
-		GlobalGameState.energy = 100;
-		GlobalGameState.score = 0;
-		GlobalGameState.bombs = 0;
-
-		GlobalGameState.placedBarriers = 0;
-		GlobalGameState.bittenBySpiders = 0;
-		GlobalGameState.catchedByCats = 0;
-		GlobalGameState.usedBombs = 0;
-		GlobalGameState.killedSpiders = 0;
-		GlobalGameState.stunnedCats = 0;
-
 		// new sprite for the title screen, position at the center of the game viewport
 		let backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
 			image: loader.getImage("sensa_grass"),

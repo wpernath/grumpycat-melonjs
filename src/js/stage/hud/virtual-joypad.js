@@ -3,16 +3,16 @@ import GlobalGameState from "../../global-game-state";
 /**
  * a basic control to toggle fullscreen on/off
  */
-class Button extends GUI_Object {
+class ActionButton extends GUI_Object {
 	/**
 	 * constructor
 	 */
 	constructor(x, y) {
 		super(x, y, {
 			image: GlobalGameState.screenControlsTexture,
-			region: "shadedDark36",
+			region: "shadedDark38",
 		});
-		this.setOpacity(0.5);
+		this.setOpacity(0.25);
 		this.anchorPoint.set(0, 0);
 	}
 
@@ -35,11 +35,43 @@ class Button extends GUI_Object {
 	}
 }
 
+class OtherButton extends GUI_Object {
+	/**
+	 * constructor
+	 */
+	constructor(x, y) {
+		super(x, y, {
+			image: GlobalGameState.screenControlsTexture,
+			region: "shadedDark36",
+		});
+		this.setOpacity(0.25);
+		this.anchorPoint.set(0, 0);
+	}
+
+	/**
+	 * function called when the object is clicked on
+	 */
+	onClick(event) {
+		this.setOpacity(0.5);
+		input.triggerKeyEvent(input.KEY.SHIFT, true);
+		return false;
+	}
+
+	/**
+	 * function called when the object is clicked on
+	 */
+	onRelease(event) {
+		this.setOpacity(0.25);
+		input.triggerKeyEvent(input.KEY.SHIFT, false);
+		return false;
+	}
+}
+
 /**
  * a virtual joypad
  */
 class Joypad extends GUI_Object {
-	/**
+	/**o
 	 * constructor
 	 */
 	constructor(x, y) {
@@ -64,7 +96,7 @@ class Joypad extends GUI_Object {
 		this.joypad_offset = new Vector2d();
 
 		// default opacity
-		this.setOpacity(0.5);
+		this.setOpacity(0.25);
 
 		// cursors status
 		// TODO make it configurable
@@ -89,15 +121,16 @@ class Joypad extends GUI_Object {
 	 */
 	pointerMove(event) {
 		if (this.released === false) {
-			var x = event.gameScreenX + event.width / 2;
-			var y = event.gameScreenY + event.height / 2;
+			let x = Math.round(event.gameScreenX + event.width / 2);
+			let y = Math.round(event.gameScreenY + event.height / 2);
 			// pointerMove is a global on the viewport, so check for coordinates
 			if (this.getBounds().contains(x, y)) {
 				// if any direction is active, update it if necessary
-				if (this.cursors.left === true || this.cursors.right === true) {
+				if (this.cursors.left === true || this.cursors.right === true || this.cursors.up === true || this.cursors.down === true) {
 					this.checkDirection.call(this, x, y);
 				}
-			} else {
+			} 
+			else {
 				// release keys/joypad if necessary
 				this.onRelease.call(this, event);
 			}
@@ -106,12 +139,24 @@ class Joypad extends GUI_Object {
 
 	// update the cursors value and trigger key event
 	checkDirection(x, y) {
+		x = Math.round(x);
+		y = Math.round(y);
+		let rx = x - this.pos.x;
+		let ry = y - this.pos.y;
+		let rw = this.width / 2;
+		let rh = this.height / 2;
+		let dx = rx - rw;
+		let dy = ry - rh;
+		let xAchsis = Math.abs(dx) > 20;
+		let yAchsis = Math.abs(dy) > 20;
 
-		if (y - this.pos.y < this.height / 2) {
+		console.log("checking if (" + x + "|" + y + ")" + " (" + rx + "|" + ry + ")" + " within (" + this.width + "|" + this.height + ") - distance (" + dx + "|" + dy + ")");
+
+		if (yAchsis && dy < 0) {
 			if (this.cursors.up === false) {
 				input.triggerKeyEvent(input.KEY.UP, true);
 				this.cursors.up = true;
-				this.joypad_offset.y = -(((this.height / 2 - (y - this.pos.y)) % this.pad.height) / 4);
+				this.joypad_offset.y = -(((rh - ry) % this.pad.height) / 4);
 			}
 			// release the right key if it was pressed
 			if (this.cursors.down === true) {
@@ -119,11 +164,11 @@ class Joypad extends GUI_Object {
 				this.cursors.down = false;
 			}
 		}
-		if (y - this.pos.y > this.height / 2) {
+		if (yAchsis && dy > 0) {
 			if (this.cursors.down === false) {
 				input.triggerKeyEvent(input.KEY.DOWN, true);
 				this.cursors.down = true;
-				this.joypad_offset.y = +(((y - this.pos.y - this.height / 2) % this.pad.height) / 4);
+				this.joypad_offset.y = +(((ry - rh) % this.pad.height) / 4);
 			}
 			// release the left key is it was pressed
 			if (this.cursors.up === true) {
@@ -132,11 +177,11 @@ class Joypad extends GUI_Object {
 			}
 		}
 
-		if (x - this.pos.x < this.width / 2) {
+		if (xAchsis && dx < 0) {
 			if (this.cursors.left === false) {
 				input.triggerKeyEvent(input.KEY.LEFT, true);
 				this.cursors.left = true;
-				this.joypad_offset.x = -(((this.width / 2 - (x - this.pos.x)) % this.pad.width) / 4);
+				this.joypad_offset.x = -(((rw - (rx)) % this.pad.width) / 4);
 			}
 			// release the right key if it was pressed
 			if (this.cursors.right === true) {
@@ -144,11 +189,11 @@ class Joypad extends GUI_Object {
 				this.cursors.right = false;
 			}
 		}
-		if (x - this.pos.x > this.width / 2) {
+		if (xAchsis && dx > 0) {
 			if (this.cursors.right === false) {
 				input.triggerKeyEvent(input.KEY.RIGHT, true);
 				this.cursors.right = true;
-				this.joypad_offset.x = +(((x - this.pos.x - this.width / 2) % this.pad.width) / 4);
+				this.joypad_offset.x = +(((rx - rw) % this.pad.width) / 4);
 			}
 			// release the left key is it was pressed
 			if (this.cursors.left === true) {
@@ -162,10 +207,11 @@ class Joypad extends GUI_Object {
 	 * function called when the object is clicked on
 	 */
 	onClick(event) {
-		var x = event.gameScreenX + event.width / 2;
-		var y = event.gameScreenY + event.height / 2;
+		let x = event.gameScreenX + event.width / 2;
+		let y = event.gameScreenY + event.height / 2;
 		this.setOpacity(0.5);
 		this.checkDirection.call(this, x, y);
+		console.log(JSON.stringify(this.cursors));
 		return false;
 	}
 
@@ -190,7 +236,7 @@ class Joypad extends GUI_Object {
 			input.triggerKeyEvent(input.KEY.DOWN, false);
 			this.cursors.down = false;
 		}
-
+		console.log(JSON.stringify(this.cursors));
 		this.joypad_offset.set(0, 0);
 		return false;
 	}
@@ -230,17 +276,20 @@ class VirtualJoypad extends Container {
 		// instance of the virtual joypad
 		this.joypad = new Joypad(50, game.viewport.height - 200);
 
-		// instance of the button
-		this.button = new Button(game.viewport.width - 150, game.viewport.height - 150);
+		// instance of the buttons
+		this.actionButton = new ActionButton(game.viewport.width - 200, game.viewport.height - 150);
+		this.otherButton = new OtherButton(game.viewport.width - 120, game.viewport.height - 200);
 
 		this.addChild(this.joypad);
-		this.addChild(this.button);
+		this.addChild(this.actionButton);
+		this.addChild(this.otherButton);
 
 		// re-position the button in case of
 		// size/orientation change
-		var self = this;
+		let self = this;
 		event.on(event.VIEWPORT_ONRESIZE, function (width, height) {
-			self.button.pos.set(width - 150, height - 150, self.button.pos.z);
+			self.actionButton.pos.set(width - 200, height - 150, self.button.pos.z);
+			self.otherButton.pos.set(width - 120, height - 200, self.button.pos.z);
 		});
 	}
 }

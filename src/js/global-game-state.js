@@ -1,3 +1,5 @@
+
+
 const GlobalGameState = {
 	// engine state
 	screenControlsTexture: null,
@@ -34,6 +36,9 @@ const GlobalGameState = {
 	energyLostBySpider: 15,
 	energyLostByCat: 10,
 
+	// energy on start of the game
+	energyOnBegin: 100, 
+
 	// player state
 	energy: 100,
 	score: 0,
@@ -48,6 +53,23 @@ const GlobalGameState = {
   	catchedByCats : 0,
 	killedSpiders: 0,
 	stunnedCats: 0,
+
+
+	// reset statistics and player state
+	reset: function() {
+		this.energy = this.energyOnBegin;
+		this.currentLevel = 0;
+		this.score = 0;
+		this.bombs = 0;
+		this.invincible = false;
+		this.isGameOver = false;
+		this.placedBarriers = 0;
+		this.usedBombs = 0;
+		this.bittenBySpiders = 0;
+		this.catchedByCats = 0;
+		this.killedSpiders = 0;
+		this.stunnedCats = 0;
+	}
 };
 
 export default GlobalGameState;

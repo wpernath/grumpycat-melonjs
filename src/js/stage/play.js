@@ -1,4 +1,4 @@
-import { Stage, game, level, TSXTileSet } from 'melonjs/dist/melonjs.module.js';
+import { Stage, game, level, event, state } from 'melonjs/dist/melonjs.module.js';
 import CatEnemy from '../renderables/cat-enemy.js';
 import { SpiderEnemy } from '../renderables/spider-enemy.js';
 import PlayerEntity from "../renderables/player.js";
@@ -83,6 +83,16 @@ class PlayScreen extends Stage {
                 this.joypad = new VirtualJoypad();
                 game.world.addChild(this.joypad);
 
+                this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
+                    if (action === "pause") {
+                        if( !state.isPaused() ) {
+                            state.pause();
+                        }
+                        else {
+                            state.resume();
+                        }                        
+                    }
+                });
             }
         });    
     }
@@ -91,6 +101,7 @@ class PlayScreen extends Stage {
       console.log("Play.OnExit()");  
       game.world.removeChild(this.hudContainer);
       game.world.removeChild(this.joypad);
+      event.off(event.KEYDOWN, this.handler);
     }
 
     update(dt) {

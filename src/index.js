@@ -31,10 +31,11 @@ import GlobalGameState from './js/global-game-state';
 device.onReady(() => {
 
     // initialize the display canvas once the device/browser is ready
-    if (!video.init(1024, 768, {parent : "screen", scale : "auto"})) {
-        alert("Your browser does not support HTML5 canvas.");
-        return;
-    }
+    //video.
+    if (!video.init(1024, 768, { parent: "screen", scaleMethod: "flex-width", renderer: video.AUTO, preferWebGL1: false, subPixel: false })) {
+		alert("Your browser does not support HTML5 canvas.");
+		return;
+	}
 
     // initialize the debug plugin in development mode.
     if (process.env.NODE_ENV === 'development') {
@@ -42,7 +43,6 @@ device.onReady(() => {
             // automatically register the debug panel
             utils.function.defer(plugin.register, this, debugPlugin.DebugPanelPlugin, "debugPanel");
         });
-
     }
 
     // Initialize the audio.
@@ -72,7 +72,7 @@ device.onReady(() => {
 			state.set(state.GAMEOVER, new GameOverScreen());
 
             // set the fade transition effect
-			state.transition("fade", "#000000", 1000);
+			state.transition("fade", "#000000", 500);
 
 			// add our player entity in the entity pool
 			pool.register("player", PlayerEntity, true);
@@ -86,6 +86,7 @@ device.onReady(() => {
 			input.bindKey(input.KEY.RIGHT, "right");
 			input.bindKey(input.KEY.UP, "up");
 			input.bindKey(input.KEY.E, "explode", true);
+            input.bindKey(input.KEY.P, "pause", true);
 			input.bindKey(input.KEY.DOWN, "down");
 			input.bindKey(input.KEY.SPACE, "bomb", true);
 			//input.bindKey()
