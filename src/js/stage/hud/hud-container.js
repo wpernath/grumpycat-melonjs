@@ -1,4 +1,5 @@
-import { Renderable, BitmapText, game, event, Container, Text, Vector2d, Renderer, renderer } from "melonjs/dist/melonjs.module.js";
+import { Renderable, BitmapText, game, event, Container, Text, Vector2d, Renderer} from "melonjs/dist/melonjs.module.js";
+
 import GlobalGameState from "../../global-game-state";
 
 const FONT_SIZE = 22;
@@ -23,16 +24,26 @@ class ScoreItem extends Text {
 		});
 
 		this.bold(true);
-		let width = this.measureText(renderer).width;
-		this.pos.x = game.viewport.width - width + x;
+	
 		this.relative = new Vector2d(x, y);
 		this.score = -1;
+		this.width = -1;
+
 		event.on(
 			event.CANVAS_ONRESIZE,
 			function (w, h) {
 				this.pos.set(w, h, 0).add(this.relative);
 			}.bind(this)
 		);
+	}
+
+	draw(renderer) {
+		if( this.width === -1) {
+			console.log("draw(renderer) called");
+			this.width = this.measureText(renderer).width;
+			this.pos.x = game.viewport.width - this.width + this.relative.x;
+		}
+		super.draw(renderer);
 	}
 
 	/**
@@ -103,8 +114,7 @@ class BombItem extends Text {
 	 * @param y
 	 */
 	constructor(x, y) {
-		
-		super(((game.viewport.width)/2) + x, y, {
+		super(game.viewport.width / 2 + x, y, {
 			font: "Arial",
 			size: FONT_SIZE,
 			fillStyle: "white",
@@ -113,22 +123,28 @@ class BombItem extends Text {
 			lineWidth: 2,
 			textBaseline: "top",
 			text: "Energy: 999",
-			offScreenCanvas: true		 // this has impact on positioning
+			offScreenCanvas: true, // this has impact on positioning
 		});
-		
+
 		this.bold(true);
 		this.relative = new Vector2d(x, y);
 		this.bombs = -1;
+		this.width = -1;
 
-		let width = this.measureText(renderer).width;
-		this.pos.x = ((game.viewport.width - width) / 2);
 		event.on(
 			event.CANVAS_ONRESIZE,
 			function (w, h) {
 				this.pos.set(w, h, 0).add(this.relative);
 			}.bind(this)
 		);
+	}
 
+	draw(renderer) {
+		if (this.width === -1) {
+			this.width = this.measureText(renderer).width;
+			this.pos.x = ((game.viewport.width - this.width)/2) + this.relative.x;
+		}
+		super.draw(renderer);
 	}
 
 	/**
@@ -144,7 +160,6 @@ class BombItem extends Text {
 		}
 		return false;
 	}
-
 }
 
 export default class HUDContainer extends Container {

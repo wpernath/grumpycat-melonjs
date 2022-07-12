@@ -11,14 +11,14 @@ export default class TitleText extends Renderable {
 		this.scrollerpos = game.viewport.width;
 
 		// a tween to animate the text
-		this.scrollertween = new Tween(this).to({ scrollerpos: -2200 }, 10000).onComplete(this.scrollover.bind(this)).start();
+		this.scrollertween = new Tween(this).to({ scrollerpos: -10000 }, 10000).onComplete(this.scrollover.bind(this)).start();
 	}
 
 	// some callback for the tween objects
 	scrollover() {
 		// reset to default value
 		this.scrollerpos = game.viewport.width;
-		this.scrollertween.to({ scrollerpos: -2200 }, 10000).onComplete(this.scrollover.bind(this)).start();
+		this.scrollertween.to({ scrollerpos: -10000 }, 10000).onComplete(this.scrollover.bind(this)).start();
 	}
 
 	update(dt) {

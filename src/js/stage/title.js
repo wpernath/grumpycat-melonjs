@@ -1,5 +1,5 @@
 import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader, Vector2d } from 'melonjs/dist/melonjs.module.js';
-import TitleText from './title-text';
+import TitleBackground from './title-back';
 import GlobalGameState from '../global-game-state';
 
 class TitleScreen extends Stage {
@@ -10,36 +10,18 @@ class TitleScreen extends Stage {
 		console.log("Title.OnEnter()");
 		// Reset GlobalGameState
 		GlobalGameState.reset();
-		GlobalGameState.currentLevel = 1;
+		//GlobalGameState.currentLevel = 0;
 		
-		// new sprite for the title screen, position at the center of the game viewport
-		let backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
-			image: loader.getImage("sensa_grass"),
-		});
-
-		// scale to fit with the viewport size
-		backgroundImage.scale(game.viewport.width / backgroundImage.width, game.viewport.height / backgroundImage.height);
-        backgroundImage.setOpacity(0.25);
-
-		let catLeftImage = new Sprite(5, game.viewport.height - 300, {
-			image: loader.getImage("grumpy_cat_right"),
-			anchorPoint: new Vector2d(0,0),
-		});
-		let catRightImage = new Sprite(game.viewport.width - 180, game.viewport.height - 300, {
-			image: loader.getImage("grumpy_cat_left"),
-			anchorPoint: new Vector2d(0, 0),
-		});
-
 
 		// there currently is a bug in melonjs where me.input.pointer is null if registerPointerEvent has not been called previously
 		// here we are just telling melonjs we want to use pointer events, and setting the callback to a noop
 		if (typeof input.pointer === "undefined") input.registerPointerEvent("pointerdown", null, null);
 
-		// add to the world container
-		game.world.addChild(backgroundImage, 1);
-		game.world.addChild(new TitleText(), 10);
-		game.world.addChild(catLeftImage, 5);
-		game.world.addChild(catRightImage, 5);
+
+		if( typeof this.background === "undefined") {
+			this.background = new TitleBackground();
+		}
+		game.world.addChild(this.background);
 
 		// change to play state on press Enter or click/tap
 		input.bindKey(input.KEY.ENTER, "enter", true);
@@ -49,10 +31,6 @@ class TitleScreen extends Stage {
 			if( !state.isCurrent( state.MENU )) return;
 			console.log("Title.EventHandler()");
 			if (action === "enter" || action === 'bomb') {
-				// play something on tap / enter
-				// this will unlock audio on mobile devices
-				console.log("NUMBER OF LEVELS: " + level.levelCount());
-                console.log("  Current Level: " + level.getCurrentLevelId());
 				state.change(state.READY);
 			}
 		});
