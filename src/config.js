@@ -1,5 +1,5 @@
 const CONFIG = {
-	environment: "prod", // change this on deployment
+	environment: "dev", // change this on deployment
 
 	appName: "{{applicationName}}",
 	appVersion: "{{applicationVersion}}",

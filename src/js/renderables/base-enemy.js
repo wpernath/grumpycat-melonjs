@@ -48,6 +48,13 @@ export class Queue {
 	}
 }
 
+const DIRS_NO_DIAGONAL = [
+			new Direction(-1, 0),
+			new Direction(0, -1),
+			new Direction(0, +1),
+			new Direction(+1, 0),
+];
+
 const DIRS = [
 			new Direction(-1, 0),
 			new Direction(0, -1),
@@ -74,6 +81,7 @@ export class BaseEnemySprite extends Sprite {
 	isDead = false;
 	isStunned = false;
 	enemyType = ENEMY_TYPES.cat;
+	enemyCanWalkDiagonally = true;
 
 	nextPosition = {
 		x: -1,
@@ -134,6 +142,13 @@ export class BaseEnemySprite extends Sprite {
 		let queue = new Queue();
 		let discovered = this.discoveredPlaces;
 
+		if( this.enemyCanWalkDiagonally ) {
+			dirs = DIRS;
+		}
+		else {
+			dirs = DIRS_NO_DIAGONAL;
+		}
+		
 		// prepare discovered places
 		for (let y = 0; y < this.mapHeight; y++) {
 			for (let x = 0; x < this.mapWidth; x++) {

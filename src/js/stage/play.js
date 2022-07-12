@@ -61,8 +61,8 @@ class PlayScreen extends Stage {
                                 // create a spider emitter, which emits up to X spiders every 
                                 // 10 seconds
                                 this.enemyEmitter.isActive = true;
-                                this.enemyEmitter.emitAt.x = x;
-                                this.enemyEmitter.emitAt.y = y;
+                                this.enemyEmitter.emitAt.x = x+1;
+                                this.enemyEmitter.emitAt.y = y+1;
                                 this.enemyEmitter.emitCount=l.enemyNumEmitting*10;
                                 this.enemyEmitter.emitEvery=l.enemyTimeEmitting;
                                 

@@ -28,6 +28,9 @@ export class SpiderEnemy extends BaseEnemySprite {
         this.addAnimation("die", [40, 41, 42, 43],100);
         this.addAnimation("dead", [43]);
 		this.setCurrentAnimation("stand-left");
+
+		// spiders can only walk up/down/left/right
+		this.enemyCanWalkDiagonally = false;
 	}
 
 	update(dt) {
