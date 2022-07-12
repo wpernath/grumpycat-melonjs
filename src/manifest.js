@@ -25,6 +25,18 @@ const DataManifest = [
 		src: "./data/fnt/PressStart2P.fnt",
 	},
 
+	/* Bitmap Text */
+	{
+		name: "ArialFancy",
+		type: "image",
+		src: "./data/fnt/arialfancy.png",
+	},
+	{
+		name: "ArialFancy",
+		type: "binary",
+		src: "./data/fnt/arialfancy.fnt",
+	},
+
 	{
 		name: "grumpy_cat_left",
 		type: "image",
