@@ -15,14 +15,16 @@ class ScoreItem extends Text {
 			size: FONT_SIZE,
 			fillStyle: "white",
 			strokeStyle: "black",
-			textAlign: "right",
+			textAlign: "left",
 			lineWidth: 2,
 			textBaseline: "top",
 			text: "Score: 999999",
-			//offScreenCanvas: true		 // this has impact on positioning
+			offScreenCanvas: true		 // this has impact on positioning
 		});
 
 		this.bold(true);
+		let width = this.measureText(renderer).width;
+		this.pos.x = game.viewport.width - width + x;
 		this.relative = new Vector2d(x, y);
 		this.score = -1;
 		event.on(
@@ -65,7 +67,7 @@ class EnergyItem extends Text {
 			lineWidth: 2,
 			textBaseline: "top",
 			text: "Energy: 999",
-			//offScreenCanvas: true		 // this has impact on positioning
+			offScreenCanvas: true		 // this has impact on positioning
 		});
 
 		this.bold(true);
@@ -111,7 +113,7 @@ class BombItem extends Text {
 			lineWidth: 2,
 			textBaseline: "top",
 			text: "Energy: 999",
-			//offScreenCanvas: true		 // this has impact on positioning
+			offScreenCanvas: true		 // this has impact on positioning
 		});
 		
 		this.bold(true);
