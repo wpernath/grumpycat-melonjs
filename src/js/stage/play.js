@@ -111,6 +111,7 @@ class PlayScreen extends Stage {
     }
 
     update(dt) {
+        
         if( this.enemyEmitter.isActive && this.enemyEmitter.emitEvery <=0 && this.enemyEmitter.emitCount >0) {
             // emit a new spider
             this.enemyEmitter.emitCount--;
@@ -120,6 +121,7 @@ class PlayScreen extends Stage {
             this.enemies.push(spider);
             game.world.addChild(spider);
             spider.setPlayer(this.player);
+            
         }
         
         this.enemyEmitter.emitEvery -= dt;

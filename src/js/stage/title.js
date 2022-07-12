@@ -1,6 +1,7 @@
 import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader, Vector2d } from 'melonjs/dist/melonjs.module.js';
 import TitleBackground from './title-back';
 import GlobalGameState from '../global-game-state';
+import TitleMenu from './title-menu';
 
 class TitleScreen extends Stage {
 	/**
@@ -20,9 +21,10 @@ class TitleScreen extends Stage {
 
 		if( typeof this.background === "undefined") {
 			this.background = new TitleBackground();
+			this.menu = new TitleMenu();
 		}
 		game.world.addChild(this.background);
-
+		game.world.addChild(this.menu);
 		// change to play state on press Enter or click/tap
 		input.bindKey(input.KEY.ENTER, "enter", true);
 		input.bindPointer(input.pointer.LEFT, input.KEY.ENTER);
@@ -41,6 +43,8 @@ class TitleScreen extends Stage {
 	 */
 	onDestroyEvent() {
 		console.log("Title.OnExit()");
+		game.world.removeChild(this.background);
+		game.world.removeChild(this.menu);
 		input.unbindKey(input.KEY.ENTER);
 		input.unbindPointer(input.pointer.LEFT);
 		event.off(event.KEYDOWN, this.handler);
