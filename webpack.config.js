@@ -7,7 +7,7 @@ require("@babel/register");
 
 module.exports = {
   entry: ['@babel/polyfill','./src/index.js'],
-  //target: 'web',
+  target: 'web',
   output: {
     path: __dirname + '/src/main/resources/META-INF/resources/generated/',
     filename: 'grumpycat.bundle.js',

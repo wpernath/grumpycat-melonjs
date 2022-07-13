@@ -51,7 +51,7 @@ class PlayerEntity extends Sprite {
 		this.body.setCollisionMask(collision.types.ENEMY_OBJECT);
 
         // set the display to follow our position on both axis
-        game.viewport.follow(this.pos, game.viewport.AXIS.BOTH, 0.4);
+        game.viewport.follow(this.pos, game.viewport.AXIS.BOTH, 0.1);
 
         // ensure the player is updated even when outside of the viewport
         this.alwaysUpdate = true;

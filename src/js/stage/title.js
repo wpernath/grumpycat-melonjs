@@ -3,22 +3,35 @@ import TitleBackground from './title-back';
 import GlobalGameState from '../global-game-state';
 import TitleMenu from './title-menu';
 
-class TitleScreen extends Stage {
+export default class TitleScreen extends Stage {
+
 	/**
 	 *  action to perform on state change
 	 */
 	onResetEvent() {
 		console.log("Title.OnEnter()");
+		
 		// Reset GlobalGameState
 		GlobalGameState.reset();
-		//GlobalGameState.currentLevel = 0;
 		
-		if( typeof this.background === "undefined") {
-			this.background = new TitleBackground();
-			this.menu = new TitleMenu();
-		}
+		this.background = new TitleBackground();
+		this.menu = new TitleMenu();
 		game.world.addChild(this.background);
 		game.world.addChild(this.menu);
+
+        this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
+			if (!state.isCurrent(state.MENU)) return;
+			if (action === "pause") {
+				if (!state.isPaused()) {
+					state.pause();
+				} else {
+					state.resume();
+				}
+			}
+			if (action === "bomb") {
+				state.change(state.READY);
+			}
+		});
 	}
 
 	/**
@@ -28,7 +41,7 @@ class TitleScreen extends Stage {
 		console.log("Title.OnExit()");
 		game.world.removeChild(this.background);
 		game.world.removeChild(this.menu);
+		event.off(event.KEYDOWN, this.handler);
+		
 	}
 }
-
-export default TitleScreen;
