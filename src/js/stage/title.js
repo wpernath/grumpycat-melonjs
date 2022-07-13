@@ -13,12 +13,6 @@ class TitleScreen extends Stage {
 		GlobalGameState.reset();
 		//GlobalGameState.currentLevel = 0;
 		
-
-		// there currently is a bug in melonjs where me.input.pointer is null if registerPointerEvent has not been called previously
-		// here we are just telling melonjs we want to use pointer events, and setting the callback to a noop
-		if (typeof input.pointer === "undefined") input.registerPointerEvent("pointerdown", null, null);
-
-
 		if( typeof this.background === "undefined") {
 			this.background = new TitleBackground();
 			this.menu = new TitleMenu();

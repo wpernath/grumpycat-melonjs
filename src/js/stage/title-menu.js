@@ -11,7 +11,7 @@ class BaseTextButton extends Renderable {
 		settings.backgroundColor = settings.backgroundColor || "#00aa00";
 		settings.hoverColor = settings.hoverColor || "#00ff00";
 		settings.borderStrokeColor = settings.borderStrokeColor || '#000000';
-		settings.offScreenCanvas = settings.offScreenCanvas || false;
+		settings.offScreenCanvas = settings.offScreenCanvas || true;
 		settings.fillStyle = settings.fillStyle || "#ffffff";
 		settings.lineWidth = settings.lineWidth || 1;
 		settings.anchorPoint = settings.anchorPoint || new Vector2d(0,0);		
@@ -37,9 +37,9 @@ class BaseTextButton extends Renderable {
 		);
 		
 		
-		console.log("Font:   " + this.font.pos.x + "/" + this.font.pos.y);
-		console.log("Border: " + JSON.stringify(this.border.getBounds()));
-		console.log("Renderable: " + this.pos.x + " / " + this.pos.y);
+		//console.log("Font:   " + this.font.pos.x + "/" + this.font.pos.y);
+		//console.log("Border: " + JSON.stringify(this.border.getBounds()));
+		//console.log("Renderable: " + this.pos.x + " / " + this.pos.y);
 		/**
 		 * object can be clicked or not
 		 * @public

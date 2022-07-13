@@ -94,10 +94,6 @@ device.onReady(() => {
             input.bindKey(input.KEY.ESC, "exit", true);
 			//input.bindKey()
 
-			// Start the game.
-            joypad = new VirtualJoypad();
-			game.world.addChild(joypad);
-
-			state.change(state.MENU);
+            state.change(state.MENU);
 		});
 });

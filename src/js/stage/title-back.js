@@ -36,7 +36,7 @@ class TextScroller extends BitmapText {
 
 export default class TitleBackground extends Container {
     constructor() {
-			super();
+			super(0, 0, game.viewport.width, game.viewport.height);
 
 			// persistent across level change
 			this.isPersistent = true;
@@ -83,7 +83,7 @@ export default class TitleBackground extends Container {
 					fillStyle: "white",
 					text: "Quarkus GrumpyCat",
 					textAlign: "center",
-					offScreenCanvas: true,
+					offScreenCanvas: false,
 				})
 			);
 
@@ -94,7 +94,7 @@ export default class TitleBackground extends Container {
 					fillStyle: "white",
 					textAlign: "center",
 					text: "A MelonJS client. Written by Wanja Pernath",
-					offScreenCanvas: true,
+					offScreenCanvas: false,
 				})
 			);
 
