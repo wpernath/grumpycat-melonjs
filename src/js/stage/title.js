@@ -25,17 +25,6 @@ class TitleScreen extends Stage {
 		}
 		game.world.addChild(this.background);
 		game.world.addChild(this.menu);
-		// change to play state on press Enter or click/tap
-		input.bindKey(input.KEY.ENTER, "enter", true);
-		input.bindPointer(input.pointer.LEFT, input.KEY.ENTER);
-
-		this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
-			if( !state.isCurrent( state.MENU )) return;
-			console.log("Title.EventHandler()");
-			if (action === "enter" || action === 'bomb') {
-				state.change(state.READY);
-			}
-		});
 	}
 
 	/**
@@ -45,9 +34,6 @@ class TitleScreen extends Stage {
 		console.log("Title.OnExit()");
 		game.world.removeChild(this.background);
 		game.world.removeChild(this.menu);
-		input.unbindKey(input.KEY.ENTER);
-		input.unbindPointer(input.pointer.LEFT);
-		event.off(event.KEYDOWN, this.handler);
 	}
 }
 

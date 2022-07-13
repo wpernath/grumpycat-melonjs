@@ -1,25 +1,45 @@
-import { BitmapText, input, timer, game, Container, Vector2d, Text, RoundRect, state } from "melonjs/dist/melonjs.module.js";
+import { BitmapText, input, timer, game, Renderable,Container, Vector2d, Text, RoundRect, state, Rect } from "melonjs/dist/melonjs.module.js";
 import GlobalGameState from "../global-game-state";
 
-class BaseTextButton extends Text {
-	constructor(x, y, settings) {
+class BaseTextButton extends Renderable {
+	
+	constructor(x, y, settings) {				
 		settings.font = settings.font || "Arial";
 		settings.size = settings.size || 12;
-		settings.text = settings.text || "Press me";
-		settings.offScreenCanvas = settings.offScreenCanvas || true;
-		settings.fillStyle = settings.fillStyle || "white";
-		settings.lineWidth = settings.lineWidth || 2;
+		settings.text = settings.text || "<Click Me>";
+		settings.bindKey = settings.bindKey || -1;
+		settings.backgroundColor = settings.backgroundColor || "#00aa00";
+		settings.hoverColor = settings.hoverColor || "#00ff00";
+		settings.borderStrokeColor = settings.borderStrokeColor || '#000000';
+		settings.offScreenCanvas = settings.offScreenCanvas || false;
+		settings.fillStyle = settings.fillStyle || "#ffffff";
+		settings.lineWidth = settings.lineWidth || 1;
+		settings.anchorPoint = settings.anchorPoint || new Vector2d(0,0);		
 
-		super(x, y, settings);
+		let font = new Text(x, y, settings);
+		let dimensions = font.measureText();
+		settings.borderWidth = settings.borderWidth || dimensions.width + 16;
+		settings.borderHeight = settings.borderHeight || dimensions.height + 16;
 
-		this.dimensions = this.measureText();
-		settings.borderWidth = settings.borderWidth || this.dimensions.width + 16;
-		settings.borderHeight = settings.borderHeight || this.dimensions.height + 16;
+		let border = new RoundRect(x, y, settings.borderWidth, settings.borderHeight);
+		super(x, y, border.getBounds().width, border.getBounds().height);
 
-		this.border = new RoundRect(this.pos.x - 8, this.pos.y - 8, settings.borderWidth, settings.borderHeight);
+		// build up
+		this.font = font;
+		this.dimensions = dimensions;
+		this.border = border;
+		this.settings = settings;
 
-		this.pos.x = (this.border.width - this.dimensions.width) / 2 + this.pos.x;
-
+		// adjust text position
+		this.font.pos.set(
+			Math.round((border.width - dimensions.width) / 2) + this.font.pos.x,
+			Math.round((border.height - dimensions.height) / 2) + this.font.pos.y
+		);
+		
+		
+		console.log("Font:   " + this.font.pos.x + "/" + this.font.pos.y);
+		console.log("Border: " + JSON.stringify(this.border.getBounds()));
+		console.log("Renderable: " + this.pos.x + " / " + this.pos.y);
 		/**
 		 * object can be clicked or not
 		 * @public
@@ -63,23 +83,23 @@ class BaseTextButton extends Text {
 		this.floating = true;
 
 		// enable event detection
-		this.isKinematic = false;
+		this.isKinematic = false;		
 	}
 
 	draw(renderer) {
 		renderer.setGlobalAlpha(0.5);
 		if( !this.hover ) {
-			renderer.setColor("#00aa00");
+			renderer.setColor(this.settings.backgroundColor);
 		}
 		else {
-			renderer.setColor("#00ff00");
+			renderer.setColor(this.settings.hoverColor);
 		}
 
 		renderer.fill(this.border);
 		renderer.setGlobalAlpha(1);
-		renderer.setColor("#000000");
-		renderer.stroke(this.border);
-		super.draw(renderer);
+		renderer.setColor(this.settings.borderStrokeColor);
+		renderer.stroke(this.border);		
+		this.font.draw(renderer, this.settings.text);
 	}
 
 	/**
@@ -224,7 +244,7 @@ class BaseTextButton extends Text {
 	 */
 	onDeactivateEvent() {
 		// release pointer events
-		input.releasePointerEvent("pointerdown", this);
+		input.releasePointerEvent("pointerdown", this.hitbox);
 		input.releasePointerEvent("pointerup", this);
 		input.releasePointerEvent("pointercancel", this);
 		input.releasePointerEvent("pointerenter", this);
@@ -278,7 +298,7 @@ class HighscoreButton extends BaseTextButton {
 
 export default class TitleMenu extends Container {
 	constructor() {
-		super();
+		super(0, 0, game.viewport.width, game.viewport.height);
 
 		// persistent across level change
 		this.isPersistent = true;
@@ -294,8 +314,11 @@ export default class TitleMenu extends Container {
 		// give a name
 		this.name = "TitleMenu";
 
-		this.addChild(new PlayButton((1024 - 250) / 2, 300));
-		this.addChild(new ReplayButton((1024 - 250) / 2, 360));
-		this.addChild(new HighscoreButton((1024 - 250) / 2, 420));
+		let center = Math.round((game.viewport.width - 250) / 2);
+		this.addChild(new PlayButton(center, 300));
+		this.addChild(new ReplayButton(center, 360));
+		this.addChild(new HighscoreButton(center, 420));
+		console.log("requested pos = " + center);
+		console.log("viewport: " + game.viewport.width);
 	}
 }
