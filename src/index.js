@@ -18,7 +18,7 @@ import TitleScreen from 'js/stage/title.js';
 import PlayScreen from 'js/stage/play.js';
 import GetReadyScreen from './js/stage/get-ready';
 import GameOverScreen from './js/stage/game-over';
-import VirtualJoypad from './js/stage/hud/virtual-joypad';
+import HighscoreScreen from './js/stage/highscores';
 
 import PlayerEntity from 'js/renderables/player.js';
 import CatEnemy from "js/renderables/cat-enemy.js";
@@ -29,12 +29,17 @@ import DataManifest from 'manifest.js';
 import CONFIG from 'config.js';
 import GlobalGameState from './js/global-game-state';
 
-let joypad;
 device.onReady(() => {
 
     // initialize the display canvas once the device/browser is ready
     //video.
-    if (!video.init(1024, 768, { parent: "screen", scaleMethod: "fit", renderer: video.AUTO, subPixel: false, doubleBuffering: true })) {
+    if (!video.init(1024, 768, { 
+        parent: "screen", 
+        scaleMethod: "fit", 
+        renderer: video.AUTO, 
+        subPixel: false, 
+        doubleBuffering: true 
+    })) {
 		alert("Your browser does not support HTML5 canvas.");
 		return;
 	}
@@ -60,6 +65,11 @@ device.onReady(() => {
     
     loader.setBaseURL("tmx", baseURL);
 
+    // API: read 10 highest scores
+    GlobalGameState.readHighscoreURL = baseURL + "highscore/10";
+    GlobalGameState.writeScoreURL = baseURL + "highscore";
+    GlobalGameState.createGameURL = baseURL + "game";
+
     loader.crossOrigin = "anonymous";
 
     // set and load all resources.
@@ -72,6 +82,7 @@ device.onReady(() => {
 			state.set(state.PLAY, new PlayScreen());
 			state.set(state.READY, new GetReadyScreen());
 			state.set(state.GAMEOVER, new GameOverScreen());
+            state.set(state.SCORE, new HighscoreScreen());
 
             // set the fade transition effect
 			state.transition("fade", "#000000", 500);
@@ -92,6 +103,7 @@ device.onReady(() => {
 			input.bindKey(input.KEY.DOWN, "down");
 			input.bindKey(input.KEY.SPACE, "bomb", true);
             input.bindKey(input.KEY.ESC, "exit", true);
+            input.bindKey(input.KEY.F, "fullscreen", true);
 			//input.bindKey()
 
             state.change(state.MENU);

@@ -1,9 +1,10 @@
 import { BitmapText, input, timer, game, Renderable,Container, Vector2d, Text, RoundRect, state, Rect } from "melonjs/dist/melonjs.module.js";
 import GlobalGameState from "../global-game-state";
 
-class BaseTextButton extends Renderable {
+class BaseTextButton extends Container {
 	
-	constructor(x, y, settings) {				
+	constructor(x, y, settings) {	
+		super(x,y);			
 		settings.font = settings.font || "Arial";
 		settings.size = settings.size || 12;
 		settings.text = settings.text || "<Click Me>";
@@ -11,7 +12,7 @@ class BaseTextButton extends Renderable {
 		settings.backgroundColor = settings.backgroundColor || "#00aa00";
 		settings.hoverColor = settings.hoverColor || "#00ff00";
 		settings.borderStrokeColor = settings.borderStrokeColor || '#000000';
-		settings.offScreenCanvas = settings.offScreenCanvas || true;
+		settings.offScreenCanvas = settings.offScreenCanvas || false;
 		settings.fillStyle = settings.fillStyle || "#ffffff";
 		settings.lineWidth = settings.lineWidth || 1;
 		settings.anchorPoint = settings.anchorPoint || new Vector2d(0,0);		
@@ -22,7 +23,8 @@ class BaseTextButton extends Renderable {
 		settings.borderHeight = settings.borderHeight || dimensions.height + 16;
 
 		let border = new RoundRect(x, y, settings.borderWidth, settings.borderHeight);
-		super(x, y, border.getBounds().width, border.getBounds().height);
+		super.setShape(x, y, border.getBounds().width, border.getBounds().height);
+
 
 		// build up
 		this.font = font;
@@ -298,7 +300,7 @@ class HighscoreButton extends BaseTextButton {
 
 export default class TitleMenu extends Container {
 	constructor() {
-		super(0, 0, game.viewport.width, game.viewport.height);
+		super(0, 0);
 
 		// persistent across level change
 		this.isPersistent = true;

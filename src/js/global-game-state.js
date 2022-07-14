@@ -1,6 +1,14 @@
 
 
 const GlobalGameState = {
+	// server settings
+	readHighscoreURL: null,
+	createGameURL: null,
+	writeScoreURL: null,
+	writePlayerMovementURL: null,
+	readPlayerMovementsURL: null,
+
+
 	// engine state
 	screenControlsTexture: null,
 	currentLevel: 0,

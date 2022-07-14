@@ -1,4 +1,4 @@
-import { Container, Sprite, Text, game, loader, Vector2d, BitmapText, Tween } from "melonjs";
+import { Container, Sprite, Text, game, loader, Vector2d, BitmapText, Tween } from "melonjs/dist/melonjs.module.js";
 
 
 class TextScroller extends BitmapText {
@@ -76,21 +76,18 @@ export default class TitleBackground extends Container {
 				anchorPoint: new Vector2d(0, 0),
 			});
 
-			this.titleText = new Text(game.viewport.width / 2 - 200, 20, {
-				font: "Arial",
-				size: "56",
-				fillStyle: "white",
-				text: "Quarkus GrumpyCat",
-				textAlign: "left",
-				offScreenCanvas: false,
+			this.titleText = new Sprite(86, 0, {
+				image: loader.getImage("title"),
+				anchorPoint: new Vector2d(0,0)
 			});
+			
 
-			this.subTitleText = new Text(game.viewport.width / 2 - 100, 80, {
+			this.subTitleText = new Text(126, 170, {
 				font: "Arial",
-				size: "16",
+				size: "12",
 				fillStyle: "white",
 				textAlign: "left",
-				text: "A MelonJS client. Written by Wanja Pernath",
+				text: "A JavaScript / melonJS client. Written by Wanja Pernath",
 				offScreenCanvas: false,
 			});
 		}
@@ -99,9 +96,9 @@ export default class TitleBackground extends Container {
 		this.addChild(this.backgroundImage, 0);
 		this.addChild(this.catLeftImage, 5);
 		this.addChild(this.catRightImage, 5);
-		this.addChild(this.titleText);
+		this.addChild(this.titleText,2);
 
-		this.addChild(this.subTitleText);
+		this.addChild(this.subTitleText,5 );
 
 		this.addChild( new TextScroller(
 			"QUARKUS GRUMPYCAT. A GAME WRITTEN BY WANJA PERNATH, INSPIRED BY FAT CAT AND PAC MAN. THIS GAME IS USING A QUARKUS BACKEND TO LOAD AND STORE DATA FROM/TO A SERVER................................"

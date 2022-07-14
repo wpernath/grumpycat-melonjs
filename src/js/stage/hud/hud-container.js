@@ -20,7 +20,7 @@ class ScoreItem extends Text {
 			lineWidth: 2,
 			textBaseline: "top",
 			text: "Score: 999999",
-			offScreenCanvas: false		 // this has impact on positioning
+			offScreenCanvas: true		 // this has impact on positioning
 		});
 
 		this.bold(true);

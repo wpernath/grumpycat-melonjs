@@ -1,4 +1,4 @@
-import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader, Vector2d } from 'melonjs/dist/melonjs.module.js';
+import { Stage, game, device, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader, Vector2d, video} from 'melonjs/dist/melonjs.module.js';
 import TitleBackground from './title-back';
 import GlobalGameState from '../global-game-state';
 import TitleMenu from './title-menu';
@@ -30,6 +30,14 @@ export default class TitleScreen extends Stage {
 			}
 			if (action === "bomb") {
 				state.change(state.READY);
+			}
+			if( action === 'fullscreen') {
+				if( !device.isFullscreen ) {
+					device.requestFullscreen();
+				}
+				else {
+					device.exitFullscreen();
+				}
 			}
 		});
 	}

@@ -50,6 +50,10 @@ const DataManifest = [
 	},
 
 	{
+		name: "title", type: "image", src: "./data/img/GrumpyCat-Title.png"
+	},
+
+	{
 		name: "bombs",
 		type: "image",
 		src: "./data/img/BombExploding.png",

@@ -1,4 +1,4 @@
-import { GUI_Object, Sprite, game, input, Vector2d, Container, event, device, plugins } from "melonjs";
+import { GUI_Object, Sprite, game, input, Vector2d, Container, event, device, plugins } from "melonjs/dist/melonjs.module.js";
 import GlobalGameState from "../../global-game-state";
 /**
  * a basic control to toggle fullscreen on/off
@@ -31,6 +31,39 @@ class ActionButton extends GUI_Object {
 	onRelease(event) {
 		this.setOpacity(0.25);
 		input.triggerKeyEvent(input.KEY.SPACE, false);
+		return false;
+	}
+}
+
+class FullScreenButton extends GUI_Object {
+	/**
+	 * constructor
+	 */
+	constructor(x, y) {
+		super(x, y, {
+			image: GlobalGameState.screenControlsTexture,
+			region: "shadedDark30",
+		});
+		this.setOpacity(0.25);
+		this.anchorPoint.set(0, 0);
+	}
+
+	/**
+	 * function called when the object is clicked on
+	 */
+	onClick(event) {
+		this.setOpacity(0.5);
+		input.triggerKeyEvent(input.KEY.F, true);
+		input.triggerKeyEvent(input.KEY.F, false);
+		return false;
+	}
+
+	/**
+	 * function called when the object is clicked on
+	 */
+	onRelease(event) {
+		this.setOpacity(0.25);
+		input.triggerKeyEvent(input.KEY.F, false);
 		return false;
 	}
 }
@@ -349,28 +382,34 @@ class VirtualJoypad extends Container {
 		this.name = "VirtualJoypad";
 
 		// instance of the buttons
-		this.actionButton = new ActionButton(game.viewport.width - 200, game.viewport.height - 150);
-		this.otherButton = new OtherButton(game.viewport.width - 120, game.viewport.height - 200);
 		this.pauseButton = new PauseButton(20, 24);
 		this.exitButton = new ExitButton(game.viewport.width - 48 - 20, 24);
 
 		// instance of the virtual joypad
-		if( device.touch || (plugins.debugPanel && plugins.debugPanel.panel.visible)) {
+		if( device.isMobile) {
+			this.actionButton = new ActionButton(game.viewport.width - 200, game.viewport.height - 150);
+			this.otherButton = new OtherButton(game.viewport.width - 120, game.viewport.height - 200);
 			this.joypad = new Joypad(50, game.viewport.height - 200);
 			this.addChild(this.joypad);
+			this.addChild(this.actionButton);
+			this.addChild(this.otherButton);
+		}
+		if( !device.isMobile) {
+			this.fullScreenButton = new FullScreenButton(90, 24);
+			this.addChild(this.fullScreenButton);
 		}
 
-		this.addChild(this.actionButton);
-		this.addChild(this.otherButton);
 		this.addChild(this.pauseButton);
-		this.addChild(this.exitButton);
+		this.addChild(this.exitButton);		
 
 		// re-position the button in case of
 		// size/orientation change
 		let self = this;
 		event.on(event.VIEWPORT_ONRESIZE, function (width, height) {
-			self.actionButton.pos.set(width - 200, height - 150, self.button.pos.z);
-			self.otherButton.pos.set(width - 120, height - 200, self.button.pos.z);
+			if( device.isMobile) {
+				self.actionButton.pos.set(width - 200, height - 150, self.button.pos.z);
+				self.otherButton.pos.set(width - 120, height - 200, self.button.pos.z);
+			}
 			self.exitButton.pos.set(width - 48 - 20, 24, self.button.pos.z);
 		});
 	}

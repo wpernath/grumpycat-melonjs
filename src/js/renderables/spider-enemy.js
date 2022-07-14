@@ -1,4 +1,4 @@
-import { collision } from "melonjs";
+import { collision } from "melonjs/dist/melonjs.module.js";
 import { BaseEnemySprite, ENEMY_TYPES } from "./base-enemy";
 import GlobalGameState from "../global-game-state";
 

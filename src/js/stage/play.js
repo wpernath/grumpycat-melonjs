@@ -1,4 +1,4 @@
-import { Stage, game, level, event, state } from 'melonjs/dist/melonjs.module.js';
+import { Stage, game, level, event, state,device } from 'melonjs/dist/melonjs.module.js';
 import CatEnemy from '../renderables/cat-enemy.js';
 import { SpiderEnemy } from '../renderables/spider-enemy.js';
 import PlayerEntity from "../renderables/player.js";
@@ -35,16 +35,13 @@ class PlayScreen extends Stage {
 
         this.setupLevel();
 
-        if( this.hudContainer == null ) {
-            this.hudContainer = new HUDContainer(0,0);
-            this.virtualJoypad = new VirtualJoypad();
-        }
+        this.hudContainer = new HUDContainer(0,0);
+        this.virtualJoypad = new VirtualJoypad();
         game.world.addChild(this.hudContainer);
         game.world.addChild(this.virtualJoypad);
 
         this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
-            if (!state.isCurrent(state.PLAY)) return;
-            //console.log("Play.EventHandler(" + action + ", " + keyCode + ", " + edge + ")");
+            if (!state.isCurrent(state.PLAY)) return;            
             if (action === "pause") {
                 if( !state.isPaused() ) {
                     state.pause();
@@ -56,6 +53,14 @@ class PlayScreen extends Stage {
             if( action === "exit") {
                 state.change(state.MENU);
             }
+			if (action === "fullscreen") {
+                console.log("requesting full screen");
+				if (!device.isFullscreen) {
+					device.requestFullscreen();
+				} else {
+					device.exitFullscreen();
+				}
+			}
         });
 
     }
