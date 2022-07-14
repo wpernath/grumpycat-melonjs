@@ -3,6 +3,7 @@ import BombEntity from './bomb';
 import ExplosionEntity from './explosion';
 import GlobalGameState from '../global-game-state';
 import { ENEMY_TYPES } from './base-enemy';
+import CONFIG from '../../config';
 
 const BARRIER_TILE = {
     light : 182,
@@ -193,10 +194,29 @@ class PlayerEntity extends Sprite {
                         // level won! next level
         		      	GlobalGameState.currentLevel++;
 
-						if (GlobalGameState.currentLevel >= GlobalGameState.levels.length) {
-							GlobalGameState.currentLevel = 0;
-						}
-                        state.change(state.READY);
+                        // store another entry in Hightscores
+                        let score = {
+                            playerId: GlobalGameState.globalServerGame.player.id,
+                            gameId: GlobalGameState.globalServerGame.id,
+                            score: GlobalGameState.score,
+                            level: GlobalGameState.currentLevel,
+                            name: GlobalGameState.globalServerGame.player.name
+                        }
+
+                        fetch(CONFIG.writeScoreURL, {
+                            method: "POST",
+                            mode: "cors",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(score),
+                        }).then(function() {
+                            if (GlobalGameState.currentLevel >= GlobalGameState.levels.length) {
+                                GlobalGameState.currentLevel = 0;
+                            }
+                            state.change(state.READY);
+                        });
+
                     }
                 }
 

@@ -320,7 +320,5 @@ export default class TitleMenu extends Container {
 		this.addChild(new PlayButton(center, 300));
 		this.addChild(new ReplayButton(center, 360));
 		this.addChild(new HighscoreButton(center, 420));
-		console.log("requested pos = " + center);
-		console.log("viewport: " + game.viewport.width);
 	}
 }

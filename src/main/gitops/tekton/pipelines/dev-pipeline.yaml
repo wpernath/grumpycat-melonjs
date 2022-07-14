@@ -60,27 +60,6 @@ spec:
       workspaces:
         - name: output
           workspace: source
-    - name: package
-      params:
-        - name: GOALS
-          value:
-            - package
-            - '-DskipTests'
-            - '-Dquarkus.container-image.build=false'
-            - '-Dquarkus.container-image.push=false'
-        - name: CONTEXT_DIR
-          value: the-source/$(params.git-context)
-      runAfter:
-        - clone-source
-        - clone-config
-      taskRef:
-        kind: Task
-        name: maven-caching
-      workspaces:
-        - name: source
-          workspace: source
-        - name: maven-settings
-          workspace: maven-settings
     - name: build-image
       params:
         - name: GOALS
