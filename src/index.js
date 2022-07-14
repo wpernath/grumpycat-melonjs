@@ -29,6 +29,39 @@ import DataManifest from 'manifest.js';
 import CONFIG from 'config.js';
 import GlobalGameState from './js/global-game-state';
 
+
+async function createGameOnServer() {
+	let resp = await fetch(CONFIG.fakeNameURL);
+	let name = await resp.text();
+    console.log("name: " + name);
+
+    resp = await fetch(CONFIG.createGameURL + "/version");
+    GlobalGameState.globalServerVersion = await resp.json();
+
+	let req = {
+		name: name,
+		level: "0",
+		player: {
+			name: name,
+		},
+	};
+
+    req = JSON.stringify(req);
+    console.log(req);
+	resp = await fetch(CONFIG.createGameURL, {
+		method: "POST",
+		mode: "cors",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: req,
+	});
+
+	GlobalGameState.globalServerGame = await resp.json();
+    console.log( "   Server API: " + JSON.stringify(GlobalGameState.globalServerVersion));
+    console.log( "   New game  : " + JSON.stringify(GlobalGameState.globalServerGame));
+}
+
 device.onReady(() => {
 
     // initialize the display canvas once the device/browser is ready
@@ -64,48 +97,55 @@ device.onReady(() => {
 		else if (environment === "prod") baseURL = CONFIG.prod.baseURL;
     
     loader.setBaseURL("tmx", baseURL);
+    CONFIG.baseURL = baseURL;
 
     // API: read 10 highest scores
-    GlobalGameState.readHighscoreURL = baseURL + "highscore/10";
-    GlobalGameState.writeScoreURL = baseURL + "highscore";
-    GlobalGameState.createGameURL = baseURL + "game";
+    CONFIG.readHighscoreURL = baseURL + "highscore/10";
+    CONFIG.writeScoreURL = baseURL + "highscore";
+    CONFIG.createGameURL = baseURL + "game";
+    CONFIG.fakeNameURL = baseURL + "faker";
 
     loader.crossOrigin = "anonymous";
 
     // set and load all resources.
     loader.preload(DataManifest, function() {
 
-            GlobalGameState.screenControlsTexture = new TextureAtlas(loader.getJSON("screen-controls"), loader.getImage("screen-controls"));
+        GlobalGameState.screenControlsTexture = new TextureAtlas(loader.getJSON("screen-controls"), loader.getImage("screen-controls"));
 
-			// set the user defined game stages
-			state.set(state.MENU, new TitleScreen());
-			state.set(state.PLAY, new PlayScreen());
-			state.set(state.READY, new GetReadyScreen());
-			state.set(state.GAMEOVER, new GameOverScreen());
-            state.set(state.SCORE, new HighscoreScreen());
+        // set the user defined game stages
+        state.set(state.MENU, new TitleScreen());
+        state.set(state.PLAY, new PlayScreen());
+        state.set(state.READY, new GetReadyScreen());
+        state.set(state.GAMEOVER, new GameOverScreen());
+        state.set(state.SCORE, new HighscoreScreen());
 
-            // set the fade transition effect
-			state.transition("fade", "#000000", 500);
+        // set the fade transition effect
+        state.transition("fade", "#000000", 500);
 
-			// add our player entity in the entity pool
-			pool.register("player", PlayerEntity, true);
-			pool.register("enemy", CatEnemy, false);
-			pool.register("bomb", BombEntity, true);
-			pool.register("spider", SpiderEnemy, true);
+        // add our player entity in the entity pool
+        pool.register("player", PlayerEntity, true);
+        pool.register("enemy", CatEnemy, false);
+        pool.register("bomb", BombEntity, true);
+        pool.register("spider", SpiderEnemy, true);
 
-			// bind keys
-			input.bindKey(input.KEY.SHIFT, "barrier");
-			input.bindKey(input.KEY.LEFT, "left");
-			input.bindKey(input.KEY.RIGHT, "right");
-			input.bindKey(input.KEY.UP, "up");
-			input.bindKey(input.KEY.E, "explode", true);
-            input.bindKey(input.KEY.P, "pause", true);
-			input.bindKey(input.KEY.DOWN, "down");
-			input.bindKey(input.KEY.SPACE, "bomb", true);
-            input.bindKey(input.KEY.ESC, "exit", true);
-            input.bindKey(input.KEY.F, "fullscreen", true);
-			//input.bindKey()
-
-            state.change(state.MENU);
-		});
+        // bind keys
+        input.bindKey(input.KEY.SHIFT, "barrier");
+        input.bindKey(input.KEY.LEFT, "left");
+        input.bindKey(input.KEY.RIGHT, "right");
+        input.bindKey(input.KEY.UP, "up");
+        input.bindKey(input.KEY.E, "explode", true);
+        input.bindKey(input.KEY.P, "pause", true);
+        input.bindKey(input.KEY.DOWN, "down");
+        input.bindKey(input.KEY.SPACE, "bomb", true);
+        input.bindKey(input.KEY.ESC, "exit", true);
+        input.bindKey(input.KEY.F, "fullscreen", true);
+			
+        createGameOnServer()
+            .then(function() {
+                state.change(state.MENU);
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
+    });
 });

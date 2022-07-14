@@ -1,4 +1,6 @@
 import { Container, Sprite, Text, game, loader, Vector2d, BitmapText, Tween } from "melonjs/dist/melonjs.module.js";
+import CONFIG from "../../config";
+import GlobalGameState from "../global-game-state";
 
 
 class TextScroller extends BitmapText {
@@ -37,8 +39,7 @@ class TextScroller extends BitmapText {
 }
 
 export default class TitleBackground extends Container {
-	backgroundImage = null;
-
+	
     constructor() {
 		super();
 
@@ -58,39 +59,46 @@ export default class TitleBackground extends Container {
 
 		// a tween to animate the text
 		// new sprite for the title screen, position at the center of the game viewport
-		if( this.backgroundImage === null ) {
-			this.backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
-				image: loader.getImage("sensa_grass"),
-			});
+		this.backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
+			image: loader.getImage("sensa_grass"),
+		});
 
-			// scale to fit with the viewport size
-			this.backgroundImage.scale(game.viewport.width / this.backgroundImage.width, game.viewport.height / this.backgroundImage.height);
-			this.backgroundImage.setOpacity(0.3);
+		// scale to fit with the viewport size
+		this.backgroundImage.scale(game.viewport.width / this.backgroundImage.width, game.viewport.height / this.backgroundImage.height);
+		this.backgroundImage.setOpacity(0.3);
 
-			this.catLeftImage = new Sprite(5, game.viewport.height - 300, {
-				image: loader.getImage("grumpy_cat_right"),
-				anchorPoint: new Vector2d(0, 0),
-			});
-			this.catRightImage = new Sprite(game.viewport.width - 180, game.viewport.height - 300, {
-				image: loader.getImage("grumpy_cat_left"),
-				anchorPoint: new Vector2d(0, 0),
-			});
+		this.catLeftImage = new Sprite(5, game.viewport.height - 300, {
+			image: loader.getImage("grumpy_cat_right"),
+			anchorPoint: new Vector2d(0, 0),
+		});
+		this.catRightImage = new Sprite(game.viewport.width - 180, game.viewport.height - 300, {
+			image: loader.getImage("grumpy_cat_left"),
+			anchorPoint: new Vector2d(0, 0),
+		});
 
-			this.titleText = new Sprite(86, 0, {
-				image: loader.getImage("title"),
-				anchorPoint: new Vector2d(0,0)
-			});
-			
+		this.titleText = new Sprite(86, 0, {
+			image: loader.getImage("title"),
+			anchorPoint: new Vector2d(0,0)
+		});
+		
 
-			this.subTitleText = new Text(126, 170, {
-				font: "Arial",
-				size: "12",
-				fillStyle: "white",
-				textAlign: "left",
-				text: "A JavaScript / melonJS client. Written by Wanja Pernath",
-				offScreenCanvas: false,
-			});
-		}
+		this.subTitleText = new Text(126, 170, {
+			font: "Arial",
+			size: "12",
+			fillStyle: "white",
+			textAlign: "left",
+			text: "A JavaScript / melonJS client. Written by Wanja Pernath",
+			offScreenCanvas: false,
+		});
+
+		this.subVersionText = new Text(126, 186, {
+			font: "Arial",
+			size: "12",
+			fillStyle: "white",
+			textAlign: "left",
+			text: "Server API: " + GlobalGameState.globalServerVersion.appName + "@" + GlobalGameState.globalServerVersion.appVersion + " at " + CONFIG.baseURL,
+			offScreenCanvas: false,
+		});
 
 		// add to the world container
 		this.addChild(this.backgroundImage, 0);
@@ -99,6 +107,7 @@ export default class TitleBackground extends Container {
 		this.addChild(this.titleText,2);
 
 		this.addChild(this.subTitleText,5 );
+		this.addChild(this.subVersionText, 5);
 
 		this.addChild( new TextScroller(
 			"QUARKUS GRUMPYCAT. A GAME WRITTEN BY WANJA PERNATH, INSPIRED BY FAT CAT AND PAC MAN. THIS GAME IS USING A QUARKUS BACKEND TO LOAD AND STORE DATA FROM/TO A SERVER................................"

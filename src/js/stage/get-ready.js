@@ -1,29 +1,78 @@
-import { Stage, game, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader } from "melonjs/dist/melonjs.module.js";
-import GetReadyText from "./getready-text";
+import { Container, Sprite, Text, game, loader, Vector2d, BitmapText, Stage, input,event, state } from "melonjs/dist/melonjs.module.js";
+import CONFIG from "../../config";
 import GlobalGameState from "../global-game-state";
 
-class GetReadyScreen extends Stage {
+
+class GetReadyBack extends Container {
+	constructor() {
+		super();
+
+		// persistent across level change
+		this.isPersistent = true;
+
+		// make sure we use screen coordinates
+		this.floating = true;
+
+		// always on toppest
+		this.z = 10;
+
+		this.setOpacity(1.0);
+
+		// give a name
+		this.name = "TitleBack";
+
+		// a tween to animate the text
+		// new sprite for the title screen, position at the center of the game viewport
+		this.backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
+			image: loader.getImage("sensa_grass"),
+		});
+
+		// scale to fit with the viewport size
+		this.backgroundImage.scale(game.viewport.width / this.backgroundImage.width, game.viewport.height / this.backgroundImage.height);
+		this.backgroundImage.setOpacity(0.3);
+
+		this.catLeftImage = new Sprite(5, game.viewport.height - 300, {
+			image: loader.getImage("grumpy_cat_right"),
+			anchorPoint: new Vector2d(0, 0),
+		});
+		this.catRightImage = new Sprite(game.viewport.width - 180, game.viewport.height - 300, {
+			image: loader.getImage("grumpy_cat_left"),
+			anchorPoint: new Vector2d(0, 0),
+		});
+
+		this.titleText = new Sprite(86, 0, {
+			image: loader.getImage("title"),
+			anchorPoint: new Vector2d(0, 0),
+		});
+
+		this.subTitleText = new Text(126, 170, {
+			font: "Arial",
+			size: "20",
+			fillStyle: "white",
+			textAlign: "left",
+			text: "GET READY NOW",
+			offScreenCanvas: false,
+		});
+		
+		// add to the world container
+		this.addChild(this.backgroundImage, 0);
+		this.addChild(this.catLeftImage, 5);
+		this.addChild(this.catRightImage, 5);
+		this.addChild(this.titleText, 2);
+
+		this.addChild(this.subTitleText, 5);
+	}	
+}
+
+export default class GetReadyScreen extends Stage {
 	/**
 	 *  action to perform on state change
 	 */
 	onResetEvent() {
 		console.log("GetReady.OnEnter()");
-		// new sprite for the title screen, position at the center of the game viewport
-		var backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
-			image: loader.getImage("sensa_jaa"),
-		});
 
-		// scale to fit with the viewport size
-		//backgroundImage.scale(game.viewport.width / backgroundImage.width, game.viewport.height / backgroundImage.height);
-		backgroundImage.setOpacity(0.5);
-
-		// there currently is a bug in melonjs where me.input.pointer is null if registerPointerEvent has not been called previously
-		// here we are just telling melonjs we want to use pointer events, and setting the callback to a noop
-		if (typeof input.pointer === "undefined") input.registerPointerEvent("pointerdown", null, null);
-
-		// add to the world container
-		game.world.addChild(backgroundImage, 1);
-		game.world.addChild(new GetReadyText(), 10);
+		this.back = new GetReadyBack();
+		game.world.addChild(this.back);
 
 		// change to play state on press Enter or click/tap
 		input.bindKey(input.KEY.ENTER, "enter", true);
@@ -35,10 +84,9 @@ class GetReadyScreen extends Stage {
 			if (action === "enter" || action === "bomb") {
 				state.change(state.PLAY);
 			}
-            if (action === "exit") {
+			if (action === "exit") {
 				state.change(state.MENU);
 			}
-
 		});
 	}
 
@@ -50,7 +98,6 @@ class GetReadyScreen extends Stage {
 		input.unbindKey(input.KEY.ENTER);
 		input.unbindPointer(input.pointer.LEFT);
 		event.off(event.KEYDOWN, this.handler);
+		game.world.removeChild(this.back);
 	}
 }
-
-export default GetReadyScreen;

@@ -1,16 +1,21 @@
 const CONFIG = {
-	environment: "dev", // change this on deployment
+	environment: "local", // change this TO PROD on deployment
 
 	appName: "{{applicationName}}",
 	appVersion: "{{applicationVersion}}",
 
-	mapServerURL: "maps",
-	gameServerURL: "game",
-	playerMovementURL: "movement",
-	enemyMovementURL: "enemy",
+	baseURL: "",
+
+	// server settings
+	readHighscoreURL: null,
+	createGameURL: null,
+	writeScoreURL: null,
+	writePlayerMovementURL: null,
+	readPlayerMovementsURL: null,
+	fakeNameURL: null,
 
 	local: {
-		baseURL: "http://localhost:8080",
+		baseURL: "http://localhost:8080/",
 	},
 
 	dev: {
@@ -21,8 +26,8 @@ const CONFIG = {
 	},
 
 	// use this one for the quarkus engine on production systems
-	// {{baseURL}} will be replaced with the corresponding 
-	// ENVIRONMENT parameter, provided via ConfigMap 
+	// {{baseURL}} will be replaced with the corresponding
+	// ENVIRONMENT parameter, provided via ConfigMap
 	prod: {
 		baseURL: "{{baseURL}}",
 	},

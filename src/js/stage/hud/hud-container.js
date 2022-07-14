@@ -78,7 +78,7 @@ class EnergyItem extends Text {
 			lineWidth: 2,
 			textBaseline: "top",
 			text: "Energy: 999",
-			offScreenCanvas: false		 // this has impact on positioning
+			offScreenCanvas: true		 // this has impact on positioning
 		});
 
 		this.bold(true);
@@ -122,8 +122,8 @@ class BombItem extends Text {
 			textAlign: "left",
 			lineWidth: 2,
 			textBaseline: "top",
-			text: "Energy: 999",
-			offScreenCanvas: false, // this has impact on positioning
+			text: "Bombs: 999",
+			offScreenCanvas: true, // this has impact on positioning
 		});
 
 		this.bold(true);
