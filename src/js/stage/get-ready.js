@@ -1,8 +1,49 @@
-import { Container, Sprite, Text, game, loader, Vector2d, BitmapText, Stage, input,event, state } from "melonjs/dist/melonjs.module.js";
+import { Container, Sprite, Text, game, loader, Vector2d, Stage, input,event, state, ParticleEmitter } from "melonjs/dist/melonjs.module.js";
+//import { Math } from "melonjs/dist/melonjs.module.js";
 import CONFIG from "../../config";
 import GlobalGameState from "../global-game-state";
+import SpiderEnemy from "../renderables/spider-enemy";
+class MySpider extends SpiderEnemy {
+	walkRight = true;
 
+	constructor(x,y, dx, dy) {
+		super(x,y)
+		this.dx = dx;
+		this.dy = dy;
+		this.setCurrentAnimation("walk-right");
+		this.body.force.set(1,0);
+		this.body.friction.set(0.4,0);
+		this.body.setMaxVelocity((Math.random() * 6)+1, 0);
+	}
 
+	update(dt) {
+
+		if( this.walkRight ) {
+			this.body.force.x = this.body.maxVel.x;
+		}
+		else {
+			this.body.force.x = -this.body.maxVel.x;
+		}
+		super.update(dt);
+
+		if( this.pos.x > game.viewport.width) {
+			this.pos.x = game.viewport.width;
+			this.setCurrentAnimation("walk-left");
+			this.walkRight = false;
+
+		}
+		if( this.pos.x < 0 ) {
+			this.pos.x = 0; 
+			this.setCurrentAnimation("walk-right");
+			this.walkRight = true;
+		}
+		return true;
+	}
+
+	calculateNextPosition() {
+		
+	}
+}
 class GetReadyBack extends Container {
 	constructor() {
 		super();
@@ -65,14 +106,45 @@ class GetReadyBack extends Container {
 }
 
 export default class GetReadyScreen extends Stage {
+	spiders = [];
+
 	/**
 	 *  action to perform on state change
 	 */
 	onResetEvent() {
+		this.spiders = [];
+
 		console.log("GetReady.OnEnter()");
 
 		this.back = new GetReadyBack();
 		game.world.addChild(this.back);
+
+		/*
+		for( let i = 0; i < 200; i++ ) {
+			let x = (Math.random() * (game.viewport.width / 32))+1;
+			let y = (Math.random() * (game.viewport.height /32))+1;
+
+			let dx = Math.random() * (game.viewport.width / 32) + 1;
+			let dy = Math.random() * (game.viewport.height / 32) + 1;
+
+			let spider = new MySpider(x,y, dx, dy);
+			this.spiders.push(spider);
+			game.world.addChild(spider, 10);
+		}*/
+
+		this.emitter = new ParticleEmitter(game.viewport.width/2, game.viewport.height / 2, {
+			image: loader.getImage("player"),
+			width: 64,
+			height: 64,
+			totalParticles: 100,
+			gravity: 0.02,
+			angle: 0,
+            angleVariation: 6.283185307179586,			
+			speed: 5,
+			//wind: -1,
+		} );
+		game.world.addChild(this.emitter);
+		this.emitter.streamParticles();
 
 		// change to play state on press Enter or click/tap
 		input.bindKey(input.KEY.ENTER, "enter", true);
@@ -99,5 +171,9 @@ export default class GetReadyScreen extends Stage {
 		input.unbindPointer(input.pointer.LEFT);
 		event.off(event.KEYDOWN, this.handler);
 		game.world.removeChild(this.back);
+		for( let i = 0; i < this.spiders.length; i++ ) {
+			game.world.removeChild(this.spiders[i]);
+		}
+		game.world.removeChild(this.emitter);
 	}
 }

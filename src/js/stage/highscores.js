@@ -80,12 +80,12 @@ class HighscoreEntry extends Container {
     }
 
     setTime(time) {
-        this.dateText = time.toLocaleDateString();
+        this.dateText = new Date(time).toLocaleDateString();
         this.isDirty = true;
     }
 
     setScore(score) {
-        this.scoreText = score.toLocaleString().padStart(6, "0");
+        this.scoreText = score.toString().padStart(7, "0");
         this.isDirty = true;
     }
 
