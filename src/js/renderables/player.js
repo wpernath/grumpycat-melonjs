@@ -4,6 +4,7 @@ import ExplosionEntity from './explosion';
 import GlobalGameState from '../global-game-state';
 import { ENEMY_TYPES } from './base-enemy';
 import CONFIG from '../../config';
+import { LevelManager } from '../util/level';
 
 const BARRIER_TILE = {
     light : 182,
@@ -100,7 +101,7 @@ class PlayerEntity extends Sprite {
 				playerId: GlobalGameState.globalServerGame.player.id,
 				gameId: GlobalGameState.globalServerGame.id,
 				score: GlobalGameState.score,
-				level: GlobalGameState.currentLevel,
+				level: LevelManager.getInstance().getCurrentLevelIndex() + 1,
 				name: GlobalGameState.globalServerGame.player.name,
 			};
 
@@ -210,13 +211,10 @@ class PlayerEntity extends Sprite {
                     }
 
                     if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
-                        // level won! next level
-        		      	GlobalGameState.currentLevel++;
+                        // level won! next level        		      	
                         this.writeHighscore()
                             .then(function() {
-                                if (GlobalGameState.currentLevel >= GlobalGameState.levels.length) {
-                                    GlobalGameState.currentLevel = 0;
-                                }
+                                LevelManager.getInstance().next();
                                 state.change(state.READY);
                             });
 

@@ -7,6 +7,8 @@ const GlobalGameState = {
 
 	// engine state
 	screenControlsTexture: null,
+	
+	/*
 	currentLevel: 0,
 	levels: [
 		// GUIDs from manifest.js
@@ -15,7 +17,7 @@ const GlobalGameState = {
 		"level3",
 		"level4",
 		"level5",
-	],
+	],*/
 
 	// some configs
 	enemyStunnedTime: 5000, // ms
@@ -62,7 +64,7 @@ const GlobalGameState = {
 	// reset statistics and player state
 	reset: function() {
 		this.energy = this.energyOnBegin;
-		this.currentLevel = 0;
+		//this.currentLevel = 0;
 		this.score = 0;
 		this.bombs = 0;
 		this.invincible = false;

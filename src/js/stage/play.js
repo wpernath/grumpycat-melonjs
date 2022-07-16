@@ -5,6 +5,7 @@ import PlayerEntity from "../renderables/player.js";
 import GlobalGameState from '../global-game-state.js';
 import HUDContainer from './hud/hud-container.js';
 import VirtualJoypad from './hud/virtual-joypad.js';
+import { LevelManager } from '../util/level.js';
 
 
 
@@ -92,7 +93,9 @@ class PlayScreen extends Stage {
     }
 
     setupLevel() {
-        level.load(GlobalGameState.levels[GlobalGameState.currentLevel]);
+        //level.load(GlobalGameState.levels[GlobalGameState.currentLevel]);
+        LevelManager.getInstance().prepareCurrentLevel();
+        
         console.log("PLAYING: " + level.getCurrentLevelId());
 
         let layers = level.getCurrentLevel().getLayers();

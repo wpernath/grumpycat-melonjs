@@ -2,6 +2,7 @@ import { Stage, game, device, input, Sprite, event, state, Body, collision, leve
 import TitleBackground from './title-back';
 import GlobalGameState from '../global-game-state';
 import TitleMenu from './title-menu';
+import { LevelManager } from '../util/level';
 
 export default class TitleScreen extends Stage {
 
@@ -13,6 +14,7 @@ export default class TitleScreen extends Stage {
 		
 		// Reset GlobalGameState
 		GlobalGameState.reset();
+		LevelManager.getInstance().reset();
 		
 		this.background = new TitleBackground();
 		this.menu = new TitleMenu();

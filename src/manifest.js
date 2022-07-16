@@ -118,6 +118,7 @@ const DataManifest = [
 		src: "./data/map/Terrain.json",
 	},
 
+	/*
 	{
 		name: "level1",
 		type: "tmx",
@@ -151,6 +152,7 @@ const DataManifest = [
 		//src: "./data/map/Level5.json",
 		src: "maps/4.json",
 	},
+	*/
 ];
 
 export default DataManifest;

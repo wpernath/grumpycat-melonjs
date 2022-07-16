@@ -1,8 +1,9 @@
-import { Container, Sprite, Text, game, level,loader, Vector2d, Stage, input,event, state, ParticleEmitter, Color } from "melonjs/dist/melonjs.module.js";
+import { Container, Sprite, Text, game,loader, Vector2d, Stage, input,event, state, ParticleEmitter, Color } from "melonjs/dist/melonjs.module.js";
 //import { Math } from "melonjs/dist/melonjs.module.js";
 import CONFIG from "../../config";
 import GlobalGameState from "../global-game-state";
 import SpiderEnemy from "../renderables/spider-enemy";
+import { LevelManager } from "../util/level";
 class MySpider extends SpiderEnemy {
 	walkRight = true;
 
@@ -44,6 +45,34 @@ class MySpider extends SpiderEnemy {
 		
 	}
 }
+
+class LevelDescription extends Container {
+	constructor(x,y,width,height) {
+		super(x,y,width,height);
+
+		this.levelName = new Text(4, 8, {
+			font: "Arial",
+			size: "24",
+			fillStyle: "white",
+			textAlign: "left",
+			text: LevelManager.getInstance().getCurrentLevel().longName,
+			offScreenCanvas: false,
+		});
+
+		this.levelDescr = new Text(4, 40, {
+			font: "Arial",
+			size: "20",
+			fillStyle: "white",
+			textAlign: "left",
+			text: LevelManager.getInstance().getCurrentLevel().description,
+			offScreenCanvas: false,
+		});
+
+		this.addChild(this.levelName);
+		this.addChild(this.levelDescr);
+
+	}
+}
 class GetReadyBack extends Container {
 	constructor() {
 		super();
@@ -57,7 +86,7 @@ class GetReadyBack extends Container {
 		// always on toppest
 		this.z = 10;
 
-		this.setOpacity(1.0);
+		//this.setOpacity(1.0);
 
 		// give a name
 		this.name = "TitleBack";
@@ -95,15 +124,15 @@ class GetReadyBack extends Container {
 			offScreenCanvas: false,
 		});
 		
-		console.log(level.getCurrentLevel().name);
 
+		
 		// add to the world container
 		this.addChild(this.backgroundImage, 0);
 		this.addChild(this.catLeftImage, 5);
 		this.addChild(this.catRightImage, 5);
 		this.addChild(this.titleText, 2);
-
 		this.addChild(this.subTitleText, 5);
+		this.addChild(new LevelDescription(190, game.viewport.height - 400), game.viewport.width - 400, game.viewport.height - 400);
 	}	
 }
 
@@ -135,7 +164,7 @@ export default class GetReadyScreen extends Stage {
 		}*/
 
 		this.emitter = new ParticleEmitter(game.viewport.width/2, game.viewport.height / 2 + 100, {
-			image: loader.getImage("player"),
+			//image: loader.getImage("player"),
 			tint: new Color(255,0,0),
 			width: 64,
 			height: 64,

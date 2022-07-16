@@ -28,6 +28,7 @@ import DataManifest from 'manifest.js';
 
 import CONFIG from 'config.js';
 import GlobalGameState from './js/global-game-state';
+import { LevelManager } from './js/util/level';
 
 
 async function createGameOnServer() {
@@ -69,7 +70,7 @@ device.onReady(() => {
     if (!video.init(1024, 768, { 
         parent: "screen", 
         scaleMethod: "fit", 
-        renderer: video.AUTO, 
+        renderer: video.CANVAS, 
         subPixel: false, 
         doubleBuffering: true 
     })) {
@@ -107,45 +108,49 @@ device.onReady(() => {
 
     loader.crossOrigin = "anonymous";
 
-    // set and load all resources.
-    loader.preload(DataManifest, function() {
+    LevelManager.getInstance().initialize(function() {
+        console.log("  Levels are all loaded and initialized! ");
 
-        GlobalGameState.screenControlsTexture = new TextureAtlas(loader.getJSON("screen-controls"), loader.getImage("screen-controls"));
+        // set and load all resources.
+        loader.preload(DataManifest, function() {
 
-        // set the user defined game stages
-        state.set(state.MENU, new TitleScreen());
-        state.set(state.PLAY, new PlayScreen());
-        state.set(state.READY, new GetReadyScreen());
-        state.set(state.GAMEOVER, new GameOverScreen());
-        state.set(state.SCORE, new HighscoreScreen());
+            GlobalGameState.screenControlsTexture = new TextureAtlas(loader.getJSON("screen-controls"), loader.getImage("screen-controls"));
 
-        // set the fade transition effect
-        state.transition("fade", "#000000", 500);
+            // set the user defined game stages
+            state.set(state.MENU, new TitleScreen());
+            state.set(state.PLAY, new PlayScreen());
+            state.set(state.READY, new GetReadyScreen());
+            state.set(state.GAMEOVER, new GameOverScreen());
+            state.set(state.SCORE, new HighscoreScreen());
 
-        // add our player entity in the entity pool
-        pool.register("player", PlayerEntity, true);
-        pool.register("enemy", CatEnemy, false);
-        pool.register("bomb", BombEntity, true);
-        pool.register("spider", SpiderEnemy, true);
+            // set the fade transition effect
+            state.transition("fade", "#000000", 500);
 
-        // bind keys
-        input.bindKey(input.KEY.SHIFT, "barrier");
-        input.bindKey(input.KEY.LEFT, "left");
-        input.bindKey(input.KEY.RIGHT, "right");
-        input.bindKey(input.KEY.UP, "up");
-        input.bindKey(input.KEY.E, "explode", true);
-        input.bindKey(input.KEY.P, "pause", true);
-        input.bindKey(input.KEY.DOWN, "down");
-        input.bindKey(input.KEY.SPACE, "bomb", true);
-        input.bindKey(input.KEY.ESC, "exit", true);
-        input.bindKey(input.KEY.F, "fullscreen", true);
-			
-        createGameOnServer()
-            .then(function() {
-                state.change(state.MENU);
-            })
-            .catch(function(err) {
-                console.log(err);
-            })
+            // add our player entity in the entity pool
+            pool.register("player", PlayerEntity, true);
+            pool.register("enemy", CatEnemy, false);
+            pool.register("bomb", BombEntity, true);
+            pool.register("spider", SpiderEnemy, true);
+
+            // bind keys
+            input.bindKey(input.KEY.SHIFT, "barrier");
+            input.bindKey(input.KEY.LEFT, "left");
+            input.bindKey(input.KEY.RIGHT, "right");
+            input.bindKey(input.KEY.UP, "up");
+            input.bindKey(input.KEY.E, "explode", true);
+            input.bindKey(input.KEY.P, "pause", true);
+            input.bindKey(input.KEY.DOWN, "down");
+            input.bindKey(input.KEY.SPACE, "bomb", true);
+            input.bindKey(input.KEY.ESC, "exit", true);
+            input.bindKey(input.KEY.F, "fullscreen", true);
+                
+            createGameOnServer()
+                .then(function() {
+                    state.change(state.MENU);
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+        });
     });
 });
