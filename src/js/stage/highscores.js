@@ -1,4 +1,4 @@
-import { Stage, event, loader, game, state, Vector2d, Text, Container, Renderable, Rect, Sprite } from "melonjs/dist/melonjs.module.js";
+import { Stage, event, loader, game, state, Vector2d, Text, Container, Renderable, Rect, Sprite, input } from "melonjs/dist/melonjs.module.js";
 import GlobalGameState from "../global-game-state";
 import CONFIG from "../../config";
 
@@ -184,6 +184,8 @@ export default class HighscoreScreen extends Stage {
         this.highscore = new HighscoreComponent();
         game.world.addChild(this.highscore);
 
+		input.bindPointer(input.pointer.LEFT, input.KEY.ESC);
+
         this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
             if (!state.isCurrent(state.SCORE)) return;
             if (action === "exit") {
@@ -199,6 +201,7 @@ export default class HighscoreScreen extends Stage {
 
     onDestroyEvent() {
         event.off(event.KEYDOWN, this.handler);
+		input.unbindPointer(input.pointer.LEFT);
         game.world.removeChild(this.highscore);
     }
 }

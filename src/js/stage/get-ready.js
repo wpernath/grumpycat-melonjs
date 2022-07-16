@@ -1,4 +1,4 @@
-import { Container, Sprite, Text, game, loader, Vector2d, Stage, input,event, state, ParticleEmitter } from "melonjs/dist/melonjs.module.js";
+import { Container, Sprite, Text, game, level,loader, Vector2d, Stage, input,event, state, ParticleEmitter, Color } from "melonjs/dist/melonjs.module.js";
 //import { Math } from "melonjs/dist/melonjs.module.js";
 import CONFIG from "../../config";
 import GlobalGameState from "../global-game-state";
@@ -95,6 +95,8 @@ class GetReadyBack extends Container {
 			offScreenCanvas: false,
 		});
 		
+		console.log(level.getCurrentLevel().name);
+
 		// add to the world container
 		this.addChild(this.backgroundImage, 0);
 		this.addChild(this.catLeftImage, 5);
@@ -132,15 +134,16 @@ export default class GetReadyScreen extends Stage {
 			game.world.addChild(spider, 10);
 		}*/
 
-		this.emitter = new ParticleEmitter(game.viewport.width/2, game.viewport.height / 2, {
+		this.emitter = new ParticleEmitter(game.viewport.width/2, game.viewport.height / 2 + 100, {
 			image: loader.getImage("player"),
+			tint: new Color(255,0,0),
 			width: 64,
 			height: 64,
-			totalParticles: 100,
+			totalParticles: 30,
 			gravity: 0.02,
 			angle: 0,
             angleVariation: 6.283185307179586,			
-			speed: 5,
+			speed: 2,
 			//wind: -1,
 		} );
 		game.world.addChild(this.emitter);

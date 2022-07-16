@@ -94,6 +94,25 @@ class PlayerEntity extends Sprite {
         return 0;
     }
 
+    async writeHighscore() {
+			// store another entry in Hightscores
+			let score = {
+				playerId: GlobalGameState.globalServerGame.player.id,
+				gameId: GlobalGameState.globalServerGame.id,
+				score: GlobalGameState.score,
+				level: GlobalGameState.currentLevel,
+				name: GlobalGameState.globalServerGame.player.name,
+			};
+
+			fetch(CONFIG.writeScoreURL, {
+				method: "POST",
+				mode: "cors",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(score),
+			});
+		}
     /**
      * update the entity
      */
@@ -193,29 +212,13 @@ class PlayerEntity extends Sprite {
                     if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
                         // level won! next level
         		      	GlobalGameState.currentLevel++;
-
-                        // store another entry in Hightscores
-                        let score = {
-                            playerId: GlobalGameState.globalServerGame.player.id,
-                            gameId: GlobalGameState.globalServerGame.id,
-                            score: GlobalGameState.score,
-                            level: GlobalGameState.currentLevel,
-                            name: GlobalGameState.globalServerGame.player.name
-                        }
-
-                        fetch(CONFIG.writeScoreURL, {
-                            method: "POST",
-                            mode: "cors",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify(score),
-                        }).then(function() {
-                            if (GlobalGameState.currentLevel >= GlobalGameState.levels.length) {
-                                GlobalGameState.currentLevel = 0;
-                            }
-                            state.change(state.READY);
-                        });
+                        this.writeHighscore()
+                            .then(function() {
+                                if (GlobalGameState.currentLevel >= GlobalGameState.levels.length) {
+                                    GlobalGameState.currentLevel = 0;
+                                }
+                                state.change(state.READY);
+                            });
 
                     }
                 }
@@ -250,7 +253,11 @@ class PlayerEntity extends Sprite {
             if( GlobalGameState.energy <= 0 ) {
                 console.log("GAME OVER!");
                 GlobalGameState.isGameOver = true;
-                state.change(state.GAMEOVER);
+
+                this.writeHighscore()
+                .then(function() {
+                    state.change(state.GAMEOVER);
+                });                
             }
             else {
                 GlobalGameState.invincible = true;
