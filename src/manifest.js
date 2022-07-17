@@ -27,6 +27,29 @@ const DataManifest = [
 
 	/* Bitmap Text */
 	{
+		name: "24Outline",
+		type: "image",
+		src: "./data/fnt/24Outline.png",
+	},
+	{
+		name: "24Outline",
+		type: "binary",
+		src: "./data/fnt/24Outline.fnt",
+	},
+	/* Bitmap Text */
+	{
+		name: "12Outline",
+		type: "image",
+		src: "./data/fnt/12Outline.png",
+	},
+	{
+		name: "12Outline",
+		type: "binary",
+		src: "./data/fnt/12Outline.fnt",
+	},
+
+	/* Bitmap Text */
+	{
 		name: "ArialFancy",
 		type: "image",
 		src: "./data/fnt/arialfancy.png",
@@ -35,6 +58,18 @@ const DataManifest = [
 		name: "ArialFancy",
 		type: "binary",
 		src: "./data/fnt/arialfancy.fnt",
+	},
+
+	/* Bitmap Text */
+	{
+		name: "Shadow",
+		type: "image",
+		src: "./data/fnt/Shadow.png",
+	},
+	{
+		name: "Shadow",
+		type: "binary",
+		src: "./data/fnt/Shadow.fnt",
 	},
 
 	{
@@ -50,7 +85,9 @@ const DataManifest = [
 	},
 
 	{
-		name: "title", type: "image", src: "./data/img/GrumpyCat-Title.png"
+		name: "title",
+		type: "image",
+		src: "./data/img/GrumpyCat-Title.png",
 	},
 
 	{

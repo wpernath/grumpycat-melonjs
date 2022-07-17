@@ -1,4 +1,4 @@
-import { Stage, event, loader, game, state, Vector2d, Text, Container, Renderable, Rect, Sprite, input } from "melonjs/dist/melonjs.module.js";
+import { Stage, event, loader, game, state, Vector2d, Text, Container, BitmapText, Rect, Sprite, input } from "melonjs/dist/melonjs.module.js";
 import GlobalGameState from "../global-game-state";
 import CONFIG from "../../config";
 
@@ -9,29 +9,35 @@ class HighscoreEntry extends Container {
     dateText;
     scoreText;
 
-    constructor(score, x,y, w) {
+    constructor(score, pos, x,y, w) {
         super(x,y, w, 32);
         this.scoreEntry = score;
+		this.position = pos;
 
-        this.nameFont = new Text(x, y, {
-            font: "Arial",
-            size: 16,
-            fillStyle: "#ffffff",
-            text: "@@@@",
+		this.posFont = new BitmapText(x, y, {
+			font: "24Outline",
+			size: 1,
+			text: pos.toString().padStart(2, '0') + ".",
+			anchorPoint: new Vector2d(0, 0),
+		});
+
+        this.nameFont = new BitmapText(x, y, {
+            font: "24Outline",
+            size: 1,            
+            text: "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
             anchorPoint: new Vector2d(0,0)
         });
 
-        this.dateFont = new Text(x + 200, y, {
-					font: "Arial",
-					size: 16,
-					fillStyle: "#ffffff",
+        this.dateFont = new BitmapText(x + 200, y, {
+					font: "24Outline",
+					size: 1,					
 					text: this.scoreEntry.time,
 					anchorPoint: new Vector2d(0, 0),
 				});
 
-        this.scoreFont = new Text(x + 350, y, {
-					font: "Arial",
-					size: 16,
+        this.scoreFont = new BitmapText(x + 350, y, {
+					font: "24Outline",
+					size: 1,
 					fillStyle: "#ffffff",
 					text: this.scoreEntry.score,
                     textAlign: "left",
@@ -42,18 +48,22 @@ class HighscoreEntry extends Container {
         super.setShape(x, y, w, this.fontSize.height + 16);
         this.border = new Rect(x, y, w, this.fontSize.height + 16);
         
-        this.nameFont.pos.x += 8;
+		this.posFont.pos.x += 8;
+		this.posFont.pos.y += 8;
+
+        this.nameFont.pos.x += 48;
         this.nameFont.pos.y += 8;
         
-        this.dateFont.pos.x += 30;
+        this.dateFont.pos.x += 200;
         this.dateFont.pos.y += 8;
 
-        this.scoreFont.pos.x += 100;
+        this.scoreFont.pos.x += 320;
         this.scoreFont.pos.y += 8;
 
         this.setName("Wanja Pernath");
         this.setTime(this.scoreEntry.time);
         this.setScore(this.scoreEntry.score);
+		this.posText = pos.toString().padStart(2, "0") + ".";
         console.log("(" + x + ", " + y + ", " + w + ", " + (this.fontSize.height + 16) + ")");
     }
 
@@ -68,9 +78,10 @@ class HighscoreEntry extends Container {
         renderer.stroke(this.border);
         
         renderer.setColor("#ffffff");
-        this.nameFont.draw(renderer, this.nameText);
-        this.dateFont.draw(renderer, this.dateText);
-        this.scoreFont.draw(renderer, this.scoreText);
+		this.posFont.draw(renderer, this.posText, this.posFont.pos.x, this.posFont.pos.y);
+        this.nameFont.draw(renderer, this.nameText, this.nameFont.pos.x, this.nameFont.pos.y);
+        this.dateFont.draw(renderer, this.dateText, this.dateFont.pos.x, this.dateFont.pos.y);
+        this.scoreFont.draw(renderer, this.scoreText, this.scoreFont.pos.x, this.scoreFont.pos.y);
 
     }
 
@@ -100,16 +111,16 @@ class HighscoreEntry extends Container {
 class HighscoreComponent extends Container {
 	highscoreComponent = [];
 	highscores = [
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 100000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 90000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 80000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 70000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 60000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 50000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 40000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 30000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 20000, time: new Date(Date.now()) },
-		{ name: "Wanja", playerId: 1, gameId: 2, score: 10000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 100000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 90000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 80000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 70000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 60000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 50000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 40000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 30000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 20000, time: new Date(Date.now()) },
+		{ pos: 0, name: "Wanja", playerId: 1, gameId: 2, score: 10000, time: new Date(Date.now()) },
 	];
 
 	constructor() {
@@ -135,7 +146,7 @@ class HighscoreComponent extends Container {
 
 		// scale to fit with the viewport size
 		this.backgroundImage.scale(game.viewport.width / this.backgroundImage.width, game.viewport.height / this.backgroundImage.height);
-		this.backgroundImage.setOpacity(0.3);
+		this.backgroundImage.setOpacity(0.4);
 		this.addChild(this.backgroundImage);
 
 		// title and subtitle
@@ -144,9 +155,9 @@ class HighscoreComponent extends Container {
 			anchorPoint: new Vector2d(0, 0),
 		});
 
-		this.subTitleText = new Text(126, 160, {
-			font: "Arial",
-			size: "16",
+		this.subTitleText = new BitmapText(126, 160, {
+			font: "Shadow",
+			size: "1",
 			fillStyle: "white",
 			textAlign: "left",
 			text: "HIGHSCORES",
@@ -158,7 +169,8 @@ class HighscoreComponent extends Container {
 
 		// write the highest 10 scores
 		for (let i = 0; i < this.highscores.length; i++) {
-			let comp = new HighscoreEntry(this.highscores[i], 50, 250 + 42 * i, game.viewport.width - 100, 36);
+			let se = this.highscores[i];
+			let comp = new HighscoreEntry(se, i+1, 50, 250 + 42 * i, game.viewport.width - 100, 36);
 			this.highscoreComponent.push(comp);
 			this.addChild(comp);
 		}

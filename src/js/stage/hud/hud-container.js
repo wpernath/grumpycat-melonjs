@@ -2,9 +2,9 @@ import { Renderable, BitmapText, game, event, Container, Text, Vector2d, Rendere
 
 import GlobalGameState from "../../global-game-state";
 
-const FONT_SIZE = 22;
+const FONT_SIZE = 1;
 
-class ScoreItem extends Text {
+class ScoreItem extends BitmapText {
 	/**
 	 *
 	 * @param x
@@ -12,7 +12,7 @@ class ScoreItem extends Text {
 	 */
 	constructor(x, y) {
 		super(game.viewport.width + x, y, {
-			font: "Arial",
+			font: "Shadow",
 			size: FONT_SIZE,
 			fillStyle: "white",
 			strokeStyle: "black",
@@ -23,7 +23,7 @@ class ScoreItem extends Text {
 			offScreenCanvas: false		 // this has impact on positioning
 		});
 
-		this.bold(true);
+		
 	
 		this.relative = new Vector2d(x, y);
 		this.score = -1;
@@ -62,7 +62,7 @@ class ScoreItem extends Text {
 
 }
 
-class EnergyItem extends Text {
+class EnergyItem extends BitmapText {
 	/**
 	 *
 	 * @param x
@@ -70,7 +70,7 @@ class EnergyItem extends Text {
 	 */
 	constructor(x, y) {
 		super(x, y, {
-			font: "Arial",
+			font: "Shadow",
 			size: FONT_SIZE,
 			fillStyle: "white",
 			strokeStyle: "black",
@@ -78,10 +78,10 @@ class EnergyItem extends Text {
 			lineWidth: 2,
 			textBaseline: "top",
 			text: "Energy: 999",
-			offScreenCanvas: false		 // this has impact on positioning
+			offScreenCanvas: false, // this has impact on positioning
 		});
 
-		this.bold(true);
+		
 		this.relative = new Vector2d(x, y);
 		this.energy = -1;
 		event.on(
@@ -107,7 +107,7 @@ class EnergyItem extends Text {
 	}
 }
 
-class BombItem extends Text {
+class BombItem extends BitmapText {
 	/**
 	 *
 	 * @param x
@@ -115,7 +115,7 @@ class BombItem extends Text {
 	 */
 	constructor(x, y) {
 		super(game.viewport.width / 2 + x, y, {
-			font: "Arial",
+			font: "Shadow",
 			size: FONT_SIZE,
 			fillStyle: "white",
 			strokeStyle: "black",
@@ -125,8 +125,7 @@ class BombItem extends Text {
 			text: "Bombs: 999",
 			offScreenCanvas: false, // this has impact on positioning
 		});
-
-		this.bold(true);
+		
 		this.relative = new Vector2d(x, y);
 		this.bombs = -1;
 		this.width = -1;
@@ -175,7 +174,7 @@ export default class HUDContainer extends Container {
 		// always on toppest
 		this.z = 100;
 
-		this.setOpacity(0.5);
+		this.setOpacity(0.8);
 
 		// give a name
 		this.name = "HUD";

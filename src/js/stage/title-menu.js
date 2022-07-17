@@ -1,12 +1,12 @@
-import { BitmapText, input, timer, game, Renderable,Container, Vector2d, Text, RoundRect, state, Rect } from "melonjs/dist/melonjs.module.js";
+import { BitmapText, input, timer, game, Container, Vector2d, Text, RoundRect, state, Rect } from "melonjs/dist/melonjs.module.js";
 import GlobalGameState from "../global-game-state";
 
 class BaseTextButton extends Container {
 	
 	constructor(x, y, settings) {	
 		super(x,y);			
-		settings.font = settings.font || "Arial";
-		settings.size = settings.size || 12;
+		settings.font = settings.font || "24Outline";
+		settings.size = settings.size || 1;
 		settings.text = settings.text || "<Click Me>";
 		settings.bindKey = settings.bindKey || -1;
 		settings.backgroundColor = settings.backgroundColor || "#00aa00";
@@ -17,7 +17,7 @@ class BaseTextButton extends Container {
 		settings.lineWidth = settings.lineWidth || 1;
 		settings.anchorPoint = settings.anchorPoint || new Vector2d(0,0);		
 
-		let font = new Text(x, y, settings);
+		let font = new BitmapText(x, y, settings);
 		let dimensions = font.measureText();
 		settings.borderWidth = settings.borderWidth || dimensions.width + 16;
 		settings.borderHeight = settings.borderHeight || dimensions.height + 16;
@@ -101,7 +101,7 @@ class BaseTextButton extends Container {
 		renderer.setGlobalAlpha(1);
 		renderer.setColor(this.settings.borderStrokeColor);
 		renderer.stroke(this.border);		
-		this.font.draw(renderer, this.settings.text);
+		this.font.draw(renderer, this.settings.text, this.font.pos.x, this.font.pos.y);
 	}
 
 	/**
@@ -259,8 +259,7 @@ class BaseTextButton extends Container {
 class PlayButton extends BaseTextButton {
 	constructor(x, y, ) {
 		super(x, y, {
-			text: 'Play',
-			size: 24,
+			text: 'Play',			
 			borderWidth: 250
 		});		
 	}
@@ -274,7 +273,6 @@ class ReplayButton extends BaseTextButton {
 	constructor(x, y) {
 		super(x, y, {
 			text: "Replay",
-			size: 24,
 			borderWidth: 250,
 		});
 	}
@@ -287,8 +285,7 @@ class ReplayButton extends BaseTextButton {
 class HighscoreButton extends BaseTextButton {
 	constructor(x, y) {
 		super(x, y, {
-			text: "Highscores",
-			size: 24,
+			text: "Highscores",		
 			borderWidth: 250,
 		});
 	}

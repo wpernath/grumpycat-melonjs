@@ -82,18 +82,18 @@ export default class TitleBackground extends Container {
 		});
 		
 
-		this.subTitleText = new Text(126, 170, {
-			font: "Arial",
-			size: "12",
+		this.subTitleText = new BitmapText(126, 170, {
+			font: "12Outline",
+			size: "1",
 			fillStyle: "white",
 			textAlign: "left",
 			text: "A JavaScript / melonJS client. Written by Wanja Pernath",
 			offScreenCanvas: false,
 		});
 
-		this.subVersionText = new Text(126, 186, {
-			font: "Arial",
-			size: "12",
+		this.subVersionText = new BitmapText(126, 186, {
+			font: "12Outline",
+			size: "1",
 			fillStyle: "white",
 			textAlign: "left",
 			text: "Server API: " + GlobalGameState.globalServerVersion.appName + "@" + GlobalGameState.globalServerVersion.appVersion + " at " + CONFIG.baseURL,

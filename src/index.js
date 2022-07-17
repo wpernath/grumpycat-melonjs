@@ -70,7 +70,7 @@ device.onReady(() => {
     if (!video.init(1024, 768, { 
         parent: "screen", 
         scaleMethod: "fit", 
-        renderer: video.CANVAS, 
+        renderer: video.AUTO, 
         subPixel: false, 
         doubleBuffering: true 
     })) {

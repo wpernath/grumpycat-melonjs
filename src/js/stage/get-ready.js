@@ -1,4 +1,4 @@
-import { Container, Sprite, Text, game,loader, Vector2d, Stage, input,event, state, ParticleEmitter, Color } from "melonjs/dist/melonjs.module.js";
+import { Container, Sprite, Text, BitmapText, game,loader, Vector2d, Stage, input,event, state, ParticleEmitter, Color } from "melonjs/dist/melonjs.module.js";
 //import { Math } from "melonjs/dist/melonjs.module.js";
 import CONFIG from "../../config";
 import GlobalGameState from "../global-game-state";
@@ -49,19 +49,19 @@ class MySpider extends SpiderEnemy {
 class LevelDescription extends Container {
 	constructor(x,y,width,height) {
 		super(x,y,width,height);
-
-		this.levelName = new Text(4, 8, {
-			font: "Arial",
-			size: "24",
+		this.setOpacity(1);
+		this.levelName = new BitmapText(4, 8, {
+			font: "24Outline",
+			size: "1",
 			fillStyle: "white",
 			textAlign: "left",
 			text: LevelManager.getInstance().getCurrentLevel().longName,
 			offScreenCanvas: false,
 		});
 
-		this.levelDescr = new Text(4, 40, {
-			font: "Arial",
-			size: "20",
+		this.levelDescr = new BitmapText(4, 40, {
+			font: "12Outline",
+			size: "1",
 			fillStyle: "white",
 			textAlign: "left",
 			text: LevelManager.getInstance().getCurrentLevel().description,
@@ -86,7 +86,7 @@ class GetReadyBack extends Container {
 		// always on toppest
 		this.z = 10;
 
-		//this.setOpacity(1.0);
+		this.setOpacity(1.0);
 
 		// give a name
 		this.name = "TitleBack";
@@ -94,7 +94,7 @@ class GetReadyBack extends Container {
 		// a tween to animate the text
 		// new sprite for the title screen, position at the center of the game viewport
 		this.backgroundImage = new Sprite(game.viewport.width / 2, game.viewport.height / 2, {
-			image: loader.getImage("sensa_grass"),
+			image: loader.getImage("sensa_grass"),			
 		});
 
 		// scale to fit with the viewport size
@@ -115,12 +115,12 @@ class GetReadyBack extends Container {
 			anchorPoint: new Vector2d(0, 0),
 		});
 
-		this.subTitleText = new Text(126, 170, {
-			font: "Arial",
-			size: "20",
+		this.subTitleText = new BitmapText(126, 170, {
+			font: "Shadow",
+			size: "1",
 			fillStyle: "white",
 			textAlign: "left",
-			text: "GET READY NOW",
+			text: "GET READY",
 			offScreenCanvas: false,
 		});
 		
