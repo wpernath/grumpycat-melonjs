@@ -186,7 +186,7 @@ class PlayerEntity extends Sprite {
                     action.dx = dx;
                     action.dy = dy;
                     action.gutterThrown = true;
-
+/*
                     this.writePlayerAction(action)
                         .then(function (res) {
                             console.log("update send to server");
@@ -194,6 +194,7 @@ class PlayerEntity extends Sprite {
                         .catch(function (err) {
                             console.error(err);
                         });                    
+                        */
                 }
             }
         }
@@ -269,6 +270,7 @@ class PlayerEntity extends Sprite {
                 if (this.pos.y < 0) this.pos.y -= dy;
                 if (this.pos.y > this.mapHeight * 32) this.pos.y = this.mapHeight * 32;
 
+                /*
                 this.writePlayerAction(action)
                     .then(function (res) {
                         console.log("update send to server");
@@ -276,7 +278,7 @@ class PlayerEntity extends Sprite {
                     .catch(function (err) {
                         console.error(err);
                     });                    
-
+                    */
             }
         }
         // call the parent method
