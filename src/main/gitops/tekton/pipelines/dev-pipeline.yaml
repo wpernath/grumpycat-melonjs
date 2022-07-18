@@ -74,7 +74,8 @@ spec:
         - name: CONTEXT_DIR
           value: the-source/$(params.git-context)
       runAfter:
-        - package
+        - clone-source
+        - clone-config
       taskRef:
         kind: Task
         name: maven-caching
