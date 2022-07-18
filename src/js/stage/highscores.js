@@ -1,5 +1,5 @@
 import { Stage, event, loader, game, state, Vector2d, Text, Container, BitmapText, Rect, Sprite, input } from "melonjs/dist/melonjs.module.js";
-import GlobalGameState from "../global-game-state";
+import GlobalGameState from "../util/global-game-state";
 import CONFIG from "../../config";
 
 class HighscoreEntry extends Container {

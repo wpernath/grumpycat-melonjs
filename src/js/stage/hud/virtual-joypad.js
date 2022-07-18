@@ -1,5 +1,5 @@
 import { GUI_Object, Sprite, game, input, Vector2d, Container, event, device, plugins } from "melonjs/dist/melonjs.module.js";
-import GlobalGameState from "../../global-game-state";
+import GlobalGameState from "../../util/global-game-state";
 /**
  * a basic control to toggle fullscreen on/off
  */

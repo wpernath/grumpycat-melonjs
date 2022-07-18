@@ -1,5 +1,5 @@
 import { collision, Entity, level, Rect, Sprite, Body } from "melonjs/dist/melonjs.module.js";
-import GlobalGameState from "../global-game-state";
+import GlobalGameState from "../util/global-game-state";
 
 export class Direction {
 	constructor(dx, dy) {

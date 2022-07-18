@@ -1,6 +1,6 @@
 import { Container, Sprite, Text, game, loader, Vector2d, BitmapText, Tween } from "melonjs/dist/melonjs.module.js";
 import CONFIG from "../../config";
-import GlobalGameState from "../global-game-state";
+import GlobalGameState from "../util/global-game-state";
 
 
 class TextScroller extends BitmapText {

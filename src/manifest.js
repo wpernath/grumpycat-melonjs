@@ -50,6 +50,18 @@ const DataManifest = [
 
 	/* Bitmap Text */
 	{
+		name: "18Outline",
+		type: "image",
+		src: "./data/fnt/12Outline.png",
+	},
+	{
+		name: "18Outline",
+		type: "binary",
+		src: "./data/fnt/12Outline.fnt",
+	},
+
+	/* Bitmap Text */
+	{
 		name: "ArialFancy",
 		type: "image",
 		src: "./data/fnt/arialfancy.png",

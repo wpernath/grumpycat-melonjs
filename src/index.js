@@ -27,7 +27,7 @@ import BombEntity from './js/renderables/bomb';
 import DataManifest from 'manifest.js';
 
 import CONFIG from 'config.js';
-import GlobalGameState from './js/global-game-state';
+import GlobalGameState from './js/util/global-game-state';
 import { LevelManager } from './js/util/level';
 
 

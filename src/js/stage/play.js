@@ -2,7 +2,7 @@ import { Stage, game, level, event, state,device } from 'melonjs/dist/melonjs.mo
 import CatEnemy from '../renderables/cat-enemy.js';
 import { SpiderEnemy } from '../renderables/spider-enemy.js';
 import PlayerEntity from "../renderables/player.js";
-import GlobalGameState from '../global-game-state.js';
+import GlobalGameState from '../util/global-game-state';
 import HUDContainer from './hud/hud-container.js';
 import VirtualJoypad from './hud/virtual-joypad.js';
 import { LevelManager } from '../util/level.js';

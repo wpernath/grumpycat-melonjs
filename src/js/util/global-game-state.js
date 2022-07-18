@@ -1,4 +1,4 @@
-import { LevelManager } from "./util/level";
+import { LevelManager } from "./level";
 
 
 const GlobalGameState = {

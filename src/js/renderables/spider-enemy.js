@@ -1,6 +1,6 @@
 import { collision } from "melonjs/dist/melonjs.module.js";
 import { BaseEnemySprite, ENEMY_TYPES } from "./base-enemy";
-import GlobalGameState from "../global-game-state";
+import GlobalGameState from "../util/global-game-state";
 
 export class SpiderEnemy extends BaseEnemySprite {
 	SPEED = 1;

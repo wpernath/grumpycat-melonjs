@@ -1,6 +1,6 @@
 import { Renderable, BitmapText, game, event, Container, Text, Vector2d, Renderer} from "melonjs/dist/melonjs.module.js";
 
-import GlobalGameState from "../../global-game-state";
+import GlobalGameState from "../../util/global-game-state";
 
 const FONT_SIZE = 1;
 

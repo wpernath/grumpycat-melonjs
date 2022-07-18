@@ -1,5 +1,5 @@
 import { BitmapText, input, timer, game, Container, Vector2d, Text, RoundRect, state, Rect } from "melonjs/dist/melonjs.module.js";
-import GlobalGameState from "../global-game-state";
+import GlobalGameState from "../util/global-game-state";
 
 class BaseTextButton extends Container {
 	

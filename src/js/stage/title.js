@@ -1,6 +1,6 @@
 import { Stage, game, device, input, Sprite, event, state, Body, collision, level, Tile, Rect, loader, Vector2d, video} from 'melonjs/dist/melonjs.module.js';
 import TitleBackground from './title-back';
-import GlobalGameState from '../global-game-state';
+import GlobalGameState from '../util/global-game-state';
 import TitleMenu from './title-menu';
 import { LevelManager } from '../util/level';
 

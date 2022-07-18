@@ -1,7 +1,7 @@
 import { Container, Sprite, Text, BitmapText, game,loader, Vector2d, Stage, input,event, state, ParticleEmitter, Color } from "melonjs/dist/melonjs.module.js";
 //import { Math } from "melonjs/dist/melonjs.module.js";
 import CONFIG from "../../config";
-import GlobalGameState from "../global-game-state";
+import GlobalGameState from "../util/global-game-state";
 import SpiderEnemy from "../renderables/spider-enemy";
 import { LevelManager } from "../util/level";
 class MySpider extends SpiderEnemy {
