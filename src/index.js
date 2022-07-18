@@ -105,6 +105,8 @@ device.onReady(() => {
     CONFIG.writeScoreURL = baseURL + "highscore";
     CONFIG.createGameURL = baseURL + "game";
     CONFIG.fakeNameURL = baseURL + "faker";
+    CONFIG.writePlayerMovementURL = baseURL + "movement";
+    CONFIG.readPlayerMovementsURL = baseURL + "movement/";
 
     loader.crossOrigin = "anonymous";
 

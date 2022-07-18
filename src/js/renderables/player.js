@@ -96,36 +96,62 @@ class PlayerEntity extends Sprite {
     }
 
     async writeHighscore() {
-			// store another entry in Hightscores
-			let score = {
-				playerId: GlobalGameState.globalServerGame.player.id,
-				gameId: GlobalGameState.globalServerGame.id,
-				score: GlobalGameState.score,
-				level: LevelManager.getInstance().getCurrentLevelIndex() + 1,
-				name: GlobalGameState.globalServerGame.player.name,
-			};
+        // store another entry in Hightscores
+        let score = {
+            playerId: GlobalGameState.globalServerGame.player.id,
+            gameId: GlobalGameState.globalServerGame.id,
+            score: GlobalGameState.score,
+            level: LevelManager.getInstance().getCurrentLevelIndex() + 1,
+            name: GlobalGameState.globalServerGame.player.name,
+        };
 
-			fetch(CONFIG.writeScoreURL, {
-				method: "POST",
-				mode: "cors",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(score),
-			});
-		}
+        fetch(CONFIG.writeScoreURL, {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(score),
+        });
+	}
+
+    async writePlayerAction(action) {
+        fetch(CONFIG.writePlayerMovementURL, {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(action),
+        });
+    }
+
     /**
      * update the entity
      */
     update(dt) {
-        // change body force based on inputs
+        let mapX = Math.floor(this.pos.x / 32);
+        let mapY = Math.floor(this.pos.y / 32);
         let dx = 0,
             dy = 0;
 
+        // this is the data to be stored on the server
+        const action = {
+            playerId: GlobalGameState.globalServerGame.player.id,
+            gameId: GlobalGameState.globalServerGame.id,
+            dx: 0,
+            dy: 0,
+            x: mapX,
+            y: mapY,
+            bombPlaced: false,
+            gutterThrown: false,
+            gameOver: false,
+            gameWon: false,
+            score: GlobalGameState.score,
+            time: performance.now(),
+        };
+
         if( input.isKeyPressed("barrier")) {
-            let mapX = Math.floor(this.pos.x/32);
-            let mapY = Math.floor(this.pos.y/32);
-            
             if( input.isKeyPressed("left")) {
                 dx =-1;
             }
@@ -156,6 +182,18 @@ class PlayerEntity extends Sprite {
                     let tile = this.borderLayer.getTileById(newBorderId, bX, bY);
                     this.borderLayer.setTile(tile, bX, bY);
                     GlobalGameState.placedBarriers++;
+
+                    action.dx = dx;
+                    action.dy = dy;
+                    action.gutterThrown = true;
+
+                    this.writePlayerAction(action)
+                        .then(function (res) {
+                            console.log("update send to server");
+                        })
+                        .catch(function (err) {
+                            console.error(err);
+                        });                    
                 }
             }
         }
@@ -165,6 +203,7 @@ class PlayerEntity extends Sprite {
                     game.world.addChild(new BombEntity(this.pos.x, this.pos.y));   
                     GlobalGameState.usedBombs++;         
                     GlobalGameState.bombs--;
+                    action.bombPlaced = true;
                 }
             }
             if( input.isKeyPressed("explode")) {
@@ -186,9 +225,12 @@ class PlayerEntity extends Sprite {
                 dy = +this.SPEED;
             }
 
-            if (this.isWalkable(this.pos.x + dx, this.pos.y + dy)) {
+            if ((dx != 0 || dy != 0) && this.isWalkable(this.pos.x + dx, this.pos.y + dy)) {
                 this.pos.x += dx;
                 this.pos.y += dy;
+
+                action.dx = dx;
+                action.dy = dy;
 
                 let bonus = this.collectBonusTile(this.pos.x, this.pos.y);
                 if( bonus !== 0 ) {
@@ -211,6 +253,7 @@ class PlayerEntity extends Sprite {
                     }
 
                     if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
+                        action.gameWon = true;
                         // level won! next level        		      	
                         this.writeHighscore()
                             .then(function() {
@@ -221,10 +264,19 @@ class PlayerEntity extends Sprite {
                     }
                 }
 
-                if (this.pos.x <= 0) this.pos.x -= dx;
+                if (this.pos.x < 0) this.pos.x -= dx;
                 if (this.pos.x > this.mapWidth * 32) this.pos.x = this.mapWidth * 32;
-                if (this.pos.y <= 0) this.pos.y -= dy;
+                if (this.pos.y < 0) this.pos.y -= dy;
                 if (this.pos.y > this.mapHeight * 32) this.pos.y = this.mapHeight * 32;
+
+                this.writePlayerAction(action)
+                    .then(function (res) {
+                        console.log("update send to server");
+                    })
+                    .catch(function (err) {
+                        console.error(err);
+                    });                    
+
             }
         }
         // call the parent method

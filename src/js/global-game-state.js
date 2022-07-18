@@ -1,3 +1,4 @@
+import { LevelManager } from "./util/level";
 
 
 const GlobalGameState = {
@@ -8,17 +9,6 @@ const GlobalGameState = {
 	// engine state
 	screenControlsTexture: null,
 	
-	/*
-	currentLevel: 0,
-	levels: [
-		// GUIDs from manifest.js
-		"level1",
-		"level2",
-		"level3",
-		"level4",
-		"level5",
-	],*/
-
 	// some configs
 	enemyStunnedTime: 5000, // ms
 	playerInvincibleTime: 3000, // ms
@@ -65,6 +55,7 @@ const GlobalGameState = {
 	reset: function() {
 		this.energy = this.energyOnBegin;
 		//this.currentLevel = 0;
+		LevelManager.getInstance().reset();
 		this.score = 0;
 		this.bombs = 0;
 		this.invincible = false;
