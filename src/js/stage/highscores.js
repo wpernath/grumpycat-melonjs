@@ -1,6 +1,7 @@
 import { Stage, event, loader, game, state, Vector2d, Text, Container, BitmapText, Rect, Sprite, input } from "melonjs/dist/melonjs.module.js";
 import GlobalGameState from "../util/global-game-state";
 import CONFIG from "../../config";
+import NetworkManager from "../util/network";
 
 class HighscoreEntry extends Container {
     font;
@@ -205,10 +206,9 @@ export default class HighscoreScreen extends Stage {
             }
         });
 
-        fetch(CONFIG.readHighscoreURL)
-					.then((res) => res.json())
-					.then((out) => this.highscore.updateHighscores(out))
-					.catch((err) => console.log(err));
+		NetworkManager.getInstance().readTop10Highscores()
+			.then((out) => this.highscore.updateHighscores(out))
+			.catch((err) => console.log(err));
     }
 
     onDestroyEvent() {

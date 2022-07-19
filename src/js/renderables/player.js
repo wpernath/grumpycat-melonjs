@@ -5,6 +5,7 @@ import GlobalGameState from '../util/global-game-state';
 import { ENEMY_TYPES } from './base-enemy';
 import CONFIG from '../../config';
 import { LevelManager } from '../util/level';
+import NetworkManager from '../util/network';
 
 const BARRIER_TILE = {
     light : 182,
@@ -95,36 +96,6 @@ class PlayerEntity extends Sprite {
         return 0;
     }
 
-    async writeHighscore() {
-        // store another entry in Hightscores
-        let score = {
-            playerId: GlobalGameState.globalServerGame.player.id,
-            gameId: GlobalGameState.globalServerGame.id,
-            score: GlobalGameState.score,
-            level: LevelManager.getInstance().getCurrentLevelIndex() + 1,
-            name: GlobalGameState.globalServerGame.player.name,
-        };
-
-        fetch(CONFIG.writeScoreURL, {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(score),
-        });
-	}
-
-    async writePlayerAction(action) {
-        fetch(CONFIG.writePlayerMovementURL, {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(action),
-        });
-    }
 
     /**
      * update the entity
@@ -256,7 +227,7 @@ class PlayerEntity extends Sprite {
                     if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
                         action.gameWon = true;
                         // level won! next level        		      	
-                        this.writeHighscore()
+                        NetworkManager.getInstance().writeHighscore()
                             .then(function() {
                                 LevelManager.getInstance().next();
                                 state.change(state.READY);
