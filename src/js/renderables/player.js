@@ -20,6 +20,11 @@ const BONUS_TILE = {
     cheese : 967
 };
 class PlayerEntity extends Sprite {
+    initialSpeed = 2;
+    maximalSpeed = 8;
+    currentSpeed = this.initialSpeed;
+    lastSpeedAdded = 0;
+
     SPEED=4;
     borderLayer;
     bonusLayer;
@@ -184,17 +189,32 @@ class PlayerEntity extends Sprite {
 
             if (input.isKeyPressed("left")) {            
                 this.flipX(true);
-                dx = -this.SPEED;
+                dx = -this.currentSpeed;
             } 
             if (input.isKeyPressed("right")) {
                 this.flipX(false);
-                dx = +this.SPEED;
+                dx = +this.currentSpeed;
             } 
             if (input.isKeyPressed("up")) {
-                dy = -this.SPEED;
+                dy = -this.currentSpeed;
             } 
             if (input.isKeyPressed("down")) {
-                dy = +this.SPEED;
+                dy = +this.currentSpeed;
+            }
+
+            // check speed of dog
+            if( dx == 0 && dy == 0) { // reset speed
+                this.currentSpeed = this.initialSpeed;
+            }
+            else {
+                if( this.lastSpeedAdded > 60 ) {
+                    this.currentSpeed += 2;
+                    if( this.currentSpeed > this.maximalSpeed ) this.currentSpeed = this.maximalSpeed;
+                    this.lastSpeedAdded = 0;
+                }
+                else {
+                    this.lastSpeedAdded += dt;
+                }
             }
 
             if ((dx != 0 || dy != 0) && this.isWalkable(this.pos.x + dx, this.pos.y + dy)) {
