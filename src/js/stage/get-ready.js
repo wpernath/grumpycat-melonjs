@@ -60,7 +60,7 @@ class LevelDescription extends Container {
 		});
 
 		this.levelDescr = new BitmapText(4, 40, {
-			font: "12Outline",
+			font: "18Outline",
 			size: "1",
 			fillStyle: "white",
 			textAlign: "left",
