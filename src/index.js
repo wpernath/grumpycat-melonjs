@@ -29,39 +29,10 @@ import DataManifest from 'manifest.js';
 import CONFIG from 'config.js';
 import GlobalGameState from './js/util/global-game-state';
 import { LevelManager } from './js/util/level';
+import NetworkManager from './js/util/network';
 
 
-async function createGameOnServer() {
-	let resp = await fetch(CONFIG.fakeNameURL);
-	let name = await resp.text();
-    console.log("name: " + name);
 
-    resp = await fetch(CONFIG.createGameURL + "/version");
-    GlobalGameState.globalServerVersion = await resp.json();
-
-	let req = {
-		name: name,
-		level: "0",
-		player: {
-			name: name,
-		},
-	};
-
-    req = JSON.stringify(req);
-    console.log(req);
-	resp = await fetch(CONFIG.createGameURL, {
-		method: "POST",
-		mode: "cors",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: req,
-	});
-
-	GlobalGameState.globalServerGame = await resp.json();
-    console.log( "   Server API: " + JSON.stringify(GlobalGameState.globalServerVersion));
-    console.log( "   New game  : " + JSON.stringify(GlobalGameState.globalServerGame));
-}
 
 device.onReady(() => {
 
@@ -100,16 +71,12 @@ device.onReady(() => {
     loader.setBaseURL("tmx", baseURL);
     CONFIG.baseURL = baseURL;
 
-    // API: read 10 highest scores
-    CONFIG.readHighscoreURL = baseURL + "highscore/10";
-    CONFIG.writeScoreURL = baseURL + "highscore";
-    CONFIG.createGameURL = baseURL + "game";
-    CONFIG.fakeNameURL = baseURL + "faker";
-    CONFIG.writePlayerMovementURL = baseURL + "movement";
-    CONFIG.readPlayerMovementsURL = baseURL + "movement/";
-
     loader.crossOrigin = "anonymous";
 
+    // initialize NetworkManager
+    NetworkManager.getInstance();
+
+    // Initialize LevelManager and read all levels
     LevelManager.getInstance().initialize(function() {
         console.log("  Levels are all loaded and initialized! ");
 
@@ -146,7 +113,7 @@ device.onReady(() => {
             input.bindKey(input.KEY.ESC, "exit", true);
             input.bindKey(input.KEY.F, "fullscreen", true);
                 
-            createGameOnServer()
+            NetworkManager.getInstance().createGameOnServer()
                 .then(function() {
                     state.change(state.MENU);
                 })
