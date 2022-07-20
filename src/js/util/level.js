@@ -137,7 +137,7 @@ export class LevelManager {
         return this.getCurrentLevel();
     }
 
-    hasNextLevel() {
+    hasNext() {        
         if( this.currentLevel < this.allLevels.length) return true;
         return false;
     }

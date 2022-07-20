@@ -3,7 +3,7 @@ import { LevelManager } from "../util/level";
 import GlobalGameState from "../util/global-game-state";
 import NetworkManager from "../util/network";
 class LevelStatistics extends Container {
-	constructor(x, y, width, height) {
+	constructor(x, y, width, height, isGameOver=true) {
 		super(x, y, width, height);
 		this.setOpacity(1);
 		this.levelName = new BitmapText(14, 8, {
@@ -57,7 +57,7 @@ class LevelStatistics extends Container {
 		});
 
 		this.sensaSprite = new Sprite(600, 50, {
-			image: "sensa_nee"
+			image: isGameOver ? "sensa_nee" : "sensa_jaa"
 		});
 		this.sensaSprite.setOpacity(0.8);
 
@@ -68,7 +68,7 @@ class LevelStatistics extends Container {
 	}
 }
 class GameOverBack extends Container {
-	constructor() {
+	constructor(isGameOver=true) {
 		super();
 
 		// persistent across level change
@@ -114,27 +114,41 @@ class GameOverBack extends Container {
 			size: "1",
 			fillStyle: "white",
 			textAlign: "left",
-			text: "GAME OVER!",			
+			text: isGameOver ? "GAME OVER!" : "CONGRATS! You won!",			
 		});
 
 		// add to the world container
 		this.addChild(this.backgroundImage, 0);
 		this.addChild(this.catLeftImage, 5);
 		//this.addChild(this.catRightImage, 7);
-		this.addChild(this.titleText, 2);
-		this.addChild(this.subTitleText, 5);
-		this.addChild(new LevelStatistics(190, game.viewport.height - 400), game.viewport.width - 400, game.viewport.height - 400), 6;
+		this.addChild(this.titleText, 100);
+		this.addChild(this.subTitleText, 100);
+		this.addChild(
+			new LevelStatistics(
+				190, 
+				game.viewport.height - 400, 
+				game.viewport.width - 400, 
+				game.viewport.height - 400, 
+				isGameOver
+			), 
+			6
+		);
 	}
 }
 
 export default class GameOverScreen extends Stage {
+	constructor(isGameOver = true) {
+		super();
+		this.isGameOver = isGameOver;
+	}
+
 	/**
 	 *  action to perform on state change
 	 */
 	onResetEvent() {
 		console.log("GameOver.OnEnter()");
 
-		this.back = new GameOverBack();
+		this.back = new GameOverBack(this.isGameOver);
 		game.world.addChild(this.back);
 
 		this.emitter = new ParticleEmitter(game.viewport.width / 2, game.viewport.height / 2 + 100, {

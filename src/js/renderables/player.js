@@ -20,7 +20,7 @@ const BONUS_TILE = {
     cheese : 967
 };
 class PlayerEntity extends Sprite {
-    initialSpeed = 2;
+    initialSpeed = 4;
     maximalSpeed = 8;
     currentSpeed = this.initialSpeed;
     lastSpeedAdded = 0;
@@ -294,14 +294,14 @@ class PlayerEntity extends Sprite {
                     }
 
                     if( this.collectedBonusTiles >= this.numberOfBonusTiles ) {
-                        action.gameWon = true;
-                        // level won! next level        		      	
-                        NetworkManager.getInstance().writeHighscore()
-                            .then(function() {
-                                LevelManager.getInstance().next();
-                                state.change(state.READY);
-                            });
-
+                        // level done, check to see if there are more levels
+                        if( LevelManager.getInstance().hasNext() ) {
+                            LevelManager.getInstance().next();
+                            state.change(state.READY);
+                        }
+                        else {
+                            state.change(state.GAME_END);
+                        }
                     }
                 }
 

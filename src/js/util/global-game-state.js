@@ -57,8 +57,7 @@ const GlobalGameState = {
 
 	// reset statistics and player state
 	reset: function() {
-		this.energy = 10; // this.energyOnBegin;
-		//this.currentLevel = 0;
+		this.energy = this.energyOnBegin;		
 		LevelManager.getInstance().reset();
 		this.score = 0;
 		this.bombs = 0;
