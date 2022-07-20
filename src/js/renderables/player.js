@@ -35,7 +35,7 @@ class PlayerEntity extends Sprite {
     mapHeight;
     collectedBonusTiles = 0;
     numberOfBonusTiles = 0;
-    
+    oldDx =0; oldDy=0;
     /**
      * constructor
      */
@@ -46,7 +46,7 @@ class PlayerEntity extends Sprite {
             height: 32,
             framewidth: 32,
             frameheight: 32,
-            image: "player"
+            image: "player", //image: "animals-walk"
         };
         super(x*32+16, y*32+16 , settings);
         this.xInMap = x;
@@ -72,7 +72,6 @@ class PlayerEntity extends Sprite {
             else if( l.name === "Frame") this.borderLayer = l;    
             else if( l.name === "Ground") this.groundLayer = l;    
         });
-        //this.body.addShape(new Rect(0,0,this.width, this.height));
 
         for( let x=0; x < this.mapWidth; x++) {
             for( let y=0; y < this.mapHeight; y++) {
@@ -80,6 +79,21 @@ class PlayerEntity extends Sprite {
                 if( tile !== null ) this.numberOfBonusTiles++;
             }
         }
+
+/*
+		this.addAnimation("stand-up", [84]);
+		this.addAnimation("walk-up", [84, 85, 86], 48);
+
+		this.addAnimation("stand-left", [60]);
+		this.addAnimation("walk-left", [60, 61, 62], 48);
+
+		this.addAnimation("stand-down", [48]);
+		this.addAnimation("walk-down", [48, 49, 50,], 48);
+
+		this.addAnimation("stand-right", [72]);
+		this.addAnimation("walk-right", [72, 73, 74], 48);
+		this.setCurrentAnimation("stand-left");
+*/
     }
 
     isWalkable(x, y) {
@@ -128,19 +142,31 @@ class PlayerEntity extends Sprite {
         };
 
         if( input.isKeyPressed("barrier")) {
+            /*
+            if (this.oldDx < 0) this.setCurrentAnimation("stand-left");
+            else if (this.oldDx > 0) this.setCurrentAnimation("stand-right");
+            else if (this.oldDy < 0) this.setCurrentAnimation("stand-up");
+            else if (this.oldDy > 0) this.setCurrentAnimation("stand-down");
+            */
             if( input.isKeyPressed("left")) {
                 dx =-1;
+            //    this.setCurrentAnimation("stand-left");
             }
             else if( input.isKeyPressed("right")) {
                 dx =+1;
+            //    this.setCurrentAnimation("stand-right");
             }
             if( input.isKeyPressed("up")) {
+            //    this.setCurrentAnimation("stand-up");
                 dy =-1;
             }
             else if( input.isKeyPressed("down")){
+            //    this.setCurrentAnimation("stand-down");
                 dy =+1;
             }
 
+            this.oldDx = dx;
+            this.oldDy = dy;
             if( dx != 0 || dy != 0) {
                 // place a new barrier tile in borderLayer
                 // only if there is no border tile at that pos
@@ -190,21 +216,44 @@ class PlayerEntity extends Sprite {
             if (input.isKeyPressed("left")) {            
                 this.flipX(true);
                 dx = -this.currentSpeed;
+                if(this.oldDx >= 0) {
+                    //this.setCurrentAnimation("walk-left");
+                    this.oldDx = dx;
+                }
             } 
-            if (input.isKeyPressed("right")) {
+            else if (input.isKeyPressed("right")) {
                 this.flipX(false);
                 dx = +this.currentSpeed;
+                if(this.oldDx <=0 ) {
+                    this.oldDx = dx;
+                //    this.setCurrentAnimation("walk-right");
+                }
             } 
             if (input.isKeyPressed("up")) {
                 dy = -this.currentSpeed;
+                if( this.oldDy >=0) {
+                //    this.setCurrentAnimation("walk-up");
+                    this.oldDy = dy;
+                }
             } 
-            if (input.isKeyPressed("down")) {
+            else if (input.isKeyPressed("down")) {
                 dy = +this.currentSpeed;
+                if( this.oldDy <= 0 ) {
+                //    this.setCurrentAnimation("walk-down");
+                    this.oldDy = dy;
+                }
             }
 
             // check speed of dog
             if( dx == 0 && dy == 0) { // reset speed
+                /*
+                if (this.oldDx < 0) this.setCurrentAnimation("stand-left");
+                else if (this.oldDx > 0) this.setCurrentAnimation("stand-right");
+                else if (this.oldDy < 0) this.setCurrentAnimation("stand-up");
+                else if (this.oldDy > 0) this.setCurrentAnimation("stand-down");
+                */
                 this.currentSpeed = this.initialSpeed;
+
             }
             else {
                 if( this.lastSpeedAdded > 60 ) {
@@ -291,16 +340,15 @@ class PlayerEntity extends Sprite {
                 GlobalGameState.bittenBySpiders++;
                 GlobalGameState.energy -= GlobalGameState.energyLostBySpider;
             }
-
-            console.log("  energy: " + GlobalGameState.energy + "/" + 100);
+            else if( other.enemyType === ENEMY_TYPES.golem) {
+                GlobalGameState.catchedByGolems++;
+                GlobalGameState.energy -= GlobalGameState.energyLostByGolem;
+            }
+            
             if( GlobalGameState.energy <= 0 ) {
                 console.log("GAME OVER!");
                 GlobalGameState.isGameOver = true;
-
-                this.writeHighscore()
-                .then(function() {
-                    state.change(state.GAMEOVER);
-                });                
+                state.change(state.GAMEOVER);
             }
             else {
                 GlobalGameState.invincible = true;

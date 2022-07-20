@@ -119,6 +119,18 @@ const DataManifest = [
 	},
 
 	{
+		name: "animals-walk",
+		type: "image",
+		src: "./data/img/animals-walk.png",
+	},
+
+	{
+		name: "golem-walk",
+		type: "image",
+		src: "./data/img/golem-walk.png",
+	},
+
+	{
 		name: "terrain",
 		type: "image",
 		src: "./data/img/terrain.png",
