@@ -89,7 +89,8 @@ device.onReady(() => {
             state.set(state.MENU, new TitleScreen());
             state.set(state.PLAY, new PlayScreen());
             state.set(state.READY, new GetReadyScreen());
-            state.set(state.GAMEOVER, new GameOverScreen());
+            state.set(state.GAMEOVER, new GameOverScreen(true));
+            state.set(state.GAME_END, new GameOverScreen(false));
             state.set(state.SCORE, new HighscoreScreen());
 
             // set the fade transition effect

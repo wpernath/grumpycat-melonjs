@@ -13,17 +13,6 @@ const DataManifest = [
 		src: "./data/img/screen-controls.json",
 	},
 
-	/* Bitmap Text */
-	{
-		name: "PressStart2P",
-		type: "image",
-		src: "./data/fnt/PressStart2P.png",
-	},
-	{
-		name: "PressStart2P",
-		type: "binary",
-		src: "./data/fnt/PressStart2P.fnt",
-	},
 
 	/* Bitmap Text */
 	{
@@ -52,12 +41,12 @@ const DataManifest = [
 	{
 		name: "18Outline",
 		type: "image",
-		src: "./data/fnt/12Outline.png",
+		src: "./data/fnt/18Outline.png",
 	},
 	{
 		name: "18Outline",
 		type: "binary",
-		src: "./data/fnt/12Outline.fnt",
+		src: "./data/fnt/18Outline.fnt",
 	},
 
 	/* Bitmap Text */
@@ -116,6 +105,18 @@ const DataManifest = [
 		name: "spider-red",
 		type: "image",
 		src: "./data/img/spider-red.png",
+	},
+
+	{
+		name: "animals-walk",
+		type: "image",
+		src: "./data/img/animals-walk.png",
+	},
+
+	{
+		name: "golem-walk",
+		type: "image",
+		src: "./data/img/golem-walk.png",
 	},
 
 	{

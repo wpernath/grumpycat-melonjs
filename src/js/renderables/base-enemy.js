@@ -69,6 +69,7 @@ const DIRS = [
 export const ENEMY_TYPES = {
 	cat: 'CAT',
 	spider: 'SPIDER',
+	golem: 'GOLEM',
 };
 
 export class BaseEnemySprite extends Sprite {
