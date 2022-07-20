@@ -77,11 +77,12 @@ export default class GolemEnemySprite extends BaseEnemySprite {
 
 				this.flicker(GlobalGameState.enemyStunnedTime, () => {
 					this.isStunned = false;
-					GlobalGameState.killedSpiders++;
-					GlobalGameState.score += GlobalGameState.scoreForKillingSpider;
+					GlobalGameState.stunnedGolems++;
+					GlobalGameState.score += GlobalGameState.scoreForStunningGolem;
 				});
 			}
-		} else if (other.body.collisionType === collision.types.PLAYER_OBJECT && !this.isDead && !this.isStunned && !GlobalGameState.invincible) {
+		} 
+		else if (other.body.collisionType === collision.types.PLAYER_OBJECT && !this.isDead && !this.isStunned && !GlobalGameState.invincible) {
 		}
 		return false;
 	}

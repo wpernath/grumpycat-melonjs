@@ -62,6 +62,7 @@ export class CatEnemy extends BaseEnemySprite {
 			if( other.isExploding && !this.isStunned) {
 				this.isStunned = true;
 				GlobalGameState.score += GlobalGameState.scoreForStunningCat;
+				GlobalGameState.stunnedCats++;
 				this.flicker(GlobalGameState.enemyStunnedTime, () => {
 					this.isStunned = false;
 				});

@@ -276,7 +276,7 @@ class PlayerEntity extends Sprite {
                 let bonus = this.collectBonusTile(this.pos.x, this.pos.y);
                 if( bonus !== 0 ) {
                     this.collectedBonusTiles++;
-                    
+                    GlobalGameState.bonusCollected++;
                     if( bonus === BONUS_TILE.bomb ) { // bomb                        
                         GlobalGameState.bombs += GlobalGameState.bombsForBombBonus;
                         GlobalGameState.score += GlobalGameState.scoreForBombs;

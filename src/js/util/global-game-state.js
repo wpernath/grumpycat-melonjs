@@ -53,11 +53,11 @@ const GlobalGameState = {
 	killedSpiders: 0,
 	stunnedCats: 0,
 	stunnedGolems: 0,
-
+	bonusCollected: 0,
 
 	// reset statistics and player state
 	reset: function() {
-		this.energy = this.energyOnBegin;
+		this.energy = 10; // this.energyOnBegin;
 		//this.currentLevel = 0;
 		LevelManager.getInstance().reset();
 		this.score = 0;
@@ -72,6 +72,7 @@ const GlobalGameState = {
 		this.stunnedCats = 0;
 		this.stunnedGolems = 0;
 		this.catchedByGolems=0;
+		this.bonusCollected = 0;
 	}
 };
 

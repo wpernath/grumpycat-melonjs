@@ -107,6 +107,7 @@ export class LevelManager {
      * reset the current level info
      */
     reset() {
+        console.log("  LevelManager.reset() ");
         this.currentLevel = 0;
     }
 
@@ -115,6 +116,7 @@ export class LevelManager {
      * @returns the next level or the 0th one.
      */
     next() {
+        console.log("  LevelManager.next() ");
         this.currentLevel++;
         if( this.currentLevel > this.allLevels.length) {
             this.reset();
@@ -127,6 +129,7 @@ export class LevelManager {
      * @returns the previous level or the 0th one.
      */
     prev() {
+        console.log("  LevelManager.prev() ");
         this.currentLevel--;
         if( this.currentLevel < 0 ) {
             this.reset();
