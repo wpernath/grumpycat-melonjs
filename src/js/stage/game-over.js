@@ -6,7 +6,7 @@ class LevelStatistics extends Container {
 	constructor(x, y, width, height) {
 		super(x, y, width, height);
 		this.setOpacity(1);
-		this.levelName = new BitmapText(4, 8, {
+		this.levelName = new BitmapText(14, 8, {
 			font: "24Outline",
 			size: "1",
 			textAlign: "left",
@@ -44,21 +44,27 @@ class LevelStatistics extends Container {
 			GlobalGameState.stunnedGolems + "\n"+
  			"";
 
-		this.levelDescr = new BitmapText(4, 40, {
+		this.levelDescr = new BitmapText(14, 40, {
 			font: "18Outline",
 			textAlign: "left",
 			text: textL,
 		});
 
-		this.levelDescr2 = new BitmapText(204, 40, {
+		this.levelDescr2 = new BitmapText(324, 40, {
 			font: "18Outline",
 			textAlign: "right",
 			text: textR,
 		});
 
-		this.addChild(this.levelName);
-		this.addChild(this.levelDescr);
-		this.addChild(this.levelDescr2);
+		this.sensaSprite = new Sprite(600, 50, {
+			image: "sensa_nee"
+		});
+		this.sensaSprite.setOpacity(0.8);
+
+		this.addChild(this.levelName,1);
+		this.addChild(this.levelDescr,1);
+		this.addChild(this.levelDescr2,1);
+		this.addChild(this.sensaSprite,0);
 	}
 }
 class GameOverBack extends Container {
@@ -114,10 +120,10 @@ class GameOverBack extends Container {
 		// add to the world container
 		this.addChild(this.backgroundImage, 0);
 		this.addChild(this.catLeftImage, 5);
-		this.addChild(this.catRightImage, 5);
+		//this.addChild(this.catRightImage, 7);
 		this.addChild(this.titleText, 2);
 		this.addChild(this.subTitleText, 5);
-		this.addChild(new LevelStatistics(190, game.viewport.height - 400), game.viewport.width - 400, game.viewport.height - 400);
+		this.addChild(new LevelStatistics(190, game.viewport.height - 400), game.viewport.width - 400, game.viewport.height - 400), 6;
 	}
 }
 
@@ -146,19 +152,21 @@ export default class GameOverScreen extends Stage {
 		game.world.addChild(this.emitter);
 		this.emitter.streamParticles();
 
-		// change to play state on press Enter or click/tap
-		input.bindKey(input.KEY.ENTER, "enter", true);
-		input.bindPointer(input.pointer.LEFT, input.KEY.ENTER);
+		NetworkManager.getInstance().writeHighscore().then( () => {
+			// change to play state on press Enter or click/tap
+			input.bindKey(input.KEY.ENTER, "enter", true);
+			input.bindPointer(input.pointer.LEFT, input.KEY.ENTER);
 
-		this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
-			if (!state.isCurrent(state.GAMEOVER)) return;
-			console.log("GameOver.EventHandler()");
-			if (action === "enter" || action === "bomb") {
-				state.change(state.SCORE);
-			}
-			if (action === "exit") {
-				state.change(state.MENU);
-			}
+			this.handler = event.on(event.KEYDOWN, function (action, keyCode, edge) {
+				if (!state.isCurrent(state.GAMEOVER)) return;
+				console.log("GameOver.EventHandler()");
+				if (action === "enter" || action === "bomb") {
+					state.change(state.SCORE);
+				}
+				if (action === "exit") {
+					state.change(state.MENU);
+				}
+			});
 		});
 	}
 
